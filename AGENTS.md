@@ -7,3 +7,5 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+Before finishing code changes, run `pnpm format` and `pnpm check`. Keep Biome's recommended rules enabled; fix diagnostics instead of suppressing them unless there is a documented reason. Lefthook checks staged files before commits and runs the full check before pushes.
