@@ -5,7 +5,7 @@ import { NeedsLimits, PairBar } from "./pair";
 import { EndSession, Session } from "./session";
 
 export const metadata: Metadata = {
-  title: "العبا معًا — معًا",
+  title: "العبا معًا",
   description:
     "بطاقات وعجلة وتوافق رغبات ووضعيات ومسار لليلة لزوجين بالغين، لا يظهر فيها إلا ما يقبله كلاكما.",
 };

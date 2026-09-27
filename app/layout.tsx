@@ -19,7 +19,9 @@ const sans = IBM_Plex_Sans_Arabic({
 });
 
 export const metadata: Metadata = {
-  title: "معًا — مساحة لكما وحدكما",
+  // Absolute links for the share image: set SITE_URL to the public address.
+  metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3100"),
+  title: { default: "معًا — مساحة لكما وحدكما", template: "%s — معًا" },
   description:
     "أفكار وألعاب للحظات تجمعكما، تختارانها معًا وفق رغباتكما وحدودكما. للأزواج البالغين.",
 };

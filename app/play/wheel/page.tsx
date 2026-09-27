@@ -5,6 +5,7 @@ import { pick, type Spin, seeded, wheelSegments } from "@/lib/play";
 import {
   ActivityCard,
   Empty,
+  focusOnMount,
   GameHead,
   kindLabel,
   Loading,
@@ -158,6 +159,12 @@ export default function WheelPage() {
 
           <div aria-live="polite">
             {spinning && <p className="sr-only">العجلة تدور…</p>}
+            {/* What it stopped on was hidden since; the card goes, and says so. */}
+            {!spinning && wheel.result && !result && (
+              <p className="play-state" ref={focusOnMount} tabIndex={-1}>
+                لم يعد ما توقفت عنده العجلة متاحًا. أديرا مجددًا.
+              </p>
+            )}
             {result && (
               <>
                 <ActivityCard

@@ -56,7 +56,8 @@ export default function PlayHub() {
                   alt={game.alt}
                   width={IMAGE_SIZE.width}
                   height={IMAGE_SIZE.height}
-                  sizes="8rem"
+                  // A thumbnail on phones; a third of the row from 720px.
+                  sizes="(min-width: 720px) 33vw, 8rem"
                 />
                 <span>
                   <strong>{game.title}</strong>

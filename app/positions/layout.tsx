@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ClearDataButton } from "../providers";
 
 export const metadata: Metadata = {
-  title: "دليل الوضعيات — معًا",
+  title: "دليل الوضعيات",
   description:
     "وضعيات مرسومة مع شرح مباشر وخطوات واعتبارات الراحة والسلامة، للأزواج البالغين.",
 };

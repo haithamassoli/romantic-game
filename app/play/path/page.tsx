@@ -144,17 +144,25 @@ export default function PathPage() {
   }
 
   if (stopped || !step) {
+    // Only a finished last step completes the path; a skipped one just ends it.
+    const completed = marks.at(-1) === "done";
     return (
       <>
         {head}
         <section className="wrap play-empty">
           <h2 ref={focusOnMount} tabIndex={-1}>
-            {stopped ? "توقّف المسار" : "اكتمل المسار"}
+            {stopped
+              ? "توقّف المسار"
+              : completed
+                ? "اكتمل المسار"
+                : "انتهت خطوات المسار"}
           </h2>
           <p>
             {stopped
               ? "توقفتما، وهذا جواب محترم تمامًا. لا شيء يُحتسب هنا ولا شيء يضيع."
-              : "وصلتما إلى آخر خطوة. ما بعدها لكما وحدكما."}{" "}
+              : completed
+                ? "وصلتما إلى آخر خطوة. ما بعدها لكما وحدكما."
+                : "تخطّيتما الخطوة الأخيرة، وهذا جواب محترم تمامًا. ما بعدها لكما وحدكما."}{" "}
             يتذكر هذا الجهاز الخطوات التي أنهيتماها فقط، كي لا تتكرر في ليلة
             قادمة.
           </p>

@@ -216,7 +216,12 @@ test("the night path skips steps finished before, until fresh ones run short", (
     const path = nightPath(calm, 15, 1, done, random);
     assert.equal(path.length, 5);
     assert.ok(path.every((s) => !done.includes(s.slug)));
-    // Two fresh steps can't fill half of it: both come first, then repeats.
+    // Four fresh steps nearly fill it: repeats top it up rather than leave a gap.
+    const some = slugs.slice(0, 8);
+    const topped = nightPath(calm, 15, 1, some, random).map((s) => s.slug);
+    assert.equal(topped.length, 5);
+    assert.ok(topped.slice(0, 4).every((slug) => !some.includes(slug)));
+    // Two fresh steps: both come first, then repeats.
     const most = slugs.slice(0, 10);
     const short = nightPath(calm, 15, 1, most, random).map((s) => s.slug);
     assert.deepEqual(short.slice(0, 2).sort(), ["calm-10", "calm-11"]);

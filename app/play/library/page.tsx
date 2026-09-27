@@ -15,6 +15,7 @@ import {
   type Activity,
   ActivityCard,
   Empty,
+  focusOnMount,
   GameHead,
   kindLabel,
   Loading,
@@ -34,6 +35,8 @@ export default function LibraryPage() {
 
   if (!challenges) return <Loading />;
   const chosen = challenges.find((c) => c.slug === slug) ?? null;
+  // The challenge on screen was hidden, or left the couple's limits, since it was chosen.
+  const withdrawn = slug !== null && !chosen;
 
   // Only categories and levels that hold an allowed challenge are offered.
   const topics = TOPIC_KEYS.filter((t) =>
@@ -90,6 +93,12 @@ export default function LibraryPage() {
         </section>
       ) : (
         <section className="wrap library" aria-label="التحديات">
+          {withdrawn && (
+            <p className="play-state" ref={focusOnMount} tabIndex={-1}>
+              لم يعد التحدي الذي كان أمامكما متاحًا، فعدتما إلى المكتبة. اختارا
+              غيره.
+            </p>
+          )}
           <fieldset className="lib-filter">
             <legend>الموضوع</legend>
             <label className="chip">

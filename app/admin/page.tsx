@@ -348,7 +348,10 @@ function Catalogue({
                 <strong className="admin-title">{title}</strong>
                 <span className="admin-meta">
                   <span className="admin-status">{STATUS[row.status]}</span>
-                  {row.intensity && <span>{INTENSITY[row.intensity]}</span>}
+                  {/* Every position is جريء, so only activities show it. */}
+                  {kind !== "position" && row.intensity && (
+                    <span>{INTENSITY[row.intensity]}</span>
+                  )}
                   <span dir="ltr">{row.slug}</span>
                 </span>
                 {gaps.length > 0 && (
@@ -410,16 +413,19 @@ function Editor({
   const set = (patch: Partial<Form>) => setForm((f) => ({ ...f, ...patch }));
   const position = form.kind === "position";
   const gaps = gapsOf(form);
+  // A hint is the field's description, never part of its name.
   const lines = (key: "steps" | "care", label: string, hint: string) => (
-    <label className="admin-field">
-      {label}
+    <div className="admin-field">
+      <label htmlFor={`f-${key}`}>{label}</label>
       <textarea
+        id={`f-${key}`}
+        aria-describedby={`f-${key}-hint`}
         rows={4}
         value={form[key].join("\n")}
         onChange={(e) => set({ [key]: e.target.value.split("\n") })}
       />
-      <small>{hint}</small>
-    </label>
+      <small id={`f-${key}-hint`}>{hint}</small>
+    </div>
   );
 
   async function upload(file: File) {
@@ -455,7 +461,15 @@ function Editor({
       <button
         type="button"
         className="back-link text-button"
-        onClick={() => onDone("")}
+        onClick={() => {
+          const edited = JSON.stringify(form) !== JSON.stringify(initial);
+          if (
+            edited &&
+            !window.confirm("ستضيع التعديلات التي لم تحفظها. أترجع دون حفظ؟")
+          )
+            return;
+          onDone("");
+        }}
       >
         <span aria-hidden="true">→</span> كل المحتوى، دون حفظ
       </button>
@@ -470,9 +484,11 @@ function Editor({
           الرابط: <span dir="ltr">{form.slug}</span> (لا يتغير بعد الإنشاء)
         </p>
       ) : (
-        <label className="admin-field">
-          الرابط
+        <div className="admin-field">
+          <label htmlFor="f-slug">الرابط</label>
           <input
+            id="f-slug"
+            aria-describedby="f-slug-hint"
             dir="ltr"
             value={form.slug}
             onChange={(e) => set({ slug: e.target.value.trim() })}
@@ -482,11 +498,11 @@ function Editor({
             autoCapitalize="none"
             spellCheck={false}
           />
-          <small>
+          <small id="f-slug-hint">
             أحرف لاتينية صغيرة وأرقام وشرطات، مثل slow-kiss. يبقى ثابتًا لأن
             المفضلة والجلسات تشير إليه.
           </small>
-        </label>
+        </div>
       )}
 
       {position ? (
@@ -540,20 +556,25 @@ function Editor({
               onChange={(e) => set({ title: e.target.value })}
             />
           </label>
-          <label className="admin-field">
-            {form.kind === "desire" ? "الرغبة كما يختارها كلٌّ منكما" : "النص"}
-
+          <div className="admin-field">
+            <label htmlFor="f-body">
+              {form.kind === "desire" ? "الرغبة كما يختارها كلٌّ منكما" : "النص"}
+            </label>
             <textarea
+              id="f-body"
+              aria-describedby={
+                form.kind === "card" ? "f-body-hint" : undefined
+              }
               rows={4}
               value={form.body}
               onChange={(e) => set({ body: e.target.value })}
             />
             {form.kind === "card" && (
-              <small>
+              <small id="f-body-hint">
                 بطاقة موسومة «حديث وأسئلة» تُسحب سؤالًا، وغيرها تحديًا.
               </small>
             )}
-          </label>
+          </div>
           {form.kind === "desire" && (
             <label className="admin-field">
               الخطوة الواقعية حين يختارها كلاهما
@@ -644,33 +665,40 @@ function Editor({
               type="file"
               accept="image/png,image/jpeg,image/webp"
               aria-label={form.imageUrl ? "استبدال الرسم" : "رفع الرسم"}
+              aria-describedby="f-image-hint"
               onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (file) void upload(file);
               }}
             />
-            <small>
+            <small id="f-image-hint">
               رسم عمودي بنسبة الرسوم الحالية (1145×1374)، لبالغين وبلا ملامح
               وجوه، ويملك الناشر حقوقه. يُحفظ مع العنصر.
             </small>
           </div>
-          <label className="admin-field">
-            النص البديل للرسم
+          <div className="admin-field">
+            <label htmlFor="f-alt">النص البديل للرسم</label>
             <textarea
+              id="f-alt"
+              aria-describedby="f-alt-hint"
               rows={2}
               value={form.imageAlt}
               onChange={(e) => set({ imageAlt: e.target.value })}
             />
-            <small>ما يظهر في الرسم لمن لا يراه.</small>
-          </label>
-          <label className="admin-field">
-            حقوق الرسم
+            <small id="f-alt-hint">ما يظهر في الرسم لمن لا يراه.</small>
+          </div>
+          <div className="admin-field">
+            <label htmlFor="f-rights">حقوق الرسم</label>
             <input
+              id="f-rights"
+              aria-describedby="f-rights-hint"
               value={form.imageRights}
               onChange={(e) => set({ imageRights: e.target.value })}
             />
-            <small>من رسمه، ومن يملكه، وبأي إذن يُنشر هنا.</small>
-          </label>
+            <small id="f-rights-hint">
+              من رسمه، ومن يملكه، وبأي إذن يُنشر هنا.
+            </small>
+          </div>
         </>
       )}
 

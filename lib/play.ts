@@ -112,8 +112,9 @@ function shuffle<T>(list: readonly T[], random: () => number): T[] {
 /**
  * The night path: gentle steps first, bolder later, never longer than `minutes`
  * nor bolder than `ceiling`. Each level gets an equal share of the time, and what
- * one leaves unused passes to the next. Steps finished on earlier nights return
- * only when fresh ones can't fill half the time, and then only after them.
+ * one leaves unused passes to the next; then any step that still fits fills the
+ * rest, so the path runs close to the chosen time. Steps finished on earlier
+ * nights only fill what fresh ones can't, and come after them.
  */
 export function nightPath<T extends Item & { minutes?: number }>(
   pool: readonly T[],
@@ -134,24 +135,23 @@ export function nightPath<T extends Item & { minutes?: number }>(
     random,
   );
   const levels = LEVELS.filter((l) => fits.some((i) => i.intensity === l));
-  const build = (queue: T[]) => {
-    const path: T[] = [];
-    let used = 0;
-    for (const [n, level] of levels.entries()) {
-      const until = (minutes * (n + 1)) / levels.length;
-      for (const item of queue) {
-        if (item.intensity === level && used + stepMinutes(item) <= until) {
-          path.push(item);
-          used += stepMinutes(item);
-        }
+  const path: T[] = [];
+  let used = 0;
+  const add = (item: T, until: number) => {
+    if (path.includes(item) || used + stepMinutes(item) > until) return;
+    path.push(item);
+    used += stepMinutes(item);
+  };
+  for (const [n, level] of levels.entries()) {
+    for (const item of fresh) {
+      if (item.intensity === level) {
+        add(item, (minutes * (n + 1)) / levels.length);
       }
     }
-    return { path, used };
-  };
-  const first = build(fresh);
-  return first.used * 2 >= minutes
-    ? first.path
-    : build([...fresh, ...again]).path;
+  }
+  for (const item of [...fresh, ...again]) add(item, minutes);
+  // A stable sort: gentle to bold, and within a level fresh steps stay first.
+  return path.sort((a, b) => a.intensity - b.intensity);
 }
 
 /**

@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# معًا (Maʿan)
 
-## Getting Started
+A free Arabic (RTL, mobile-first) website for consenting adult couples: an illustrated sex-position guide plus couple games (challenge cards, choice wheel, desire match, position discovery, night path, challenge library), played on one device or on two phones. Couples need no account. Each partner sets limits in secret, and only what both accept is shown. Product spec: [docs/PRD.md](docs/PRD.md). Milestones: [docs/tasks.md](docs/tasks.md). Launch status and open decisions: [docs/launch.md](docs/launch.md).
 
-First, run the development server:
+## Stack
+
+- Next.js 16 (App Router), React 19, Tailwind CSS 4, with the design system in `app/globals.css`
+- [Convex](https://convex.dev) for content, two-phone sessions (real-time), and the publisher admin (`convex/`)
+- Biome (lint/format), `node:test` (tests), Lefthook (git hooks), pnpm
+
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+npx convex dev   # first run: log in and pick/create a deployment; writes NEXT_PUBLIC_CONVEX_URL to .env.local; keeps pushing convex/ on save
+pnpm dev         # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Seed the content: the 16 publisher-owned drawings, plus cards, challenges and desires. Seeding is insert-only, so re-running never overwrites edits made in `/admin`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npx convex run seed:positions
+npx convex run seed:activities
+# rewrite chosen seeded items from the source (keeps their status):
+npx convex run seed:positions '{"refresh":["spooning"]}'
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Publisher admin (`/admin`)
 
-## Learn More
+`/admin` has no accounts. It asks for `ADMIN_TOKEN`, an environment variable on the Convex deployment (at least 32 characters). Admin functions refuse every call while it is unset.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npx convex env set ADMIN_TOKEN "$(openssl rand -base64 32)"   # create, or rotate
+npx convex env get ADMIN_TOKEN                                 # read it when signing in
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Rotating the token signs out every open admin tab on its next call. Add `--prod` to target the production deployment. Never commit the token.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Checks
 
-## Deploy on Vercel
+```bash
+pnpm format   # Biome, writes fixes
+pnpm check    # lint + typecheck + tests (pnpm test runs node:test on lib/ and scripts/)
+pnpm build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Lefthook lints staged files on commit and runs `pnpm check` before push. CI (`.github/workflows/ci.yml`) runs `pnpm check` and `pnpm build`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy
+
+1. `npx convex deploy`, then set `ADMIN_TOKEN` with `--prod` and run the seeds with `--prod`.
+2. On the web host, set `NEXT_PUBLIC_CONVEX_URL` (the production deployment) and `SITE_URL` (the public address, used for absolute share-image links).
+3. Before a public launch, see [docs/launch.md](docs/launch.md): launch countries and age-verification requirements, and third-party images that must be removed.
