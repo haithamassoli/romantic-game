@@ -1022,7 +1022,7 @@ const challenges: Draft[] = [
   },
 ];
 
-// For the desire-match game (milestone 3): each partner picks privately; only shared picks show.
+// For the desire-match game: each partner picks privately from `body`; a shared pick turns into its `action`.
 const desires: Draft[] = [
   {
     slug: "desire-long-kiss",
@@ -1031,6 +1031,9 @@ const desires: Draft[] = [
     intensity: 1,
     topics: ["kiss"],
     constraints: [],
+    action:
+      "اجلسا متقابلين وقبّلا بعضكما بلا عجلة: الشفاه أولًا، ثم العنق وخلف الأذن. لا أيدي تحت الملابس حتى ينتهي الوقت.",
+    minutes: 5,
   },
   {
     slug: "desire-cuddle",
@@ -1039,6 +1042,9 @@ const desires: Draft[] = [
     intensity: 1,
     topics: ["touch"],
     constraints: [],
+    action:
+      "أطفئا الضوء وضعا الهاتف بعيدًا، واستلقيا متعانقين. تنفّسا معًا، ودعا الأيدي تمسح الظهر والشعر بلا هدف غير القرب.",
+    minutes: 10,
   },
   {
     slug: "desire-oil-massage",
@@ -1047,6 +1053,9 @@ const desires: Draft[] = [
     intensity: 2,
     topics: ["massage", "undress"],
     constraints: [],
+    action:
+      "ليتمدد أحدكما عاريًا على منشفة، وليدفّئ الآخر الزيت بين كفيه ثم يدلّكه من الكتفين حتى القدمين، ببطء وضغط ثابت. بدّلا الأدوار عند انتهاء الوقت.",
+    minutes: 15,
   },
   {
     slug: "desire-shower",
@@ -1055,14 +1064,20 @@ const desires: Draft[] = [
     intensity: 2,
     topics: ["undress", "touch", "outside"],
     constraints: ["balance"],
+    action:
+      "افتحا الماء دافئًا وادخلا معًا. ليغسل كلٌّ منكما جسد الآخر بالصابون بيديه فقط، على مهل. ضعا منشفة على الأرض، وأمسكا بشيء ثابت كي لا تنزلقا.",
+    minutes: 10,
   },
   {
     slug: "desire-blindfold",
     title: "عصابة العين",
     body: "أن تُعصب العينان وتتولى الحواس الأخرى كل شيء.",
     intensity: 2,
-    topics: ["props"],
+    topics: ["props", "kiss", "touch"],
     constraints: [],
+    action:
+      "ليعصب أحدكما عيني الآخر بوشاح ناعم، ثم يقبّله ويلمسه حيث لا يتوقع. من عُصبت عيناه يقول «توقف» متى شاء، فيُرفع الوشاح فورًا.",
+    minutes: 5,
   },
   {
     slug: "desire-ice",
@@ -1071,6 +1086,9 @@ const desires: Draft[] = [
     intensity: 2,
     topics: ["undress", "props", "kiss"],
     constraints: [],
+    action:
+      "أحضرا مكعبات ثلج. مرّرا الثلج على العنق والصدر والبطن، ولتتبع الشفاه الدافئة أثره فورًا. أبعدا الثلج عن الأعضاء التناسلية مباشرة.",
+    minutes: 5,
   },
   {
     slug: "desire-feather",
@@ -1079,6 +1097,9 @@ const desires: Draft[] = [
     intensity: 2,
     topics: ["props", "touch"],
     constraints: [],
+    action:
+      "ليستلقِ أحدكما مغمض العينين، وليمرّر الآخر ريشة أو طرف وشاح على العنق والبطن وداخل الفخذين، أبطأ مما تظنان. ثم بدّلا.",
+    minutes: 5,
   },
   {
     slug: "desire-slow-strip",
@@ -1087,22 +1108,31 @@ const desires: Draft[] = [
     intensity: 3,
     topics: ["undress"],
     constraints: [],
+    action:
+      "اختارا أغنية. ليجلس أحدكما ويتفرّج دون أن يلمس، وليتعرَّ الآخر أمامه قطعة بعد قطعة حتى تنتهي الأغنية.",
+    minutes: 4,
   },
   {
     slug: "desire-oral-give",
     title: "أن أداعبك بالفم",
     body: "أن أقضي وقتًا طويلًا بين فخذيك بشفتيّ ولساني.",
     intensity: 3,
-    topics: ["oral"],
+    topics: ["oral", "undress"],
     constraints: [],
+    action:
+      "كلاكما يشتهي أن يداعب الآخر بفمه، فتناوبا. ليستلقِ أحدكما، وليبدأ الآخر بقبلات على داخل الفخذين قبل الشفاه واللسان، ثم بدّلا عند انتهاء الوقت.",
+    minutes: 10,
   },
   {
     slug: "desire-oral-receive",
     title: "أن أُداعَب بالفم",
     body: "أن أستلقي وأترك الشفاه واللسان يأخذانني إلى الحافة.",
     intensity: 3,
-    topics: ["oral"],
+    topics: ["oral", "undress"],
     constraints: [],
+    action:
+      "كلاكما يشتهي أن يُداعَب بالفم: ارميا قطعة نقود لتعرفا من يبدأ. ليستلقِ الأول ويقل بصوت مسموع ما يريد: أبطأ، أسرع، هنا. ثم بدّلا.",
+    minutes: 10,
   },
   {
     slug: "desire-strangers",
@@ -1111,14 +1141,20 @@ const desires: Draft[] = [
     intensity: 2,
     topics: ["roleplay"],
     constraints: [],
+    action:
+      "ليخرج أحدكما من الغرفة ثم يعود كأنه غريب يلتقي الآخر للمرة الأولى. عرّفا بنفسيكما باسمين جديدين، ودعا الإغواء يبدأ من أول جملة.",
+    minutes: 15,
   },
   {
     slug: "desire-lead",
     title: "أن يقود أحدنا",
     body: "أن يقود أحدنا الليلة كلها، ويسلّم الآخر نفسه للقيادة.",
     intensity: 3,
-    topics: ["roleplay"],
+    topics: ["roleplay", "undress", "positions"],
     constraints: [],
+    action:
+      "اتفقا على من يقود الليلة وعلى كلمة للتوقف. القائد يقرر الإيقاع والمكان والترتيب، والآخر يسلّم نفسه ويقول ما يعجبه بصوت مسموع. كلمة التوقف تنهي كل شيء فورًا.",
+    minutes: 20,
   },
   {
     slug: "desire-new-position",
@@ -1127,6 +1163,8 @@ const desires: Draft[] = [
     intensity: 3,
     topics: ["undress", "positions"],
     constraints: [],
+    action:
+      "العبا «اكتشاف الوضعيات» لتختارا معًا وضعية لم تجرّباها ضمن حدودكما. اقرآ خطواتها بصوت مسموع، ثم جرّباها ببطء، وعودا إلى وضعية تحبانها إن لم تريحكما.",
   },
   {
     slug: "desire-standing",
@@ -1134,7 +1172,9 @@ const desires: Draft[] = [
     body: "جسدان واقفان، وجدار يسندهما، وإيقاع لا ينتظر السرير.",
     intensity: 3,
     topics: ["undress", "positions"],
-    constraints: ["balance", "strength"],
+    constraints: ["balance", "strength", "knees"],
+    action:
+      "اختارا جدارًا ثابتًا وأرضًا غير زلقة، وقفا حافيين متقابلين. ليستند أحدكما إلى الجدار، وليثنِ الأطول ركبتيه حتى يتوازى الحوضان، ثم تحركا بإيقاع قصير.",
   },
   {
     slug: "desire-lazy-morning",
@@ -1143,6 +1183,8 @@ const desires: Draft[] = [
     intensity: 2,
     topics: ["undress", "touch", "positions"],
     constraints: [],
+    action:
+      "اضبطا المنبّه غدًا أبكر بنصف ساعة. حين يرن لا تغادرا السرير: التصقا كالملاعق، ودعا الأيدي تستيقظ قبلكما.",
   },
   {
     slug: "desire-beyond-bedroom",
@@ -1151,6 +1193,8 @@ const desires: Draft[] = [
     intensity: 3,
     topics: ["undress", "outside", "positions"],
     constraints: [],
+    action:
+      "اختارا مكانًا في البيت غير السرير: الأريكة، أو السجادة، أو طاولة ثابتة. أغلقا الأبواب والستائر، وابدآ هناك الآن.",
   },
   {
     slug: "desire-dirty-talk",
@@ -1159,30 +1203,42 @@ const desires: Draft[] = [
     intensity: 3,
     topics: ["talk"],
     constraints: [],
+    action:
+      "ليقل كلٌّ منكما للآخر، وعيناه في عينيه، ثلاثة أشياء يشتهي أن يفعلها به الليلة، بأوضح كلمات يجرؤ عليها. ثم نفّذا واحدًا منها يقبله كلاكما.",
+    minutes: 3,
   },
   {
     slug: "desire-mirror",
     title: "أمام المرآة",
     body: "أن نرى نفسينا معًا في المرآة ونحن نتلامس.",
     intensity: 3,
-    topics: ["undress", "positions"],
+    topics: ["undress", "touch", "positions"],
     constraints: [],
+    action:
+      "قفا أو اجلسا أمام مرآة كبيرة، أحدكما خلف الآخر. تعرّيا ببطء وتلامسا وأعينكما على الانعكاس، لا على بعضكما.",
+    minutes: 5,
   },
   {
     slug: "desire-edge",
     title: "على الحافة",
     body: "الاقتراب من الذروة مرات، والتوقف، ثم الوصول أخيرًا.",
     intensity: 3,
-    topics: ["touch"],
+    topics: ["touch", "undress"],
     constraints: [],
+    action:
+      "ليداعب أحدكما الآخر حتى يقترب من الذروة، ثم يتوقف تمامًا حين يسمع «قريب». انتظرا نصف دقيقة وكرّرا ثلاث مرات قبل الوصول، ثم بدّلا.",
+    minutes: 15,
   },
   {
     slug: "desire-candle-bath",
     title: "حمّام وشموع",
     body: "حوض دافئ وضوء شموع وجسدان متلاصقان في الماء.",
     intensity: 2,
-    topics: ["undress", "outside"],
-    constraints: [],
+    topics: ["undress", "touch", "outside"],
+    constraints: ["balance"],
+    action:
+      "املآ الحوض بماء دافئ لا ساخن، وأشعلا الشموع بعيدًا عن المناشف. اجلسا في الماء أحدكما خلف الآخر، ودعا الحديث والأيدي تأخذ وقتها.",
+    minutes: 20,
   },
 ];
 

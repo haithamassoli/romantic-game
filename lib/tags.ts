@@ -73,7 +73,7 @@ export const NO_LIMITS: Limits = {
   blockedConstraints: [],
 };
 
-type Tagged = {
+export type Tagged = {
   intensity: number;
   topics: readonly string[];
   constraints: readonly string[];

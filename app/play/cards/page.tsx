@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { draw } from "@/lib/play";
 import {
   type Activity,
@@ -20,6 +21,8 @@ export default function CardsPage() {
   const [drawn, setDrawn] = useState<string[]>([]);
   const [card, setCard] = useState<Activity | null>(null);
   const [spent, setSpent] = useState<Pile | null>(null);
+  // The card back says what happened when the button pressed has just gone.
+  const back = useRef<HTMLDivElement>(null);
 
   if (!deck) return <Loading />;
 
@@ -31,9 +34,12 @@ export default function CardsPage() {
 
   function pull(pile: Pile) {
     const next = draw(piles[pile], drawn);
-    setCard(next);
-    setSpent(next ? null : pile);
-    if (next) setDrawn([...drawn, next.slug]);
+    flushSync(() => {
+      setCard(next);
+      setSpent(next ? null : pile);
+      if (next) setDrawn([...drawn, next.slug]);
+    });
+    if (!next) back.current?.focus();
   }
 
   return (
@@ -54,7 +60,7 @@ export default function CardsPage() {
                 label={kindLabel(card)}
               />
             ) : (
-              <div className="card-back">
+              <div className="card-back" ref={back} tabIndex={-1}>
                 <span aria-hidden="true">✳</span>
                 <p>
                   {spent
@@ -103,9 +109,12 @@ export default function CardsPage() {
                 type="button"
                 className="text-button"
                 onClick={() => {
-                  setDrawn([]);
-                  setCard(null);
-                  setSpent(null);
+                  flushSync(() => {
+                    setDrawn([]);
+                    setCard(null);
+                    setSpent(null);
+                  });
+                  back.current?.focus();
                 }}
               >
                 اخلطا الرزمة من جديد

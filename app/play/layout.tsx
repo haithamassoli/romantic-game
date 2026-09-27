@@ -6,7 +6,7 @@ import { EndSession, NeedsLimits, Session } from "./session";
 export const metadata: Metadata = {
   title: "العبا معًا — معًا",
   description:
-    "بطاقات وعجلة ومكتبة تحديات لزوجين بالغين، لا يظهر فيها إلا ما يقبله كلاكما.",
+    "بطاقات وعجلة وتوافق رغبات ووضعيات ومسار لليلة لزوجين بالغين، لا يظهر فيها إلا ما يقبله كلاكما.",
 };
 
 export default function PlayLayout({ children }: LayoutProps<"/play">) {
@@ -39,8 +39,9 @@ export default function PlayLayout({ children }: LayoutProps<"/play">) {
             معًا
           </Link>
           <p>
-            حدودكما لا تُحفظ ولا تُرسل، وتُمحى بإنهاء الجلسة أو إغلاق الصفحة. يبقى
-            على هذا الجهاز تفضيل المؤقت فقط.
+            حدودكما واختياراتكما لا تُحفظ ولا تُرسل، وتُمحى بإنهاء الجلسة أو إغلاق
+            الصفحة. يبقى على هذا الجهاز تفضيل المؤقت وخطوات مسار الليلة التي
+            أنهيتماها فقط.
           </p>
           <ClearDataButton />
         </footer>

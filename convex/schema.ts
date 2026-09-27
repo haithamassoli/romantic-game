@@ -50,6 +50,8 @@ export default defineSchema({
     topics,
     constraints,
     minutes: v.optional(v.number()),
+    /** Desires only: the real-world step a shared desire turns into. */
+    action: v.optional(v.string()),
   })
     .index("by_status_and_kind", ["status", "kind"])
     .index("by_slug", ["slug"]),

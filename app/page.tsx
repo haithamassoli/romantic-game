@@ -176,7 +176,7 @@ export default function Home() {
           </p>
         </div>
         <p className="coming-soon">
-          ثلاث منها جاهزة للعب على جهاز واحد، والبقية تصل قريبًا.{" "}
+          الست كلها جاهزة للعب على جهاز واحد، واللعب على هاتفين يصل قريبًا.{" "}
           <Link href="/play">ابدآ اللعب</Link>
         </p>
         <div className="games-grid">
@@ -193,14 +193,10 @@ export default function Home() {
               </div>
               <div className="game-meta">
                 <span>{String(index + 1).padStart(2, "0")} / تجربة</span>
-                <span>{game.href ? "جاهزة" : "قريبًا"}</span>
+                <span>جاهزة</span>
               </div>
               <h3>
-                {game.href ? (
-                  <Link href={game.href}>{game.title}</Link>
-                ) : (
-                  game.title
-                )}
+                <Link href={game.href}>{game.title}</Link>
               </h3>
               <p>{game.description}</p>
             </article>

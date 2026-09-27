@@ -13,7 +13,7 @@ import {
 } from "react";
 import { api } from "@/convex/_generated/api";
 import type { Doc } from "@/convex/_generated/dataModel";
-import { allowedFor } from "@/lib/play";
+import { allowedFor, match } from "@/lib/play";
 import {
   CONSTRAINT_KEYS,
   CONSTRAINTS,
@@ -89,7 +89,7 @@ export function EndSession() {
 }
 
 /** The one filter: published activities both partners accept; undefined while loading. */
-export function useAllowed(kind: "card" | "challenge") {
+export function useAllowed(kind: Activity["kind"]) {
   const { limits } = useSession();
   const items = useQuery(api.activities.list, { kind });
   return useMemo(
@@ -99,11 +99,15 @@ export function useAllowed(kind: "card" | "challenge") {
 }
 
 // Stable, so it runs once per mounted step rather than on every render.
-const focusOnMount = (el: HTMLElement | null) => el?.focus();
+export const focusOnMount = (el: HTMLElement | null) => el?.focus();
 const focusInPlace = (el: HTMLElement | null) =>
   el?.focus({ preventScroll: true });
 const revealOnMount = (el: HTMLElement | null) =>
   el?.scrollIntoView({ block: "nearest" });
+// Runs after its children's refs, so the verdict above revealed cards shows first.
+const topOnMount = (el: HTMLElement | null) => {
+  if (el) window.scrollTo(0, 0);
+};
 
 type Step = "intro" | "first" | "handoff" | "second";
 
@@ -143,22 +147,9 @@ function Boundaries() {
   }
   if (step === "handoff") {
     return (
-      <section className="wrap bounds bounds-handoff" key={step}>
-        <span className="bounds-glyph" aria-hidden="true">
-          ✳
-        </span>
-        <h1 ref={focusOnMount} tabIndex={-1}>
-          أعطِ الهاتف لشريكك
-        </h1>
-        <p>أُخفيت إجاباتك، ولن تظهر مرة أخرى.</p>
-        <button
-          type="button"
-          className="button"
-          onClick={() => setStep("second")}
-        >
-          أنا الطرف الثاني، أبدأ
-        </button>
-      </section>
+      <HandOff onReady={() => setStep("second")}>
+        أُخفيت إجاباتك، ولن تظهر مرة أخرى.
+      </HandOff>
     );
   }
   return (
@@ -177,6 +168,30 @@ function Boundaries() {
         }
       }}
     />
+  );
+}
+
+/** Partner one is done: nothing of theirs is left on screen for partner two. */
+function HandOff({
+  onReady,
+  children,
+}: {
+  onReady: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="wrap bounds bounds-handoff">
+      <span className="bounds-glyph" aria-hidden="true">
+        ✳
+      </span>
+      <h1 ref={focusOnMount} tabIndex={-1}>
+        أعطِ الهاتف لشريكك
+      </h1>
+      <p>{children}</p>
+      <button type="button" className="button" onClick={onReady}>
+        أنا الطرف الثاني، أبدأ
+      </button>
+    </section>
   );
 }
 
@@ -284,6 +299,182 @@ function LimitsForm({
   );
 }
 
+type PickStep = "intro" | "first" | "handoff" | "second" | "reveal";
+
+/**
+ * Desire match and position discovery: each partner picks alone, in turn, and
+ * only what both picked is ever rendered. Partner one's picks wait unrendered in
+ * a ref; both lists are dropped the moment the overlap is known.
+ */
+export function SecretPicks<T extends { slug: string }>({
+  title,
+  intro,
+  pool,
+  ask,
+  hint,
+  option,
+  grid = false,
+  reveal,
+}: {
+  title: string;
+  intro: string;
+  pool: T[];
+  ask: string;
+  hint: string;
+  option: (item: T) => React.ReactNode;
+  grid?: boolean;
+  reveal: (matches: T[]) => React.ReactNode;
+}) {
+  const [step, setStep] = useState<PickStep>("intro");
+  const first = useRef<string[]>([]);
+  const [matches, setMatches] = useState<T[]>([]);
+
+  if (step === "handoff") {
+    return (
+      <HandOff onReady={() => setStep("second")}>
+        أُخفيت اختياراتك. لن يظهر منها إلا ما يختاره شريكك أيضًا.
+      </HandOff>
+    );
+  }
+  if (step === "first" || step === "second") {
+    return (
+      <PickForm
+        key={step}
+        who={step === "first" ? "الطرف الأول" : "الطرف الثاني"}
+        ask={ask}
+        hint={hint}
+        pool={pool}
+        option={option}
+        grid={grid}
+        done={
+          step === "first" ? "انتهيت، أخفِ اختياراتي" : "انتهيت، لنرَ ما يجمعنا"
+        }
+        onDone={(mine) => {
+          window.scrollTo(0, 0);
+          if (step === "first") {
+            first.current = mine;
+            setStep("handoff");
+          } else {
+            setMatches(match(pool, first.current, mine));
+            first.current = [];
+            setStep("reveal");
+          }
+        }}
+      />
+    );
+  }
+  const again = (
+    <div className="play-actions">
+      <button
+        type="button"
+        className="button"
+        onClick={() => {
+          setMatches([]);
+          setStep("first");
+        }}
+      >
+        جولة جديدة، يبدأ الطرف الأول
+      </button>
+      <Link className="ghost-button" href="/play">
+        لعبة أخرى
+      </Link>
+    </div>
+  );
+  if (step === "reveal") {
+    const none = matches.length === 0;
+    return (
+      <>
+        <GameHead title={none ? "لا توافق هذه المرة" : "هنا تلتقيان"}>
+          {none
+            ? "لم تلتقِ اختياراتكما عند شيء في هذه الجولة، ولن يعرف أحدكما ما اختاره الآخر. جرّبا جولة أخرى، أو لعبة مختلفة."
+            : "هذا ما اختاره كلاكما، ولا شيء غيره. ما اختاره أحدكما وحده بقي سرًّا، ومُحي الآن."}
+        </GameHead>
+        <section className="wrap matches" aria-label="النتيجة" ref={topOnMount}>
+          {!none && reveal(matches)}
+          {again}
+        </section>
+      </>
+    );
+  }
+  return (
+    <>
+      <GameHead title={title}>{intro}</GameHead>
+      {pool.length === 0 ? (
+        <Empty />
+      ) : (
+        <section className="wrap picks-start">
+          <p>
+            ليحمل أحدكما الهاتف وليُشِح الآخر بنظره. حين ينتهي الأول يسلّمه للثاني.
+          </p>
+          <button
+            type="button"
+            className="button"
+            onClick={() => setStep("first")}
+          >
+            أنا الطرف الأول، أختار
+          </button>
+        </section>
+      )}
+    </>
+  );
+}
+
+function PickForm<T extends { slug: string }>({
+  who,
+  ask,
+  hint,
+  pool,
+  option,
+  grid,
+  done,
+  onDone,
+}: {
+  who: string;
+  ask: string;
+  hint: string;
+  pool: T[];
+  option: (item: T) => React.ReactNode;
+  grid: boolean;
+  done: string;
+  onDone: (mine: string[]) => void;
+}) {
+  const [mine, setMine] = useState<string[]>([]);
+  return (
+    <form
+      className="wrap bounds bounds-form"
+      onSubmit={(event) => {
+        event.preventDefault();
+        onDone(mine);
+      }}
+    >
+      <span className="bounds-who">{who}</span>
+      <h1 ref={focusOnMount} tabIndex={-1}>
+        {ask}
+      </h1>
+      <p>{hint}</p>
+      <fieldset className={grid ? "pick-grid" : undefined}>
+        <legend>اختر ما شئت، أو لا شيء</legend>
+        {pool.map((item) => (
+          <label
+            className={grid ? "pick-card" : "level-option"}
+            key={item.slug}
+          >
+            <input
+              type="checkbox"
+              checked={mine.includes(item.slug)}
+              onChange={() => setMine(toggle(mine, item.slug))}
+            />
+            {option(item)}
+          </label>
+        ))}
+      </fieldset>
+      <button type="submit" className="button">
+        {done}
+      </button>
+    </form>
+  );
+}
+
 export function GameHead({
   title,
   children,
@@ -353,19 +544,27 @@ export function minutesLabel(n: number) {
   return `${n} دقيقة`;
 }
 
-/** A real-world action: what to do, how bold it is, and an optional timer. */
+/**
+ * A real-world action: what to do, how bold it is, and an optional timer.
+ * `focus` lands keyboard and screen-reader users on it when it replaces the
+ * control they used.
+ */
 export function ActivityCard({
   item,
   label,
+  focus = false,
 }: {
   item: Activity;
   label: string;
+  focus?: boolean;
 }) {
   const timer = useStored("timer") !== "off";
   return (
     <article className="act-card" ref={revealOnMount}>
       <span className="act-kind">{label}</span>
-      <h2>{item.title}</h2>
+      <h2 ref={focus ? focusInPlace : undefined} tabIndex={-1}>
+        {item.title}
+      </h2>
       <p>{item.body}</p>
       <p className="act-meta">
         <span data-level={item.intensity}>

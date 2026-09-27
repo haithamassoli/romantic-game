@@ -4,6 +4,7 @@ import {
   isAllowed,
   LEVELS,
   type Limits,
+  type Tagged,
   TOPIC_KEYS,
   TOPICS,
 } from "./tags.ts";
@@ -17,7 +18,7 @@ type Item = {
 };
 
 /** The one filter every game uses: only what both partners accept. */
-export function allowedFor<T extends Item>(
+export function allowedFor<T extends Tagged>(
   items: readonly T[],
   limits: Limits,
 ): T[] {
@@ -78,6 +79,87 @@ export function seeded(seed: number) {
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
+}
+
+/**
+ * What both partners picked, in the pool's order, and nothing either picked alone.
+ * Picks outside the pool (not allowed, excluded, unpublished) never match.
+ */
+export function match<T extends { slug: string }>(
+  pool: readonly T[],
+  first: readonly string[],
+  second: readonly string[],
+): T[] {
+  return pool.filter(
+    (item) => first.includes(item.slug) && second.includes(item.slug),
+  );
+}
+
+export const PATH_MINUTES = [15, 30, 45] as const;
+
+/** Untimed cards and challenges still take a few minutes each. */
+export const stepMinutes = (item: { minutes?: number }) => item.minutes ?? 3;
+
+function shuffle<T>(list: readonly T[], random: () => number): T[] {
+  const rest = [...list];
+  const out: T[] = [];
+  while (rest.length > 0) {
+    out.push(...rest.splice(Math.floor(random() * rest.length), 1));
+  }
+  return out;
+}
+
+/**
+ * The night path: gentle steps first, bolder later, never longer than `minutes`
+ * nor bolder than `ceiling`. Each level gets an equal share of the time, and what
+ * one leaves unused passes to the next. Steps finished on earlier nights return
+ * only when fresh ones can't fill half the time, and then only after them.
+ */
+export function nightPath<T extends Item & { minutes?: number }>(
+  pool: readonly T[],
+  minutes: number,
+  ceiling: number,
+  done: readonly string[] = [],
+  random = Math.random,
+): T[] {
+  const fits = pool.filter(
+    (item) => item.intensity <= ceiling && stepMinutes(item) <= minutes,
+  );
+  const fresh = shuffle(
+    fits.filter((item) => !done.includes(item.slug)),
+    random,
+  );
+  const again = shuffle(
+    fits.filter((item) => done.includes(item.slug)),
+    random,
+  );
+  const levels = LEVELS.filter((l) => fits.some((i) => i.intensity === l));
+  const build = (queue: T[]) => {
+    const path: T[] = [];
+    let used = 0;
+    for (const [n, level] of levels.entries()) {
+      const until = (minutes * (n + 1)) / levels.length;
+      for (const item of queue) {
+        if (item.intensity === level && used + stepMinutes(item) <= until) {
+          path.push(item);
+          used += stepMinutes(item);
+        }
+      }
+    }
+    return { path, used };
+  };
+  const first = build(fresh);
+  return first.used * 2 >= minutes
+    ? first.path
+    : build([...fresh, ...again]).path;
+}
+
+/**
+ * The only progress a game writes: finished path steps, newest last. Content
+ * slugs only, never a pick, a match, or a limit.
+ */
+export function remember(done: readonly string[], slug: string, keep = 60) {
+  return JSON.stringify([...done.filter((s) => s !== slug), slug].slice(-keep));
 }
 
 // Everything this device remembers lives under `maan:` in localStorage.

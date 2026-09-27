@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { flushSync } from "react-dom";
 import { pick } from "@/lib/play";
 import {
   INTENSITY,
@@ -47,6 +48,15 @@ export default function LibraryPage() {
     const next = rest(shown).length > 0 ? rest(shown) : rest(challenges);
     setChosen(next.length > 0 ? pick(next) : null);
   };
+  // Back in the list, focus returns to the challenge just seen, or to the count above the list.
+  const back = () => {
+    const slug = chosen?.slug;
+    flushSync(() => setChosen(null));
+    (
+      document.querySelector<HTMLElement>(`[data-slug="${slug}"]`) ??
+      document.querySelector<HTMLElement>(".library .pos-count")
+    )?.focus();
+  };
 
   return (
     <>
@@ -62,16 +72,13 @@ export default function LibraryPage() {
             key={chosen.slug}
             item={chosen}
             label={kindLabel(chosen)}
+            focus
           />
           <div className="play-actions">
             <button type="button" className="button" onClick={skip}>
               تخطَّيا، تحدٍّ آخر
             </button>
-            <button
-              type="button"
-              className="ghost-button"
-              onClick={() => setChosen(null)}
-            >
+            <button type="button" className="ghost-button" onClick={back}>
               العودة إلى المكتبة
             </button>
           </div>
@@ -126,7 +133,7 @@ export default function LibraryPage() {
           </fieldset>
 
           <div className="lib-bar">
-            <p className="pos-count" aria-live="polite">
+            <p className="pos-count" aria-live="polite" tabIndex={-1}>
               {shown.length === 0
                 ? "لا تحدي بهذا الاختيار؛ جرّبا موضوعًا أو درجة أخرى."
                 : `${shown.length} من ${challenges.length}`}
@@ -148,6 +155,7 @@ export default function LibraryPage() {
                 <button
                   type="button"
                   className="lib-item"
+                  data-slug={c.slug}
                   onClick={() => setChosen(c)}
                 >
                   <strong>{c.title}</strong>

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { games, IMAGE_SIZE } from "@/lib/site-images";
 import { store, useStored } from "../providers";
-import { useSession } from "./session";
+import { focusOnMount, useSession } from "./session";
 
 export default function PlayHub() {
   const { limits, ended } = useSession();
@@ -13,7 +13,14 @@ export default function PlayHub() {
   return (
     <>
       <section className="wrap play-head" aria-labelledby="play-title">
-        <h1 id="play-title">العبا معًا</h1>
+        {/* After "إنهاء الجلسة" the button is gone; land on the page heading instead. */}
+        <h1
+          id="play-title"
+          ref={ended ? focusOnMount : undefined}
+          tabIndex={-1}
+        >
+          العبا معًا
+        </h1>
         <p>
           قبل أول لعبة يحدد كلٌّ منكما حدوده سرًّا، ثم لا يظهر إلا ما يقبله كلاكما.
           تخطَّيا ما لا يعجبكما، وأنهيا الجلسة متى شئتما: لا نقاط ولا خسارة.
@@ -26,7 +33,7 @@ export default function PlayHub() {
           {limits
             ? "حدودكما محددة لهذه الجلسة؛ انتقلا بين الألعاب دون أن تُسألا من جديد."
             : ended
-              ? "انتهت الجلسة، ومُحيت حدودكما من هذا الجهاز."
+              ? "انتهت الجلسة، ومُحيت حدودكما واختياراتكما من هذا الجهاز."
               : ""}
         </p>
       </section>
@@ -50,35 +57,24 @@ export default function PlayHub() {
           اختارا لعبة
         </h2>
         <ul className="game-list">
-          {games.map(
-            (game) =>
-              game.href && (
-                <li key={game.title}>
-                  <Link className="game-link" href={game.href}>
-                    <Image
-                      src={game.src}
-                      alt={game.alt}
-                      width={IMAGE_SIZE.width}
-                      height={IMAGE_SIZE.height}
-                      sizes="8rem"
-                    />
-                    <span>
-                      <strong>{game.title}</strong>
-                      <small>{game.description}</small>
-                    </span>
-                  </Link>
-                </li>
-              ),
-          )}
+          {games.map((game) => (
+            <li key={game.title}>
+              <Link className="game-link" href={game.href}>
+                <Image
+                  src={game.src}
+                  alt={game.alt}
+                  width={IMAGE_SIZE.width}
+                  height={IMAGE_SIZE.height}
+                  sizes="8rem"
+                />
+                <span>
+                  <strong>{game.title}</strong>
+                  <small>{game.description}</small>
+                </span>
+              </Link>
+            </li>
+          ))}
         </ul>
-        <p className="play-soon">
-          تصل قريبًا:{" "}
-          {games
-            .filter((game) => !game.href)
-            .map((game) => game.title)
-            .join("، ")}
-          .
-        </p>
       </section>
 
       <fieldset className="wrap play-prefs">

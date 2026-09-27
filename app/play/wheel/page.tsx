@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { pick, type Spin, seeded, wheelSegments } from "@/lib/play";
 import {
   type Activity,
@@ -38,6 +38,8 @@ export default function WheelPage() {
   const [turn, setTurn] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [result, setResult] = useState<Activity | null>(null);
+  // Focus waits on the hub while the wheel turns, then moves to the result.
+  const hub = useRef<HTMLButtonElement>(null);
 
   const pool = useMemo(
     () => (cards && challenges ? [...cards, ...challenges] : undefined),
@@ -51,7 +53,8 @@ export default function WheelPage() {
   if (!pool) return <Loading />;
 
   function go() {
-    if (!pool) return;
+    if (!pool || spinning) return;
+    hub.current?.focus();
     // Decide the landing now, from the same seeded segments the wheel will render.
     const nextSeed = Math.random();
     const next = wheelSegments(pool, spin, seeded(nextSeed));
@@ -133,8 +136,9 @@ export default function WheelPage() {
             <button
               type="button"
               className="wheel-hub"
+              ref={hub}
               onClick={go}
-              disabled={spinning}
+              aria-disabled={spinning}
             >
               أديرا
             </button>
@@ -151,6 +155,7 @@ export default function WheelPage() {
                   key={turn}
                   item={result}
                   label={kindLabel(result)}
+                  focus
                 />
                 <div className="play-actions">
                   <button type="button" className="button" onClick={go}>
@@ -159,7 +164,10 @@ export default function WheelPage() {
                   <button
                     type="button"
                     className="ghost-button"
-                    onClick={() => setResult(null)}
+                    onClick={() => {
+                      setResult(null);
+                      hub.current?.focus();
+                    }}
                   >
                     تخطَّيا
                   </button>
