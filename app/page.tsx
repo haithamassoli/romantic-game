@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import {
   games,
   IMAGE_SIZE,
@@ -6,6 +7,7 @@ import {
   playModes,
   siteImages,
 } from "../lib/site-images";
+import { ClearDataButton } from "./providers";
 
 export default function Home() {
   return (
@@ -21,7 +23,7 @@ export default function Home() {
             معًا
           </a>
           <nav aria-label="التنقل الرئيسي">
-            <a href="#guide">الدليل</a>
+            <Link href="/positions">الوضعيات</Link>
             <a href="#games">الألعاب</a>
             <a href="#play">اللعب</a>
           </nav>
@@ -43,11 +45,11 @@ export default function Home() {
               وبالإيقاع الذي يريحكما.
             </p>
             <div className="hero-actions">
-              <a className="button" href="#games">
-                اكتشفا الألعاب <span aria-hidden="true">↙</span>
-              </a>
-              <a className="text-link" href="#guide">
-                استكشفا الدليل ←
+              <Link className="button" href="/positions">
+                استكشاف الوضعيات <span aria-hidden="true">↙</span>
+              </Link>
+              <a className="text-link" href="#games">
+                العبا معًا ←
               </a>
             </div>
           </div>
@@ -114,9 +116,9 @@ export default function Home() {
               دليل مصوّر يساعدكما على استكشاف الوضعيات وفهم خطواتها ومستوى
               صعوبتها واعتبارات الراحة، لتختارا ما يناسبكما.
             </p>
-            <span className="coming-soon">
-              الدليل قيد الإعداد <span aria-hidden="true">✦</span>
-            </span>
+            <Link className="button guide-cta" href="/positions">
+              افتحا دليل الوضعيات <span aria-hidden="true">↙</span>
+            </Link>
           </div>
         </div>
       </section>
@@ -173,6 +175,10 @@ export default function Home() {
             متى أردتما.
           </p>
         </div>
+        <p className="coming-soon">
+          الألعاب قيد الإعداد وتصل قريبًا. إلى أن تصل، ابدآ بـ
+          <Link href="/positions">دليل الوضعيات</Link>.
+        </p>
         <div className="games-grid">
           {games.map((game, index) => (
             <article className="game-card" key={game.title}>
@@ -267,6 +273,7 @@ export default function Home() {
           معًا
         </a>
         <p>مساحة خاصة للأزواج البالغين. الرضا والراحة دائمًا أولًا.</p>
+        <ClearDataButton />
         <span>© 2026 معًا</span>
       </footer>
     </main>

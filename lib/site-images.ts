@@ -1,5 +1,8 @@
 export const IMAGE_SIZE = { width: 1280, height: 720 } as const;
 
+// ponytail: all 16 drawings share one card size; store width/height per image once the admin accepts other sizes.
+export const POSITION_IMAGE_SIZE = { width: 1145, height: 1374 } as const;
+
 export const siteImages = {
   hero: {
     src: "/images/hero.jpg",

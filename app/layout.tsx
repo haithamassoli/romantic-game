@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Amiri, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
 
 const display = Amiri({
   subsets: ["arabic", "latin"],
@@ -28,9 +29,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="ar"
       dir="rtl"
+      data-scroll-behavior="smooth"
       className={`${display.variable} ${sans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
