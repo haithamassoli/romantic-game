@@ -2,7 +2,7 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 import { CONSTRAINT_KEYS, TOPIC_KEYS } from "../lib/tags";
 
-const status = v.union(
+export const status = v.union(
   v.literal("draft"),
   v.literal("published"),
   v.literal("hidden"),
@@ -17,6 +17,45 @@ export const activityKind = v.union(
   v.literal("challenge"),
   v.literal("desire"),
 );
+
+// Content. Drafts may lack tags, text or a drawing; publishing requires them
+// (lib/content.ts), so published rows always carry them.
+export const position = v.object({
+  slug: v.string(),
+  order: v.number(),
+  status,
+  name: v.string(),
+  summary: v.string(),
+  description: v.string(),
+  steps: v.array(v.string()),
+  /** Comfort and safety notes. */
+  care: v.array(v.string()),
+  /** A drawing under /public (the 16 seeded ones)… */
+  image: v.optional(v.string()),
+  /** …or one uploaded from /admin, which wins. */
+  imageId: v.optional(v.id("_storage")),
+  imageAlt: v.string(),
+  /** Who owns the drawing and on what terms; required to publish. */
+  imageRights: v.optional(v.string()),
+  difficulty: v.optional(level),
+  intensity: v.optional(level),
+  topics,
+  constraints,
+});
+
+export const activity = v.object({
+  slug: v.string(),
+  kind: activityKind,
+  status,
+  title: v.string(),
+  body: v.string(),
+  intensity: v.optional(level),
+  topics,
+  constraints,
+  minutes: v.optional(v.number()),
+  /** Desires only: the real-world step a shared desire turns into. */
+  action: v.optional(v.string()),
+});
 
 // Two-phone sessions. The types mirror lib/pair.ts, which decides what each phone sees.
 export const limits = v.object({
@@ -64,40 +103,11 @@ export const shared = v.object({
 });
 
 export default defineSchema({
-  positions: defineTable({
-    slug: v.string(),
-    order: v.number(),
-    status,
-    name: v.string(),
-    summary: v.string(),
-    description: v.string(),
-    steps: v.array(v.string()),
-    /** Comfort and safety notes. */
-    care: v.array(v.string()),
-    // ponytail: public path under /public; move to Convex file storage with the admin (milestone 5).
-    image: v.string(),
-    imageAlt: v.string(),
-    difficulty: level,
-    intensity: level,
-    topics,
-    constraints,
-  })
+  positions: defineTable(position)
     .index("by_status_and_order", ["status", "order"])
     .index("by_slug", ["slug"]),
 
-  activities: defineTable({
-    slug: v.string(),
-    kind: activityKind,
-    status,
-    title: v.string(),
-    body: v.string(),
-    intensity: level,
-    topics,
-    constraints,
-    minutes: v.optional(v.number()),
-    /** Desires only: the real-world step a shared desire turns into. */
-    action: v.optional(v.string()),
-  })
+  activities: defineTable(activity)
     .index("by_status_and_kind", ["status", "kind"])
     .index("by_slug", ["slug"]),
 

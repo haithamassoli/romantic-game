@@ -1,10 +1,12 @@
 import { type Infer, v } from "convex/values";
 import {
   answer,
+  fits,
   IDLE_MS,
   INVITE_MS,
   isCode,
   isSecret,
+  slugsIn,
   viewFor,
 } from "../lib/pair";
 import { allowedFor } from "../lib/play";
@@ -208,22 +210,21 @@ export const setLimits = mutation({
   },
 });
 
-/** Moves a shared game on both phones, if every card or challenge in it is one both accept. */
+/**
+ * Moves a shared game on both phones, if it stays within bounds and every card
+ * or challenge it names is one both accept. Those already in the game stay
+ * valid even once hidden or edited out of bounds, so the game passes over them
+ * (the pools no longer carry their text) instead of refusing every move.
+ */
 export const play = mutation({
   args: { key, ...shared.partial().fields },
   handler: async (ctx, { key, ...games }) => {
     const m = await member(ctx, key);
-    const pool = m && (await allowed(ctx, m.s, ["card", "challenge"]));
+    const pool =
+      m && fits(games) && (await allowed(ctx, m.s, ["card", "challenge"]));
     if (!m || !pool) return false;
-    const ok = new Set(pool.map((item) => item.slug));
-    const slugs = [
-      games.cards?.card,
-      ...(games.cards?.drawn ?? []),
-      games.wheel?.result,
-      games.library?.chosen,
-      ...(games.path?.steps ?? []),
-    ];
-    if (!slugs.every((slug) => !slug || ok.has(slug))) return false;
+    const ok = new Set([...pool.map((item) => item.slug), ...slugsIn(m.s)]);
+    if (!slugsIn(games).every((slug) => ok.has(slug))) return false;
     await ctx.db.patch("sessions", m.s._id, { ...games, activeAt: Date.now() });
     return true;
   },

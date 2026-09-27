@@ -1,6 +1,6 @@
 export const IMAGE_SIZE = { width: 1280, height: 720 } as const;
 
-// ponytail: all 16 drawings share one card size; store width/height per image once the admin accepts other sizes.
+// ponytail: every drawing is laid out at this size; lists crop uploads cut differently (globals.css), the detail page shows them whole. Store width/height per image if that ever jars.
 export const POSITION_IMAGE_SIZE = { width: 1145, height: 1374 } as const;
 
 export const siteImages = {

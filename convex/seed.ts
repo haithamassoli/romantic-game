@@ -1,10 +1,15 @@
 import type { WithoutSystemFields } from "convex/server";
+import { v } from "convex/values";
+import { missing } from "../lib/content";
+import type { Level } from "../lib/tags";
 import type { Doc } from "./_generated/dataModel";
 import { internalMutation } from "./_generated/server";
 
 type Position = WithoutSystemFields<Doc<"positions">>;
 
-const content: Omit<Position, "order" | "status" | "image">[] = [
+const content: (Omit<Position, "order" | "status" | "image" | "intensity"> & {
+  difficulty: Level;
+})[] = [
   {
     slug: "spooning",
     name: "الملاعق",
@@ -26,7 +31,6 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لزوجين بالغين بملابس كاملة يستلقيان على جانبيهما في الاتجاه نفسه على سرير، والرجل يحتضن المرأة من الخلف.",
     difficulty: 1,
-    intensity: 1,
     topics: ["positions"],
     constraints: [],
   },
@@ -50,7 +54,6 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لزوجين بالغين بملابس كاملة يستلقيان على جانبيهما متقابلين على سرير، يتعانقان وقد تقارب رأساهما.",
     difficulty: 1,
-    intensity: 1,
     topics: ["positions", "kiss"],
     constraints: ["hips"],
   },
@@ -75,7 +78,6 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لرجل بالغ يجلس على كرسي خشبي وامرأة بالغة تجلس فوق فخذيه مواجهةً له وتعانقه، وكلاهما بملابس كاملة.",
     difficulty: 2,
-    intensity: 2,
     topics: ["positions", "kiss", "outside"],
     constraints: ["strength"],
   },
@@ -100,7 +102,6 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لرجل بالغ يجلس على كرسي وامرأة بالغة تجلس في حجره بالاتجاه نفسه مستندةً بظهرها إلى صدره، وكلاهما بملابس كاملة.",
     difficulty: 1,
-    intensity: 2,
     topics: ["positions", "outside"],
     constraints: ["strength"],
   },
@@ -124,7 +125,6 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لزوجين بالغين بملابس كاملة يستلقيان متقابلين على سرير، المرأة ممدودة فوق الرجل وتستند إلى صدره وهو يحتضن خصرها.",
     difficulty: 1,
-    intensity: 1,
     topics: ["positions", "kiss"],
     constraints: ["strength"],
   },
@@ -148,9 +148,8 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لامرأة بالغة مستلقية على بطنها فوق سرير ورأسها على الوسائد، ورجل بالغ جاثٍ بجانبها يضع يده على ظهرها، وكلاهما بملابس كاملة.",
     difficulty: 1,
-    intensity: 2,
     topics: ["positions"],
-    constraints: [],
+    constraints: ["strength"],
   },
   {
     slug: "bed-edge",
@@ -173,7 +172,6 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لامرأة بالغة تجلس على حافة سرير ورجل بالغ يقف أمامها، وقد تعانقت أذرعهما وتقارب وجهاهما، وكلاهما بملابس كاملة.",
     difficulty: 1,
-    intensity: 2,
     topics: ["positions", "kiss"],
     constraints: ["knees"],
   },
@@ -197,7 +195,6 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لزوجين بالغين بملابس كاملة يجلسان متقابلين على وسادة أرضية كبيرة، الرجل متربع والمرأة في حجره تلف ساقيها حوله وتعانقه.",
     difficulty: 2,
-    intensity: 2,
     topics: ["positions", "kiss"],
     constraints: ["hips", "knees", "flexibility"],
   },
@@ -222,7 +219,6 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لرجل بالغ مستلقٍ على ظهره فوق سرير وامرأة بالغة تجثو فوق وركيه مواجهةً له وتضع يديها على صدره، وكلاهما بملابس كاملة.",
     difficulty: 1,
-    intensity: 2,
     topics: ["positions", "kiss"],
     constraints: ["knees"],
   },
@@ -247,7 +243,6 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لرجل بالغ مستلقٍ على ظهره فوق سرير وامرأة بالغة تجلس فوق ساقيه وظهرها إليه ويداها على ركبتيها، وكلاهما بملابس كاملة.",
     difficulty: 2,
-    intensity: 3,
     topics: ["positions"],
     constraints: ["knees", "balance"],
   },
@@ -272,7 +267,6 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لزوجين بالغين بملابس كاملة يقفان متقابلين في غرفة ويتعانقان بقوة، يدا الرجل حول خصر المرأة ويداها حول عنقه.",
     difficulty: 2,
-    intensity: 2,
     topics: ["positions", "kiss", "outside"],
     constraints: ["balance", "strength"],
   },
@@ -296,7 +290,6 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لامرأة بالغة ترتكز على يديها وركبتيها فوق سرير، ورجل بالغ جاثٍ خلفها يضع يديه على ظهرها، وكلاهما بملابس كاملة.",
     difficulty: 1,
-    intensity: 3,
     topics: ["positions"],
     constraints: ["knees", "back"],
   },
@@ -320,7 +313,6 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لامرأة بالغة مستلقية على ظهرها فوق سرير بركبتين مثنيتين ووسادة تحت ظهرها، ورجل بالغ يجلس على حافة السرير ممسكًا بيدها، وكلاهما بملابس كاملة.",
     difficulty: 2,
-    intensity: 2,
     topics: ["positions"],
     constraints: ["back"],
   },
@@ -344,7 +336,6 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لامرأة بالغة مستلقية على ظهرها فوق سرير ترفع ساقًا مستقيمة، ورجل بالغ جاثٍ عند قدميها يسند الساق المرفوعة بيديه، وكلاهما بملابس كاملة.",
     difficulty: 2,
-    intensity: 3,
     topics: ["positions"],
     constraints: ["flexibility", "hips"],
   },
@@ -369,7 +360,6 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لزوجين بالغين بملابس كاملة يقفان متقابلين ويتشابكان باليدين، والمرأة ترفع ركبتها إلى جانب ورك الرجل.",
     difficulty: 3,
-    intensity: 3,
     topics: ["positions", "kiss", "outside"],
     constraints: ["balance", "flexibility", "strength"],
   },
@@ -394,36 +384,63 @@ const content: Omit<Position, "order" | "status" | "image">[] = [
     imageAlt:
       "رسم لامرأة بالغة مستلقية على بطنها فوق حافة سرير ورجل بالغ واقف خلفها يمسك كاحليها ويرفع ساقيها، وكلاهما بملابس كاملة.",
     difficulty: 3,
-    intensity: 3,
     topics: ["positions"],
     constraints: ["strength", "balance", "back"],
   },
 ];
 
+/** The 16 drawings in public/images/positions (docs/kamasutra-poses.md). */
+const OWN_DRAWING =
+  "رسم توضيحي أنتجه الناشر خصيصًا لـ«معًا» (انظر docs/kamasutra-poses.md)، وحقوق نشره للناشر.";
+
+/** Seeds are published, so they must pass the same check as the admin's publish button. */
+function complete(
+  kind: Parameters<typeof missing>[0],
+  doc: Position | Activity,
+) {
+  const gaps = missing(kind, doc);
+  if (gaps.length > 0) throw new Error(`${doc.slug}: ${gaps.join("، ")}`);
+}
+
+const refresh = { refresh: v.optional(v.array(v.string())) };
+
 /**
- * Upserts the 16 owned illustrations as published positions, keyed by slug.
- * Re-run any time: `npx convex run seed:positions`. It overwrites seeded
- * fields, including status, back to the values below.
+ * Adds the 16 owned illustrations as published positions, keyed by slug.
+ * Insert-only, so re-running never undoes the publisher's edits: an existing
+ * slug is left alone unless named in `refresh`, which rewrites its seeded text,
+ * tags and credit but keeps its status and any uploaded drawing.
+ * `npx convex run seed:positions`, or `… '{"refresh":["spooning"]}'`.
  */
 export const positions = internalMutation({
-  args: {},
-  handler: async (ctx) => {
+  args: refresh,
+  handler: async (ctx, { refresh = [] }) => {
+    let written = 0;
     for (const [index, position] of content.entries()) {
       const doc: Position = {
         ...position,
         // Easiest first, as the list intro promises; image number breaks ties.
         order: position.difficulty * 100 + index + 1,
         status: "published",
+        // Each is explicit sex, so only couples who accept جريء see it (LEVEL_HINTS).
+        intensity: 3,
         image: `/images/positions/${String(index + 1).padStart(2, "0")}-${position.slug}.png`,
+        imageRights: OWN_DRAWING,
       };
+      complete("position", doc);
       const existing = await ctx.db
         .query("positions")
         .withIndex("by_slug", (q) => q.eq("slug", doc.slug))
         .unique();
-      if (existing) await ctx.db.replace("positions", existing._id, doc);
-      else await ctx.db.insert("positions", doc);
+      if (!existing) await ctx.db.insert("positions", doc);
+      else if (refresh.includes(doc.slug)) {
+        await ctx.db.patch("positions", existing._id, {
+          ...doc,
+          status: existing.status,
+        });
+      } else continue;
+      written++;
     }
-    return content.length;
+    return written;
   },
 });
 
@@ -508,7 +525,7 @@ const cards: Draft[] = [
     slug: "card-rhythm",
     title: "الإيقاع",
     body: "بطيء وطويل، أم سريع ومفاجئ؟ ليصف كلٌّ منكما الإيقاع الذي يشعله أكثر، ومتى يحب أن يتبدّل.",
-    intensity: 2,
+    intensity: 3,
     topics: ["talk", "positions"],
     constraints: [],
   },
@@ -524,7 +541,7 @@ const cards: Draft[] = [
     slug: "card-position-wish",
     title: "وضعية تشتهيانها",
     body: "ليختر كلٌّ منكما وضعية يودّ أن يجربها أو يكررها، ويشرح ما يغريه فيها: الزاوية، أم القرب، أم المنظر.",
-    intensity: 2,
+    intensity: 3,
     topics: ["talk", "positions"],
     constraints: [],
   },
@@ -563,7 +580,7 @@ const cards: Draft[] = [
   {
     slug: "card-tonight-plan",
     title: "خطة الليلة",
-    body: "ليصف أحدكما للآخر، وعيناه في عينيه، ما يريد أن يفعله بجسده الليلة خطوة بخطوة. ثم تبادلا الدور.",
+    body: "ليصف أحدكما للآخر، وعيناه في عينيه، ما يريد أن يفعله بجسده الليلة خطوة بخطوة. ثم تبادلا الدور، وليقل كلٌّ منكما أي خطوات من خطة الآخر يقبلها.",
     intensity: 3,
     topics: ["talk"],
     constraints: [],
@@ -723,7 +740,7 @@ const cards: Draft[] = [
   {
     slug: "card-first-date",
     title: "موعد أول",
-    body: "تظاهرا بأنكما في موعد أول: عرّفا بنفسيكما من جديد، وليحاول أحدكما أن يسرق قبلة قبل أن تنتهي الدقائق الخمس.",
+    body: "تظاهرا بأنكما في موعد أول: عرّفا بنفسيكما من جديد، وليحاول كلٌّ منكما أن يفوز بقبلة من الآخر قبل أن تنتهي الدقائق الخمس.",
     intensity: 2,
     topics: ["roleplay", "kiss"],
     constraints: [],
@@ -991,14 +1008,14 @@ const challenges: Draft[] = [
     title: "على الحافة",
     body: "ليقترب أحدكما بالآخر من الذروة باليد أو بالفم، ثم يتوقف حتى يهدأ، ثلاث مرات قبل أن يتركه يصل. ومن يتلقى يملك كلمة التوقف في كل لحظة.",
     intensity: 3,
-    topics: ["touch", "oral"],
+    topics: ["touch", "oral", "undress"],
     constraints: [],
     minutes: 15,
   },
   {
     slug: "challenge-lead-tonight",
     title: "من يقود الليلة",
-    body: "ليقرّر أحدكما كل شيء الليلة: الوضعية، والإيقاع، ومتى تتوقفان، وليستسلم الآخر للقيادة. كلمة التوقف وحدها أقوى من أي دور.",
+    body: "اتفقا أولًا على ما يبقى خارج اللعبة وعلى كلمة للتوقف. ثم ليقرّر أحدكما كل شيء الليلة: الوضعية، والإيقاع، ومتى تتوقفان، وليستسلم الآخر للقيادة. كلمة التوقف أقوى من أي دور، وتُحترم فور قولها.",
     intensity: 3,
     topics: ["undress", "roleplay", "positions"],
     constraints: [],
@@ -1010,7 +1027,7 @@ const challenges: Draft[] = [
     body: "ادخلا الدش معًا، واتركا الصابون والماء الدافئ يقودان الأيدي إلى كل مكان، ثم جرّبا وضعية واقفة ويدٌ على الجدار. السجادة المانعة للانزلاق ضرورية.",
     intensity: 3,
     topics: ["undress", "touch", "positions", "outside"],
-    constraints: ["balance"],
+    constraints: ["balance", "strength"],
   },
   {
     slug: "challenge-reflection",
@@ -1179,12 +1196,12 @@ const desires: Draft[] = [
   {
     slug: "desire-lazy-morning",
     title: "صباح كسول",
-    body: "قرب بطيء قبل أن نغادر السرير في الصباح.",
-    intensity: 2,
+    body: "جنس بطيء بعيون نصف مغمضة، قبل أن نغادر السرير في الصباح.",
+    intensity: 3,
     topics: ["undress", "touch", "positions"],
     constraints: [],
     action:
-      "اضبطا المنبّه غدًا أبكر بنصف ساعة. حين يرن لا تغادرا السرير: التصقا كالملاعق، ودعا الأيدي تستيقظ قبلكما.",
+      "اضبطا المنبّه غدًا أبكر بنصف ساعة. حين يرن لا تغادرا السرير: التصقا كالملاعق، ودعا الأيدي تستيقظ قبلكما، ثم ادخلا في وضعية الملاعق على مهل، بلا هدف ولا عجلة. وإن غلب النعاس أحدكما، فالعناق وحده يكفي.",
   },
   {
     slug: "desire-beyond-bedroom",
@@ -1243,26 +1260,34 @@ const desires: Draft[] = [
 ];
 
 /**
- * Upserts the cards, challenges and desires as published activities, keyed by
- * slug. Re-run any time: `npx convex run seed:activities`. It overwrites seeded
- * fields, including status, back to the values above.
+ * Adds the cards, challenges and desires as published activities, keyed by
+ * slug; insert-only with `refresh`, like `positions` above.
+ * `npx convex run seed:activities`, or `… '{"refresh":["card-neck"]}'`.
  */
 export const activities = internalMutation({
-  args: {},
-  handler: async (ctx) => {
+  args: refresh,
+  handler: async (ctx, { refresh = [] }) => {
     const all: Activity[] = [
       ...cards.map((a) => ({ ...a, kind: "card" as const })),
       ...challenges.map((a) => ({ ...a, kind: "challenge" as const })),
       ...desires.map((a) => ({ ...a, kind: "desire" as const })),
     ].map((a) => ({ ...a, status: "published" }));
+    let written = 0;
     for (const doc of all) {
+      complete(doc.kind, doc);
       const existing = await ctx.db
         .query("activities")
         .withIndex("by_slug", (q) => q.eq("slug", doc.slug))
         .unique();
-      if (existing) await ctx.db.replace("activities", existing._id, doc);
-      else await ctx.db.insert("activities", doc);
+      if (!existing) await ctx.db.insert("activities", doc);
+      else if (refresh.includes(doc.slug)) {
+        await ctx.db.patch("activities", existing._id, {
+          ...doc,
+          status: existing.status,
+        });
+      } else continue;
+      written++;
     }
-    return all.length;
+    return written;
   },
 });

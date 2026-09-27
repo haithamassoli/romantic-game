@@ -6,7 +6,7 @@ import Link from "next/link";
 import { use, useRef, useState } from "react";
 import { api } from "@/convex/_generated/api";
 import { POSITION_IMAGE_SIZE } from "@/lib/site-images";
-import { CONSTRAINTS, DIFFICULTY, INTENSITY } from "@/lib/tags";
+import { CONSTRAINTS, DIFFICULTY } from "@/lib/tags";
 import { readList, toggleSlug, useStored } from "../../providers";
 
 export default function PositionPage({
@@ -71,12 +71,6 @@ export default function PositionPage({
             <div>
               <dt>الصعوبة</dt>
               <dd>{DIFFICULTY[position.difficulty]}</dd>
-            </div>
-            <div>
-              <dt>الجرأة</dt>
-              <dd data-level={position.intensity}>
-                {INTENSITY[position.intensity]}
-              </dd>
             </div>
             <div>
               <dt>تُجهد</dt>

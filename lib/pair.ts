@@ -72,6 +72,43 @@ export type PairSession = {
   path?: unknown;
 };
 
+/** The shared games' state, as far as the server checks it. */
+export type Games = {
+  cards?: { drawn: readonly string[]; card: string | null };
+  wheel?: { seed: number; turn: number; result: string | null };
+  library?: { chosen: string | null };
+  path?: { steps: readonly string[] | null; marks: readonly unknown[] };
+};
+
+/** Every card or challenge a shared-game state names. */
+export function slugsIn(games: Games): string[] {
+  const all = [
+    games.cards?.card,
+    ...(games.cards?.drawn ?? []),
+    games.wheel?.result,
+    games.library?.chosen,
+    ...(games.path?.steps ?? []),
+  ];
+  return all.filter((slug): slug is string => Boolean(slug));
+}
+
+// A deck holds at most 200 cards (convex/activities.ts); a 45-minute path, 45 steps.
+export const MAX_DRAWN = 200;
+export const MAX_STEPS = 60;
+
+/** Bounds on one phone's move, so a partner can't bloat the shared session. */
+export function fits(games: Games) {
+  const { cards, wheel, path } = games;
+  const steps = path?.steps?.length ?? 0;
+  return (
+    (cards?.drawn.length ?? 0) <= MAX_DRAWN &&
+    steps <= MAX_STEPS &&
+    (path?.marks.length ?? 0) <= steps &&
+    (!wheel ||
+      (wheel.seed >= 0 && wheel.seed <= 1 && Math.abs(wheel.turn) <= 1e9))
+  );
+}
+
 export function seatOf(s: PairSession, key: string): Seat | null {
   if (s.host.key === key) return "host";
   if (s.guest?.key === key) return "guest";

@@ -5,12 +5,16 @@ import {
   answer,
   CODE_ALPHABET,
   CODE_LENGTH,
+  fits,
   isCode,
   isSecret,
   joinCode,
+  MAX_DRAWN,
+  MAX_STEPS,
   type PairSession,
   readCode,
   secret,
+  slugsIn,
   viewFor,
 } from "./pair.ts";
 import type { Limits } from "./tags.ts";
@@ -186,4 +190,31 @@ test("secrets and codes are random, well formed, and read forgivingly", () => {
   assert.ok(!isCode("K7MX2PQO"));
   assert.ok(!isCode("K7MX2P"));
   assert.ok(!isSecret("short"));
+});
+
+test("a phone's move into the shared games stays within bounds", () => {
+  const cards = { drawn: ["a"], card: "a" };
+  const wheel = { seed: 0.4, turn: 2160, result: "b" };
+  const path = { steps: ["c", "d"], marks: ["done"] };
+  assert.ok(fits({ cards, wheel, path, library: { chosen: "e" } }));
+  assert.deepEqual(slugsIn({ cards, wheel, path, library: { chosen: null } }), [
+    "a",
+    "a",
+    "b",
+    "c",
+    "d",
+  ]);
+  const many = (n: number) => Array.from({ length: n }, () => "a");
+  assert.ok(!fits({ cards: { drawn: many(MAX_DRAWN + 1), card: null } }));
+  assert.ok(!fits({ path: { steps: many(MAX_STEPS + 1), marks: [] } }));
+  assert.ok(!fits({ path: { steps: ["c"], marks: ["done", "done"] } }));
+  assert.ok(!fits({ path: { steps: null, marks: ["done"] } }));
+  for (const bad of [
+    { seed: Number.NaN, turn: 0 },
+    { seed: 2, turn: 0 },
+    { seed: 0.5, turn: Number.POSITIVE_INFINITY },
+    { seed: 0.5, turn: 1e12 },
+  ]) {
+    assert.ok(!fits({ wheel: { ...bad, result: null } }), JSON.stringify(bad));
+  }
 });

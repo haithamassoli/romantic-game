@@ -179,13 +179,19 @@ export function PlayModes() {
     else setError(REFUSED);
   }
 
-  // A shared link lands here with its token after "#": used once, then dropped from the address.
+  // A shared link lands here with its token after "#": used once, then dropped
+  // from the address. Pasted into a tab already on /play, it arrives as a hashchange.
   useEffect(() => {
-    const token = location.hash.slice(1);
-    if (!isSecret(token)) return;
-    history.replaceState(null, "", location.pathname);
-    setTwo(true);
-    if (!pair) void enter(token);
+    const take = () => {
+      const token = location.hash.slice(1);
+      if (!isSecret(token)) return;
+      history.replaceState(null, "", location.pathname);
+      setTwo(true);
+      if (!pair) void enter(token);
+    };
+    take();
+    window.addEventListener("hashchange", take);
+    return () => window.removeEventListener("hashchange", take);
   });
 
   if (pair) {

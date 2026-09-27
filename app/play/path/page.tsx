@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { flushSync } from "react-dom";
-import { nightPath, PATH_MINUTES, remember } from "@/lib/play";
+import { nightPath, PATH_MINUTES, pathAt, remember } from "@/lib/play";
 import { INTENSITY, LEVELS, type Level } from "@/lib/tags";
 import { readList, store, useStored } from "../../providers";
 import {
@@ -44,14 +44,25 @@ export default function PathPage() {
   );
   if (!pool) return <Loading />;
 
-  const path =
-    run.steps?.flatMap((slug) => pool.filter((i) => i.slug === slug)) ?? null;
+  // A step hidden since the path was drawn is passed over, never shown.
+  const drawn = run.steps && pathAt(run.steps, pool, marks.length);
+  const path = drawn?.steps.filter((s) => s !== undefined) ?? null;
   // The ceiling goes only as high as something both partners accept.
   const top = Math.max(0, ...pool.map((i) => i.intensity));
   const levels = LEVELS.filter((l) => l <= top);
   const upTo = Math.min(ceiling ?? top, top);
-  const at = marks.length;
-  const step = path?.[at];
+  const at = drawn?.at ?? -1;
+  const step = drawn?.steps[at];
+  // Marks follow the drawn slugs, so withdrawn steps passed over count as skipped.
+  const mark = (m: "done" | "skipped") =>
+    setRun({
+      ...run,
+      marks: [
+        ...marks,
+        ...Array.from({ length: at - marks.length }, () => "skipped" as const),
+        m,
+      ],
+    });
 
   const head = (
     <GameHead title="مسار الليلة">
@@ -171,7 +182,7 @@ export default function PathPage() {
     );
   }
 
-  const last = at === path.length - 1;
+  const last = step === path.at(-1);
   return (
     <>
       {head}
@@ -179,7 +190,7 @@ export default function PathPage() {
         <ActivityCard
           key={at}
           item={step}
-          label={`الخطوة ${at + 1} من ${path.length}`}
+          label={`الخطوة ${path.indexOf(step) + 1} من ${path.length}`}
           focus
         />
         <div className="play-actions">
@@ -188,7 +199,7 @@ export default function PathPage() {
             className="button"
             onClick={() => {
               store("path", remember(finished, step.slug));
-              setRun({ ...run, marks: [...marks, "done"] });
+              mark("done");
             }}
           >
             {last ? "تمّت، أنهينا المسار" : "تمّت، إلى التالية"}
@@ -196,7 +207,7 @@ export default function PathPage() {
           <button
             type="button"
             className="ghost-button"
-            onClick={() => setRun({ ...run, marks: [...marks, "skipped"] })}
+            onClick={() => mark("skipped")}
           >
             تخطَّيا هذه الخطوة
           </button>
@@ -209,21 +220,24 @@ export default function PathPage() {
           </button>
         </div>
         <ol className="path-steps" aria-label="خطوات المسار">
-          {path.map((s, i) => (
-            <li
-              key={s.slug}
-              data-level={s.intensity}
-              data-state={marks[i] ?? (i === at ? "now" : "next")}
-              aria-current={i === at ? "step" : undefined}
-            >
-              <strong>{s.title}</strong>
-              <small>
-                {INTENSITY[s.intensity]}
-                {marks[i] === "done" && "، تمّت"}
-                {marks[i] === "skipped" && "، تخطّيتماها"}
-              </small>
-            </li>
-          ))}
+          {drawn?.steps.map(
+            (s, i) =>
+              s && (
+                <li
+                  key={s.slug}
+                  data-level={s.intensity}
+                  data-state={marks[i] ?? (i === at ? "now" : "next")}
+                  aria-current={i === at ? "step" : undefined}
+                >
+                  <strong>{s.title}</strong>
+                  <small>
+                    {INTENSITY[s.intensity]}
+                    {marks[i] === "done" && "، تمّت"}
+                    {marks[i] === "skipped" && "، تخطّيتماها"}
+                  </small>
+                </li>
+              ),
+          )}
         </ol>
       </section>
     </>

@@ -155,6 +155,21 @@ export function nightPath<T extends Item & { minutes?: number }>(
 }
 
 /**
+ * Where a drawn path stands. `steps` holds each drawn slug's item, or undefined
+ * once it left the pool (hidden, or edited out of the couple's limits); `at` is
+ * the first step still there past the `marked` ones, -1 when none is left. A
+ * step withdrawn mid-path is passed over, and marks stay aligned with slugs.
+ */
+export function pathAt<T extends { slug: string }>(
+  slugs: readonly string[],
+  pool: readonly T[],
+  marked: number,
+) {
+  const steps = slugs.map((slug) => pool.find((item) => item.slug === slug));
+  return { steps, at: steps.findIndex((step, i) => step && i >= marked) };
+}
+
+/**
  * The only progress a game writes: finished path steps, newest last. Content
  * slugs only, never a pick, a match, or a limit.
  */

@@ -13,7 +13,6 @@ import {
   useState,
 } from "react";
 import { api } from "@/convex/_generated/api";
-import type { Doc } from "@/convex/_generated/dataModel";
 import { HEARTBEAT_MS, PAIR_KEY } from "@/lib/pair";
 import { allowedFor, match } from "@/lib/play";
 import {
@@ -28,7 +27,8 @@ import {
 } from "@/lib/tags";
 import { useStored } from "../providers";
 
-export type Activity = Doc<"activities">;
+/** A published card, challenge or desire, as the games get it. */
+export type Activity = FunctionReturnType<typeof api.activities.list>[number];
 /** What this phone may see of a two-phone session (lib/pair.ts decides). */
 export type View = NonNullable<FunctionReturnType<typeof api.sessions.view>>;
 

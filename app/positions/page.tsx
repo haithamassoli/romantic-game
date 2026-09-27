@@ -9,7 +9,6 @@ import {
   CONSTRAINT_KEYS,
   CONSTRAINTS,
   DIFFICULTY,
-  INTENSITY,
   isAllowed,
   LEVELS,
   type Level,
@@ -35,7 +34,9 @@ const DEFAULTS: Filters = {
 
 function readFilters(raw: string | null | undefined): Filters {
   try {
-    return { ...DEFAULTS, ...JSON.parse(raw ?? "{}") };
+    // Every position is جريء, so there is no intensity to filter by; this
+    // also drops one saved before that.
+    return { ...DEFAULTS, ...JSON.parse(raw ?? "{}"), maxIntensity: 3 };
   } catch {
     return DEFAULTS;
   }
@@ -85,7 +86,6 @@ export default function PositionsPage() {
   );
   const active =
     Number(filters.maxDifficulty < 3) +
-    Number(filters.maxIntensity < 3) +
     filters.blockedConstraints.length +
     filters.blockedTopics.length +
     Number(filters.favoritesOnly) +
@@ -123,20 +123,6 @@ export default function PositionsPage() {
                   onChange={() => set({ maxDifficulty: level })}
                 />
                 {upTo(DIFFICULTY, level)}
-              </label>
-            ))}
-          </fieldset>
-          <fieldset>
-            <legend>الجرأة</legend>
-            {LEVELS.map((level) => (
-              <label className="chip" key={level}>
-                <input
-                  type="radio"
-                  name="intensity"
-                  checked={filters.maxIntensity === level}
-                  onChange={() => set({ maxIntensity: level })}
-                />
-                {upTo(INTENSITY, level)}
               </label>
             ))}
           </fieldset>
@@ -230,10 +216,6 @@ export default function PositionsPage() {
                     <span>
                       <span className="sr-only">الصعوبة: </span>
                       {DIFFICULTY[p.difficulty]}
-                    </span>
-                    <span data-level={p.intensity}>
-                      <span className="sr-only">الجرأة: </span>
-                      {INTENSITY[p.intensity]}
                     </span>
                   </span>
                   {isFavorite && (

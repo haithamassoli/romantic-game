@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { POSITION_IMAGE_SIZE } from "@/lib/site-images";
-import { DIFFICULTY, INTENSITY } from "@/lib/tags";
+import { DIFFICULTY } from "@/lib/tags";
 import { readList, useStored } from "../../providers";
 import { Loading, SecretPicks, useAllowedPositions } from "../session";
 
@@ -60,10 +60,6 @@ export default function DiscoverPage() {
                 <span>
                   <span className="sr-only">الصعوبة: </span>
                   {DIFFICULTY[p.difficulty]}
-                </span>
-                <span data-level={p.intensity}>
-                  <span className="sr-only">الجرأة: </span>
-                  {INTENSITY[p.intensity]}
                 </span>
               </p>
               <Link

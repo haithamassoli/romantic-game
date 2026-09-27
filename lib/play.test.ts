@@ -8,6 +8,7 @@ import {
   nightPath,
   PATH_MINUTES,
   PREFIX,
+  pathAt,
   pick,
   remember,
   type Spin,
@@ -258,4 +259,19 @@ test("nothing secret reaches local storage or a link", () => {
   assert.equal(JSON.parse(remember(long, "step-3")).at(-1), "step-3");
   // Game links are fixed paths: no query or fragment to carry a pick.
   for (const game of games) assert.match(game.href, /^\/play\/[a-z]+$/);
+});
+
+test("a step withdrawn mid-path is passed over, and marks stay aligned", () => {
+  const pool = ["one", "two", "three", "four"].map((slug) => ({ slug }));
+  const slugs = pool.map((i) => i.slug);
+  assert.equal(pathAt(slugs, pool, 1).at, 1);
+  // The current step is hidden: the next one is up, and "two" is gone from view.
+  const hiddenNow = pool.filter((i) => i.slug !== "two");
+  const now = pathAt(slugs, hiddenNow, 1);
+  assert.equal(now.at, 2);
+  assert.equal(now.steps[1], undefined);
+  // A step already done is hidden: the current one stays where it was.
+  assert.equal(pathAt(slugs, pool.slice(1), 1).at, 1);
+  // Everything left is hidden: nothing to show.
+  assert.equal(pathAt(slugs, pool.slice(0, 2), 2).at, -1);
 });

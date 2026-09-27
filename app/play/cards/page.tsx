@@ -72,7 +72,10 @@ export default function CardsPage() {
                 <p>
                   {spent
                     ? `سحبتما كل ${spent === "question" ? "الأسئلة" : "التحديات"} المتاحة. اخلطا الرزمة لتعود كلها، أو اسحبا من النوع الآخر.`
-                    : "اسحبا أول بطاقة."}
+                    : // Also when the card on the table was just withdrawn.
+                      drawn.length > 0
+                      ? "اسحبا البطاقة التالية."
+                      : "اسحبا أول بطاقة."}
                 </p>
               </div>
             )}
