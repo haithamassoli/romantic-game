@@ -20,15 +20,20 @@ import {
   Loading,
   minutesLabel,
   useAllowed,
+  useShared,
 } from "../session";
 
 export default function LibraryPage() {
   const challenges = useAllowed("challenge");
   const [topic, setTopic] = useState<Topic | null>(null);
   const [level, setLevel] = useState<Level | null>(null);
-  const [chosen, setChosen] = useState<Activity | null>(null);
+  // Each phone browses on its own; a chosen challenge shows on both.
+  const [{ chosen: slug }, setShared] = useShared("library", { chosen: null });
+  const setChosen = (c: Activity | null) =>
+    setShared({ chosen: c?.slug ?? null });
 
   if (!challenges) return <Loading />;
+  const chosen = challenges.find((c) => c.slug === slug) ?? null;
 
   // Only categories and levels that hold an allowed challenge are offered.
   const topics = TOPIC_KEYS.filter((t) =>

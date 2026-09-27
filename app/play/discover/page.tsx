@@ -1,27 +1,22 @@
 "use client";
 
-import { useQuery } from "convex/react";
 import Image from "next/image";
 import Link from "next/link";
-import { api } from "@/convex/_generated/api";
-import { allowedFor } from "@/lib/play";
 import { POSITION_IMAGE_SIZE } from "@/lib/site-images";
 import { DIFFICULTY, INTENSITY } from "@/lib/tags";
 import { readList, useStored } from "../../providers";
-import { Loading, SecretPicks, useSession } from "../session";
+import { Loading, SecretPicks, useAllowedPositions } from "../session";
 
 export default function DiscoverPage() {
-  const { limits } = useSession();
-  const positions = useQuery(api.positions.list);
+  const positions = useAllowedPositions();
   const excluded = readList(useStored("excluded"));
-  if (!positions || !limits) return <Loading />;
+  if (!positions) return <Loading />;
   // Only what both accept, minus what this device excluded in the guide.
-  const pool = allowedFor(positions, limits).filter(
-    (p) => !excluded.includes(p.slug),
-  );
+  const pool = positions.filter((p) => !excluded.includes(p.slug));
 
   return (
     <SecretPicks
+      game="discover"
       title="اكتشاف الوضعيات"
       intro="يتصفح كلٌّ منكما الوضعيات وحده ويحدد ما يودّ تجربته، ثم تظهر الوضعيات التي اختارها كلاكما فقط. لا تظهر هنا الوضعيات التي استبعدتماها في الدليل."
       pool={pool}

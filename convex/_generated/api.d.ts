@@ -9,8 +9,10 @@
  */
 
 import type * as activities from "../activities.js";
+import type * as crons from "../crons.js";
 import type * as positions from "../positions.js";
 import type * as seed from "../seed.js";
+import type * as sessions from "../sessions.js";
 
 import type {
   ApiFromModules,
@@ -20,8 +22,10 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   activities: typeof activities;
+  crons: typeof crons;
   positions: typeof positions;
   seed: typeof seed;
+  sessions: typeof sessions;
 }>;
 
 /**

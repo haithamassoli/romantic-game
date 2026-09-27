@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { flushSync } from "react-dom";
 import { draw } from "@/lib/play";
 import {
@@ -11,6 +11,7 @@ import {
   kindLabel,
   Loading,
   useAllowed,
+  useShared,
 } from "../session";
 
 type Pile = "question" | "dare";
@@ -18,13 +19,17 @@ const isQuestion = (card: Activity) => card.topics.includes("talk");
 
 export default function CardsPage() {
   const deck = useAllowed("card");
-  const [drawn, setDrawn] = useState<string[]>([]);
-  const [card, setCard] = useState<Activity | null>(null);
-  const [spent, setSpent] = useState<Pile | null>(null);
+  // On two phones both see the same card, and either can draw or skip.
+  const [{ drawn, card: face, spent }, setTable] = useShared("cards", {
+    drawn: [],
+    card: null,
+    spent: null,
+  });
   // The card back says what happened when the button pressed has just gone.
   const back = useRef<HTMLDivElement>(null);
 
   if (!deck) return <Loading />;
+  const card = deck.find((c) => c.slug === face) ?? null;
 
   const piles = {
     question: deck.filter(isQuestion),
@@ -34,11 +39,13 @@ export default function CardsPage() {
 
   function pull(pile: Pile) {
     const next = draw(piles[pile], drawn);
-    flushSync(() => {
-      setCard(next);
-      setSpent(next ? null : pile);
-      if (next) setDrawn([...drawn, next.slug]);
-    });
+    flushSync(() =>
+      setTable({
+        drawn: next ? [...drawn, next.slug] : drawn,
+        card: next?.slug ?? null,
+        spent: next ? null : pile,
+      }),
+    );
     if (!next) back.current?.focus();
   }
 
@@ -109,11 +116,9 @@ export default function CardsPage() {
                 type="button"
                 className="text-button"
                 onClick={() => {
-                  flushSync(() => {
-                    setDrawn([]);
-                    setCard(null);
-                    setSpent(null);
-                  });
+                  flushSync(() =>
+                    setTable({ drawn: [], card: null, spent: null }),
+                  );
                   back.current?.focus();
                 }}
               >

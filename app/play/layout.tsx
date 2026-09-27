@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ClearDataButton } from "../providers";
-import { EndSession, NeedsLimits, Session } from "./session";
+import { NeedsLimits, PairBar } from "./pair";
+import { EndSession, Session } from "./session";
 
 export const metadata: Metadata = {
   title: "العبا معًا — معًا",
@@ -30,6 +31,7 @@ export default function PlayLayout({ children }: LayoutProps<"/play">) {
           </span>
           <EndSession />
         </header>
+        <PairBar />
         <NeedsLimits>{children}</NeedsLimits>
         <footer className="site-footer wrap">
           <Link className="brand" href="/">
@@ -39,9 +41,10 @@ export default function PlayLayout({ children }: LayoutProps<"/play">) {
             معًا
           </Link>
           <p>
-            حدودكما واختياراتكما لا تُحفظ ولا تُرسل، وتُمحى بإنهاء الجلسة أو إغلاق
-            الصفحة. يبقى على هذا الجهاز تفضيل المؤقت وخطوات مسار الليلة التي
-            أنهيتماها فقط.
+            على جهاز واحد لا تُحفظ حدودكما واختياراتكما ولا تُرسل، وتُمحى بإنهاء
+            الجلسة أو إغلاق الصفحة. على هاتفين تبقى في جلستكما على الخادم لا
+            يراها الطرف الآخر، وتُحذف بإنهاء الجلسة أو بعد يوم بلا نشاط. يبقى على
+            هذا الجهاز تفضيل المؤقت وخطوات مسار الليلة التي أنهيتماها فقط.
           </p>
           <ClearDataButton />
         </footer>

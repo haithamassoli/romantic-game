@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { games, IMAGE_SIZE } from "@/lib/site-images";
 import { store, useStored } from "../providers";
+import { PlayModes } from "./pair";
 import { focusOnMount, useSession } from "./session";
 
 export default function PlayHub() {
@@ -32,25 +33,15 @@ export default function PlayHub() {
         <p className="play-state" role="status">
           {limits
             ? "حدودكما محددة لهذه الجلسة؛ انتقلا بين الألعاب دون أن تُسألا من جديد."
-            : ended
-              ? "انتهت الجلسة، ومُحيت حدودكما واختياراتكما من هذا الجهاز."
-              : ""}
+            : ended === "two"
+              ? "انتهت الجلسة على الهاتفين، وحُذف من الخادم كل ما فيها: حدودكما واختياراتكما ونتائجكما."
+              : ended
+                ? "انتهت الجلسة، ومُحيت حدودكما واختياراتكما من هذا الجهاز."
+                : ""}
         </p>
       </section>
 
-      <fieldset className="wrap play-modes">
-        <legend>كيف تلعبان؟</legend>
-        <label className="mode">
-          <input type="radio" name="mode" defaultChecked />
-          <strong>على جهاز واحد</strong>
-          <small>تتبادلان الهاتف، وتبقى حدود كلٍّ منكما مخفية عن الآخر.</small>
-        </label>
-        <label className="mode">
-          <input type="radio" name="mode" disabled />
-          <strong>على هاتفين</strong>
-          <small>قريبًا: رمز يربط هاتفيكما في جلسة واحدة.</small>
-        </label>
-      </fieldset>
+      <PlayModes />
 
       <section className="wrap" aria-labelledby="games-title">
         <h2 id="games-title" className="play-subtitle">

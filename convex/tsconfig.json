@@ -11,6 +11,8 @@
     "jsx": "react-jsx",
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
+    /* lib/ imports with .ts extensions, so node:test runs it without a build. */
+    "allowImportingTsExtensions": true,
 
     /* These compiler options are required by Convex */
     "target": "ESNext",

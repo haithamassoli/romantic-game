@@ -176,7 +176,7 @@ export default function Home() {
           </p>
         </div>
         <p className="coming-soon">
-          الست كلها جاهزة للعب على جهاز واحد، واللعب على هاتفين يصل قريبًا.{" "}
+          الست كلها جاهزة، على جهاز واحد أو على هاتفين.{" "}
           <Link href="/play">ابدآ اللعب</Link>
         </p>
         <div className="games-grid">
@@ -218,7 +218,7 @@ export default function Home() {
           </div>
           <p>تبقيان معًا في الجلسة نفسها، وتظهر لكما النتائج المشتركة فقط.</p>
           <Link className="button play-cta" href="/play">
-            ابدآ على جهاز واحد <span aria-hidden="true">↙</span>
+            ابدآ اللعب <span aria-hidden="true">↙</span>
           </Link>
         </div>
         <div className="play-grid">

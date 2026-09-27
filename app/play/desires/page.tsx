@@ -7,6 +7,7 @@ export default function DesiresPage() {
   if (!desires) return <Loading />;
   return (
     <SecretPicks
+      game="desires"
       title="توافق الرغبات"
       intro="يختار كلٌّ منكما وحده ما يشتهيه الليلة، ثم لا يظهر إلا ما اختاره كلاكما، ليصير خطوة تبدآنها الآن."
       pool={desires}

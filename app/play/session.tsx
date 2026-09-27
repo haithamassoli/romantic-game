@@ -1,6 +1,7 @@
 "use client";
 
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
+import type { FunctionReturnType } from "convex/server";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -13,6 +14,7 @@ import {
 } from "react";
 import { api } from "@/convex/_generated/api";
 import type { Doc } from "@/convex/_generated/dataModel";
+import { HEARTBEAT_MS, PAIR_KEY } from "@/lib/pair";
 import { allowedFor, match } from "@/lib/play";
 import {
   CONSTRAINT_KEYS,
@@ -27,12 +29,19 @@ import {
 import { useStored } from "../providers";
 
 export type Activity = Doc<"activities">;
+/** What this phone may see of a two-phone session (lib/pair.ts decides). */
+export type View = NonNullable<FunctionReturnType<typeof api.sessions.view>>;
 
 type SessionValue = {
   limits: Limits | null;
   setLimits: (limits: Limits | null) => void;
   end: () => void;
-  ended: boolean;
+  /** Which session just ended, once back on the hub. */
+  ended: "one" | "two" | null;
+  leaving: boolean;
+  /** Two phones: this phone's player key and its view, undefined while loading. */
+  pair: { key: string; view: View | undefined } | null;
+  pairUp: (key: string) => void;
 };
 
 const SessionContext = createContext<SessionValue | null>(null);
@@ -44,43 +53,93 @@ export function useSession() {
 }
 
 /**
- * The couple's combined limits, held in React memory only: never localStorage,
- * the URL, or Convex. Closing the tab, reloading, or ending the session forgets them.
+ * One device: the couple's combined limits, held in React memory only: never
+ * localStorage, the URL, or Convex. Closing the tab, reloading, or ending the
+ * session forgets them. Two phones: only this phone's player key is kept here;
+ * each partner's limits and picks live in the session on the server, never
+ * sent to the other phone, and are deleted with it.
  */
 export function Session({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [limits, setLimits] = useState<Limits | null>(null);
-  const [ended, setEnded] = useState<"no" | "leaving" | "yes">("no");
+  const [ended, setEnded] = useState<{ two: boolean; back: boolean } | null>(
+    null,
+  );
+  // The key sits in localStorage, so a reload, a dropped connection, or a
+  // closed tab rejoins; the session itself still dies after a day idle.
+  const [key, setKey] = useState(
+    () => globalThis.localStorage?.getItem(PAIR_KEY) ?? null,
+  );
+  const view = useQuery(api.sessions.view, key ? { key } : "skip");
+  const endPair = useMutation(api.sessions.end);
+  const setPairLimits = useMutation(api.sessions.setLimits);
+  const heartbeat = useMutation(api.sessions.heartbeat);
+
   // Forget the limits once back on the hub, so the boundaries screen never flashes on the way out.
-  if (ended === "leaving" && pathname === "/play") {
-    setEnded("yes");
+  if (ended && !ended.back && pathname === "/play") {
+    setEnded({ ...ended, back: true });
     setLimits(null);
   }
+
+  // Ended on the other phone, or deleted after a day idle: back to the hub.
+  useEffect(() => {
+    if (!key || view !== null) return;
+    localStorage.removeItem(PAIR_KEY);
+    setKey(null);
+    setEnded({ two: true, back: false });
+    router.push("/play");
+  }, [key, view, router]);
+
+  // Presence: a beat now, on every page change, on return to the tab, and every few seconds.
+  useEffect(() => {
+    if (!key) return;
+    const beat = () => {
+      if (document.visibilityState === "visible") {
+        void heartbeat({ key, page: pathname });
+      }
+    };
+    beat();
+    const id = setInterval(beat, HEARTBEAT_MS);
+    document.addEventListener("visibilitychange", beat);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", beat);
+    };
+  }, [key, pathname, heartbeat]);
+
   const value: SessionValue = {
     limits,
     setLimits: (next) => {
-      setLimits(next);
-      setEnded("no");
+      if (key) void setPairLimits({ key, limits: next });
+      else setLimits(next);
+      setEnded(null);
     },
     end: () => {
-      setEnded("leaving");
+      if (key) {
+        void endPair({ key });
+        localStorage.removeItem(PAIR_KEY);
+        setKey(null);
+      }
+      setEnded({ two: Boolean(key), back: false });
       router.push("/play");
     },
-    ended: ended === "yes",
+    ended: ended?.back ? (ended.two ? "two" : "one") : null,
+    leaving: Boolean(ended && !ended.back),
+    pair: key ? { key, view: view ?? undefined } : null,
+    pairUp: (next) => {
+      localStorage.setItem(PAIR_KEY, next);
+      setKey(next);
+      setLimits(null);
+      setEnded(null);
+    },
   };
   return <SessionContext value={value}>{children}</SessionContext>;
 }
 
-/** Games ask for both partners' boundaries first; the hub doesn't. */
-export function NeedsLimits({ children }: { children: React.ReactNode }) {
-  const { limits } = useSession();
-  return usePathname() === "/play" || limits ? children : <Boundaries />;
-}
-
 export function EndSession() {
-  const { limits, end } = useSession();
-  if (usePathname() === "/play" && !limits) return null;
+  const { limits, end, pair } = useSession();
+  if (usePathname() === "/play" && !limits && !pair) return null;
   return (
     <button type="button" className="end-session" onClick={end}>
       إنهاء الجلسة
@@ -88,14 +147,63 @@ export function EndSession() {
   );
 }
 
-/** The one filter: published activities both partners accept; undefined while loading. */
+/**
+ * The one filter: published activities both partners accept; undefined while
+ * loading. On two phones the server applies it and sends only what passes.
+ */
 export function useAllowed(kind: Activity["kind"]) {
-  const { limits } = useSession();
-  const items = useQuery(api.activities.list, { kind });
-  return useMemo(
-    () => (items && limits ? allowedFor(items, limits) : undefined),
-    [items, limits],
+  const { limits, pair } = useSession();
+  const items = useQuery(api.activities.list, pair ? "skip" : { kind });
+  const shared = useQuery(
+    api.sessions.pool,
+    pair ? { key: pair.key, kind } : "skip",
   );
+  return useMemo(
+    () => shared ?? (items && limits ? allowedFor(items, limits) : undefined),
+    [shared, items, limits],
+  );
+}
+
+/** Published positions both partners accept, the same way. */
+export function useAllowedPositions() {
+  const { limits, pair } = useSession();
+  const items = useQuery(api.positions.list, pair ? "skip" : {});
+  const shared = useQuery(
+    api.sessions.positions,
+    pair ? { key: pair.key } : "skip",
+  );
+  return useMemo(
+    () => shared ?? (items && limits ? allowedFor(items, limits) : undefined),
+    [shared, items, limits],
+  );
+}
+
+type Games = Pick<View, "cards" | "wheel" | "library" | "path">;
+type Shared = { [G in keyof Games]?: NonNullable<Games[G]> };
+
+/**
+ * A game's state: React state on one device; on two phones the session's, so
+ * both show the same card, spin, challenge or step, and either can move it on.
+ */
+export function useShared<G extends keyof Games>(
+  game: G,
+  initial: NonNullable<Games[G]>,
+): [NonNullable<Games[G]>, (next: NonNullable<Games[G]>) => void] {
+  const { pair } = useSession();
+  const [local, setLocal] = useState(initial);
+  // Shown at once on this phone; the server confirms or rolls it back.
+  const play = useMutation(api.sessions.play).withOptimisticUpdate(
+    (store, { key, ...games }) => {
+      const view = store.getQuery(api.sessions.view, { key });
+      if (view)
+        store.setQuery(api.sessions.view, { key }, { ...view, ...games });
+    },
+  );
+  if (!pair) return [local, setLocal];
+  return [
+    pair.view?.[game] ?? initial,
+    (next) => void play({ key: pair.key, ...({ [game]: next } as Shared) }),
+  ];
 }
 
 // Stable, so it runs once per mounted step rather than on every render.
@@ -111,7 +219,7 @@ const topOnMount = (el: HTMLElement | null) => {
 
 type Step = "intro" | "first" | "handoff" | "second";
 
-function Boundaries() {
+export function Boundaries() {
   const { setLimits } = useSession();
   const [step, setStep] = useState<Step>("intro");
   // Partner one's answers wait here, unrendered, until partner two is done.
@@ -171,6 +279,27 @@ function Boundaries() {
   );
 }
 
+/** A pause while the other partner takes their turn. */
+export function Waiting({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="wrap bounds bounds-handoff">
+      <span className="bounds-glyph" aria-hidden="true">
+        ✳
+      </span>
+      <h1 ref={focusOnMount} tabIndex={-1}>
+        {title}
+      </h1>
+      {children}
+    </section>
+  );
+}
+
 /** Partner one is done: nothing of theirs is left on screen for partner two. */
 function HandOff({
   onReady,
@@ -180,18 +309,12 @@ function HandOff({
   children: React.ReactNode;
 }) {
   return (
-    <section className="wrap bounds bounds-handoff">
-      <span className="bounds-glyph" aria-hidden="true">
-        ✳
-      </span>
-      <h1 ref={focusOnMount} tabIndex={-1}>
-        أعطِ الهاتف لشريكك
-      </h1>
+    <Waiting title="أعطِ الهاتف لشريكك">
       <p>{children}</p>
       <button type="button" className="button" onClick={onReady}>
         أنا الطرف الثاني، أبدأ
       </button>
-    </section>
+    </Waiting>
   );
 }
 
@@ -207,7 +330,7 @@ function toggle<T>(list: T[], value: T) {
     : [...list, value];
 }
 
-function LimitsForm({
+export function LimitsForm({
   who,
   done,
   onDone,
@@ -302,11 +425,14 @@ function LimitsForm({
 type PickStep = "intro" | "first" | "handoff" | "second" | "reveal";
 
 /**
- * Desire match and position discovery: each partner picks alone, in turn, and
- * only what both picked is ever rendered. Partner one's picks wait unrendered in
- * a ref; both lists are dropped the moment the overlap is known.
+ * Desire match and position discovery: each partner picks alone, and only what
+ * both picked is ever rendered. On one device they pick in turn; partner one's
+ * picks wait unrendered in a ref, and both lists are dropped the moment the
+ * overlap is known. On two phones each picks at once on their own phone; the
+ * server holds the lists until both are in, then keeps only the overlap.
  */
 export function SecretPicks<T extends { slug: string }>({
+  game,
   title,
   intro,
   pool,
@@ -316,6 +442,7 @@ export function SecretPicks<T extends { slug: string }>({
   grid = false,
   reveal,
 }: {
+  game: "desires" | "discover";
   title: string;
   intro: string;
   pool: T[];
@@ -325,33 +452,88 @@ export function SecretPicks<T extends { slug: string }>({
   grid?: boolean;
   reveal: (matches: T[]) => React.ReactNode;
 }) {
+  const { pair } = useSession();
   const [step, setStep] = useState<PickStep>("intro");
   const first = useRef<string[]>([]);
   const [matches, setMatches] = useState<T[]>([]);
+  const send = useMutation(api.sessions.pick).withOptimisticUpdate(
+    (store, { key, game, picks }) => {
+      const view = store.getQuery(api.sessions.view, { key });
+      if (!view) return;
+      const round = picks
+        ? { ...view[game], me: true }
+        : { me: false, partner: false, matches: null };
+      store.setQuery(
+        api.sessions.view,
+        { key },
+        game === "desires"
+          ? { ...view, desires: round }
+          : { ...view, discover: round },
+      );
+    },
+  );
+  // On two phones the session's round decides the stage.
+  const round = pair?.view?.[game];
+  const stage: PickStep = !round
+    ? step
+    : round.matches
+      ? "reveal"
+      : round.me
+        ? "handoff"
+        : step === "first"
+          ? "first"
+          : "intro";
+  const shown = round?.matches
+    ? pool.filter((item) => round.matches?.includes(item.slug))
+    : matches;
 
-  if (step === "handoff") {
-    return (
+  if (stage === "handoff") {
+    return pair ? (
+      <Waiting title="بانتظار شريكك">
+        <p>
+          وصلت اختياراتك مخفية. حين ينهي شريكك اختياره على هاتفه، يظهر لكما ما
+          اختاره كلاكما فقط.
+        </p>
+        {/* Nav is hidden on phones: without this, only ending the session leaves. */}
+        <Link className="ghost-button" href="/play">
+          لعبة أخرى
+        </Link>
+      </Waiting>
+    ) : (
       <HandOff onReady={() => setStep("second")}>
         أُخفيت اختياراتك. لن يظهر منها إلا ما يختاره شريكك أيضًا.
       </HandOff>
     );
   }
-  if (step === "first" || step === "second") {
+  if (stage === "first" || stage === "second") {
     return (
       <PickForm
-        key={step}
-        who={step === "first" ? "الطرف الأول" : "الطرف الثاني"}
+        key={stage}
+        who={
+          pair
+            ? "على هاتفك"
+            : stage === "first"
+              ? "الطرف الأول"
+              : "الطرف الثاني"
+        }
         ask={ask}
         hint={hint}
         pool={pool}
         option={option}
         grid={grid}
         done={
-          step === "first" ? "انتهيت، أخفِ اختياراتي" : "انتهيت، لنرَ ما يجمعنا"
+          pair
+            ? "انتهيت، أرسل اختياراتي سرًّا"
+            : stage === "first"
+              ? "انتهيت، أخفِ اختياراتي"
+              : "انتهيت، لنرَ ما يجمعنا"
         }
         onDone={(mine) => {
           window.scrollTo(0, 0);
-          if (step === "first") {
+          if (pair) {
+            setStep("intro");
+            void send({ key: pair.key, game, picks: mine });
+          } else if (stage === "first") {
             first.current = mine;
             setStep("handoff");
           } else {
@@ -371,17 +553,18 @@ export function SecretPicks<T extends { slug: string }>({
         onClick={() => {
           setMatches([]);
           setStep("first");
+          if (pair) void send({ key: pair.key, game, picks: null });
         }}
       >
-        جولة جديدة، يبدأ الطرف الأول
+        {pair ? "جولة جديدة" : "جولة جديدة، يبدأ الطرف الأول"}
       </button>
       <Link className="ghost-button" href="/play">
         لعبة أخرى
       </Link>
     </div>
   );
-  if (step === "reveal") {
-    const none = matches.length === 0;
+  if (stage === "reveal") {
+    const none = shown.length === 0;
     return (
       <>
         <GameHead title={none ? "لا توافق هذه المرة" : "هنا تلتقيان"}>
@@ -390,7 +573,7 @@ export function SecretPicks<T extends { slug: string }>({
             : "هذا ما اختاره كلاكما، ولا شيء غيره. ما اختاره أحدكما وحده بقي سرًّا، ومُحي الآن."}
         </GameHead>
         <section className="wrap matches" aria-label="النتيجة" ref={topOnMount}>
-          {!none && reveal(matches)}
+          {!none && reveal(shown)}
           {again}
         </section>
       </>
@@ -404,14 +587,19 @@ export function SecretPicks<T extends { slug: string }>({
       ) : (
         <section className="wrap picks-start">
           <p>
-            ليحمل أحدكما الهاتف وليُشِح الآخر بنظره. حين ينتهي الأول يسلّمه للثاني.
+            {pair
+              ? "يختار كلٌّ منكما على هاتفه في الوقت نفسه، ولا يرى أحدكما اختيارات الآخر."
+              : "ليحمل أحدكما الهاتف وليُشِح الآخر بنظره. حين ينتهي الأول يسلّمه للثاني."}
           </p>
+          {round?.partner && (
+            <p className="play-state">أنهى شريكك اختياره، والدور لك.</p>
+          )}
           <button
             type="button"
             className="button"
             onClick={() => setStep("first")}
           >
-            أنا الطرف الأول، أختار
+            {pair ? "أبدأ الاختيار" : "أنا الطرف الأول، أختار"}
           </button>
         </section>
       )}
@@ -505,7 +693,7 @@ export function Loading() {
 
 /** Nothing both partners accept is left. Never says who excluded what. */
 export function Empty() {
-  const { setLimits, end } = useSession();
+  const { setLimits, end, pair } = useSession();
   return (
     <section className="wrap play-empty" ref={revealOnMount}>
       <h2>لا شيء هنا يناسبكما معًا الليلة</h2>
@@ -522,7 +710,8 @@ export function Empty() {
           className="ghost-button"
           onClick={() => setLimits(null)}
         >
-          أعيدا تحديد الحدود
+          {/* On two phones each partner owns, and resets, only their own. */}
+          {pair ? "أعد تحديد حدودك" : "أعيدا تحديد الحدود"}
         </button>
         <button type="button" className="ghost-button" onClick={end}>
           إنهاء الجلسة

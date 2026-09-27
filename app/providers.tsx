@@ -1,7 +1,9 @@
 "use client";
 
-import { ConvexProvider, ConvexReactClient } from "convex/react";
+import { ConvexProvider, ConvexReactClient, useMutation } from "convex/react";
 import { useSyncExternalStore } from "react";
+import { api } from "@/convex/_generated/api";
+import { PAIR_KEY } from "@/lib/pair";
 import { localKeys, PREFIX } from "@/lib/play";
 
 const convex = new ConvexReactClient(
@@ -58,6 +60,7 @@ export function toggleSlug(key: "favorites" | "excluded", slug: string) {
 }
 
 export function ClearDataButton() {
+  const endPair = useMutation(api.sessions.end);
   return (
     <button
       type="button"
@@ -69,6 +72,9 @@ export function ClearDataButton() {
           )
         )
           return;
+        // A two-phone session ends for both, and its data leaves the server too.
+        const pair = localStorage.getItem(PAIR_KEY);
+        if (pair) void endPair({ key: pair });
         for (const key of localKeys(Object.keys(localStorage))) {
           localStorage.removeItem(key);
         }

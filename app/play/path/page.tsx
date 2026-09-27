@@ -7,7 +7,6 @@ import { nightPath, PATH_MINUTES, remember } from "@/lib/play";
 import { INTENSITY, LEVELS, type Level } from "@/lib/tags";
 import { readList, store, useStored } from "../../providers";
 import {
-  type Activity,
   ActivityCard,
   Empty,
   focusOnMount,
@@ -15,7 +14,7 @@ import {
   Loading,
   minutesLabel,
   useAllowed,
-  useSession,
+  useShared,
 } from "../session";
 
 const CEILINGS: Record<Level, string> = {
@@ -24,29 +23,33 @@ const CEILINGS: Record<Level, string> = {
   3: "حتى الجريء",
 };
 
-type Mark = "done" | "skipped";
-
 export default function PathPage() {
-  const { limits } = useSession();
   const cards = useAllowed("card");
   const challenges = useAllowed("challenge");
   // Finished steps from earlier nights: content slugs only, never a pick or a limit.
   const finished = readList(useStored("path"));
   const [minutes, setMinutes] = useState<number>(30);
   const [ceiling, setCeiling] = useState<Level | null>(null);
-  const [path, setPath] = useState<Activity[] | null>(null);
-  const [marks, setMarks] = useState<Mark[]>([]);
-  const [stopped, setStopped] = useState(false);
+  // On two phones both follow the same steps, and either can finish, skip or stop one.
+  const [run, setRun] = useShared("path", {
+    steps: null,
+    marks: [],
+    stopped: false,
+  });
+  const { marks, stopped } = run;
 
   const pool = useMemo(
     () => (cards && challenges ? [...cards, ...challenges] : undefined),
     [cards, challenges],
   );
-  if (!pool || !limits) return <Loading />;
+  if (!pool) return <Loading />;
 
-  // The ceiling can only go as high as both partners accept.
-  const levels = LEVELS.filter((l) => l <= limits.maxIntensity);
-  const upTo = Math.min(ceiling ?? limits.maxIntensity, limits.maxIntensity);
+  const path =
+    run.steps?.flatMap((slug) => pool.filter((i) => i.slug === slug)) ?? null;
+  // The ceiling goes only as high as something both partners accept.
+  const top = Math.max(0, ...pool.map((i) => i.intensity));
+  const levels = LEVELS.filter((l) => l <= top);
+  const upTo = Math.min(ceiling ?? top, top);
   const at = marks.length;
   const step = path?.[at];
 
@@ -74,9 +77,13 @@ export default function PathPage() {
           className="wrap path-setup"
           onSubmit={(event) => {
             event.preventDefault();
-            setPath(nightPath(pool, minutes, upTo, finished));
-            setMarks([]);
-            setStopped(false);
+            setRun({
+              steps: nightPath(pool, minutes, upTo, finished).map(
+                (s) => s.slug,
+              ),
+              marks: [],
+              stopped: false,
+            });
           }}
         >
           <fieldset className="lib-filter">
@@ -145,7 +152,9 @@ export default function PathPage() {
               type="button"
               className="button"
               onClick={() => {
-                flushSync(() => setPath(null));
+                flushSync(() =>
+                  setRun({ steps: null, marks: [], stopped: false }),
+                );
                 document
                   .querySelector<HTMLElement>(".path-setup :checked")
                   ?.focus();
@@ -179,7 +188,7 @@ export default function PathPage() {
             className="button"
             onClick={() => {
               store("path", remember(finished, step.slug));
-              setMarks([...marks, "done"]);
+              setRun({ ...run, marks: [...marks, "done"] });
             }}
           >
             {last ? "تمّت، أنهينا المسار" : "تمّت، إلى التالية"}
@@ -187,14 +196,14 @@ export default function PathPage() {
           <button
             type="button"
             className="ghost-button"
-            onClick={() => setMarks([...marks, "skipped"])}
+            onClick={() => setRun({ ...run, marks: [...marks, "skipped"] })}
           >
             تخطَّيا هذه الخطوة
           </button>
           <button
             type="button"
             className="ghost-button"
-            onClick={() => setStopped(true)}
+            onClick={() => setRun({ ...run, stopped: true })}
           >
             أوقفا المسار
           </button>

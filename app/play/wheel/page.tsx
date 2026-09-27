@@ -1,15 +1,15 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { pick, type Spin, seeded, wheelSegments } from "@/lib/play";
 import {
-  type Activity,
   ActivityCard,
   Empty,
   GameHead,
   kindLabel,
   Loading,
   useAllowed,
+  useShared,
 } from "../session";
 
 const SPINS: { value: Spin; label: string }[] = [
@@ -33,11 +33,17 @@ function paint(count: number) {
 export default function WheelPage() {
   const cards = useAllowed("card");
   const challenges = useAllowed("challenge");
-  const [spin, setSpin] = useState<Spin>("activity");
-  const [seed, setSeed] = useState(Math.random);
-  const [turn, setTurn] = useState(0);
-  const [spinning, setSpinning] = useState(false);
-  const [result, setResult] = useState<Activity | null>(null);
+  // On two phones both wheels turn together and stop on the same result.
+  const [wheel, setWheel] = useShared("wheel", {
+    spin: "activity",
+    seed: 0.5,
+    turn: 0,
+    result: null,
+  });
+  const { spin, seed, turn } = wheel;
+  // The turn whose result shows; a new turn spins first, on whichever phone started it.
+  const [landed, setLanded] = useState(turn);
+  const spinning = turn !== landed;
   // Focus waits on the hub while the wheel turns, then moves to the result.
   const hub = useRef<HTMLButtonElement>(null);
 
@@ -50,7 +56,17 @@ export default function WheelPage() {
     [pool, spin, seed],
   );
 
+  useEffect(() => {
+    if (turn === landed) return;
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const id = setTimeout(() => setLanded(turn), still ? 0 : SPIN_MS);
+    return () => clearTimeout(id);
+  }, [turn, landed]);
+
   if (!pool) return <Loading />;
+  const result = spinning
+    ? null
+    : (pool.find((item) => item.slug === wheel.result) ?? null);
 
   function go() {
     if (!pool || spinning) return;
@@ -62,18 +78,12 @@ export default function WheelPage() {
     const a = 360 / next.length;
     const land = 360 - (index + 0.5 + (Math.random() - 0.5) * 0.6) * a;
     const item = pick(next[index].items);
-    setSeed(nextSeed);
-    setTurn(turn - (turn % 360) + 5 * 360 + land);
-    setResult(null);
-    setSpinning(true);
-    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setTimeout(
-      () => {
-        setSpinning(false);
-        setResult(item);
-      },
-      still ? 0 : SPIN_MS,
-    );
+    setWheel({
+      spin,
+      seed: nextSeed,
+      turn: turn - (turn % 360) + 5 * 360 + land,
+      result: item.slug,
+    });
   }
 
   const angle = 360 / segments.length;
@@ -96,10 +106,9 @@ export default function WheelPage() {
                   type="radio"
                   name="spin"
                   checked={spin === s.value}
-                  onChange={() => {
-                    setSpin(s.value);
-                    setResult(null);
-                  }}
+                  onChange={() =>
+                    setWheel({ ...wheel, spin: s.value, result: null })
+                  }
                 />
                 {s.label}
               </label>
@@ -165,7 +174,7 @@ export default function WheelPage() {
                     type="button"
                     className="ghost-button"
                     onClick={() => {
-                      setResult(null);
+                      setWheel({ ...wheel, result: null });
                       hub.current?.focus();
                     }}
                   >

@@ -2196,3 +2196,188 @@ button.button {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* Play: two phones */
+
+.pair {
+  display: grid;
+  justify-items: start;
+  gap: 0.9rem;
+  max-width: 34rem;
+  margin-bottom: 2rem;
+}
+
+.pair p,
+.invite p {
+  margin: 0;
+  color: var(--blush);
+}
+
+.pair .play-subtitle {
+  margin: 0;
+}
+
+.button:disabled,
+.ghost-button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.invite {
+  display: grid;
+  justify-items: start;
+  gap: 0.8rem;
+}
+
+.bounds-handoff .invite {
+  justify-items: center;
+}
+
+/* The code is the one thing to read across the room: set like an engraved plate. */
+.invite-code {
+  padding: 0.35rem 0.9rem 0.2rem;
+  border-block: 1px solid var(--gold);
+  background: color-mix(in srgb, var(--wine) 45%, transparent);
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 13vw, 3.4rem);
+  line-height: 1.2;
+  letter-spacing: 0.3em;
+}
+
+.pair .invite-code,
+.invite .invite-code {
+  color: var(--gold-soft);
+}
+
+/* Letter spacing trails the last symbol; pull it back so the code sits centered. */
+.invite-code [dir="ltr"] {
+  margin-inline-end: -0.3em;
+}
+
+.invite .invite-note {
+  color: var(--rose);
+  font-size: 0.85rem;
+}
+
+.pair-join {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.pair-join label {
+  color: var(--gold);
+  font-size: 0.85rem;
+}
+
+.pair-join div {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.pair-join input {
+  width: 11rem;
+  min-height: 2.9rem;
+  padding-inline: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--plum);
+  color: var(--ivory);
+  font: inherit;
+  font-size: 1.1rem;
+  letter-spacing: 0.25em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.pair-join input::placeholder {
+  color: color-mix(in srgb, var(--rose) 55%, transparent);
+}
+
+.pair-join input:focus-visible {
+  border-color: var(--gold);
+}
+
+.pair .pair-error:not(:empty) {
+  padding-inline-start: 0.9rem;
+  border-inline-start: 2px solid var(--rose);
+  color: var(--ivory);
+  font-size: 0.92rem;
+}
+
+/* Two lights on one thread: this phone, then the partner's. */
+.pair-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.7rem;
+  padding-block: 0.55rem;
+  color: var(--blush);
+  font-size: 0.86rem;
+}
+
+.pair-bar p {
+  flex: 1 1 12rem;
+  margin: 0;
+}
+
+.pair-bar a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--gold-soft);
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+
+.pair-thread {
+  position: relative;
+  flex: none;
+  width: 2.6rem;
+  height: 0.7rem;
+  background:
+    linear-gradient(var(--gold), var(--gold)) center / 100% 1px no-repeat;
+}
+
+.pair-thread::before,
+.pair-thread::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.pair-thread::before {
+  inset-inline-start: 0;
+}
+
+.pair-thread::after {
+  inset-inline-end: 0;
+}
+
+.pair-bar[data-state="here"] .pair-thread::after {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 25%, transparent);
+}
+
+.pair-bar[data-state="waiting"] .pair-thread,
+.pair-bar[data-state="away"] .pair-thread,
+.pair-bar[data-state="offline"] .pair-thread {
+  background:
+    repeating-linear-gradient(to left, var(--rose) 0 3px, transparent 3px 6px)
+    center / 100% 1px no-repeat;
+}
+
+.pair-bar[data-state="waiting"] .pair-thread::after,
+.pair-bar[data-state="away"] .pair-thread::after,
+.pair-bar[data-state="offline"] .pair-thread::before {
+  border-color: var(--rose);
+  background: var(--night);
+}
+
+.pair-bar[data-state="away"],
+.pair-bar[data-state="offline"] {
+  color: var(--ivory);
+}
