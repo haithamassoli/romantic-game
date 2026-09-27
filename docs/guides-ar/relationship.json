@@ -1,0 +1,90 @@
+{
+  "language": "ar",
+  "updated_at": "2026-09-27",
+  "guides": [
+    {
+      "id": "communication",
+      "audience": "couple",
+      "title_ar": "التحدث عن الرغبات والحدود",
+      "summary_ar": "الحديث الصريح والهادئ يساعد الزوجين على فهم ما يريده كل منهما وما لا يريده. يمكن التعبير عن رغبة أو خيال من دون توقع تنفيذه، وتغيير الرأي يظل ممكناً في أي وقت.",
+      "points_ar": [
+        "اختارا وقتاً مريحاً بعيداً عن لحظة الضغط، واسألا بعضكما عما يبعث الراحة أو القلق.",
+        "قدّما طلبات واضحة وملاحظات لطيفة بدلاً من افتراض أن الطرف الآخر يعرف ما يناسبكما.",
+        "استمعا للرغبة بلا حكم؛ سماعها لا يلزم أياً منكما بالموافقة عليها أو تجربتها."
+      ],
+      "source": {
+        "title_en": "9.3: Communication",
+        "url": "https://socialsci.libretexts.org/Bookshelves/Gender_Studies/Sexuality_the_Self_and_Society_(Ruhman_Bowman_Jackson_Lushtak_Newman_and_Sunder)/09:_Relationship_Styles_Communication_Sexual_Behavior_and_Fantasies/9.03:_Communication",
+        "publisher": "Sexuality, the Self, and Society",
+        "author": "Susan Rahman, Nathan Bowman, Dahmitra Jackson, Anna Lushtak, Remi Newman, Prateek Sunder",
+        "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "attribution": "ترجمة عربية محررة من عمل Rahman وآخرين، بترخيص CC BY 4.0؛ لا تعني موافقة المؤلفين على هذه الصياغة.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "consent",
+      "audience": "couple",
+      "title_ar": "الرضا المتبادل في كل خطوة",
+      "summary_ar": "الرضا اتفاق حرّ وواضح على نشاط محدد، وليس افتراضاً يُبنى على علاقة سابقة أو صمت الطرف الآخر. يحق لكل من الزوجين التوقف أو تغيير رأيه أثناء التجربة.",
+      "points_ar": [
+        "اسألا بوضوح عما يريده كل طرف، وتحققا من استمرار راحته خلال النشاط.",
+        "اعتبرا التردد أو الصمت سبباً للتوقف والسؤال، لا علامة موافقة.",
+        "احترما الرفض فوراً ومن دون إلحاح؛ الموافقة على شيء لا تشمل أشياء أخرى تلقائياً."
+      ],
+      "source": {
+        "title_en": "14.2: Consent",
+        "url": "https://socialsci.libretexts.org/Bookshelves/Gender_Studies/Sexuality_the_Self_and_Society_(Ruhman_Bowman_Jackson_Lushtak_Newman_and_Sunder)/14:_Consent_Coercion_and_Sexual_Violence/14.02:_Consent",
+        "publisher": "Sexuality, the Self, and Society",
+        "author": "Susan Rahman, Nathan Bowman, Dahmitra Jackson, Anna Lushtak, Remi Newman, Prateek Sunder",
+        "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "attribution": "ترجمة عربية محررة من عمل Rahman وآخرين، بترخيص CC BY 4.0؛ لا تعني موافقة المؤلفين على هذه الصياغة.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "pleasure",
+      "audience": "couple",
+      "title_ar": "الإثارة والمتعة بلا افتراضات",
+      "summary_ar": "الاستجابة الجسدية للإثارة تختلف بين الأشخاص، ولا تكشف وحدها عما يرغب به الشخص أو يوافق عليه. المتعة ليست محصورة في طريقة واحدة أو بلوغ النشوة؛ الحوار هو أفضل وسيلة لمعرفة ما يفضله الشريك.",
+      "points_ar": [
+        "اسألا عن التجربة المرغوبة بدلاً من تفسير الإشارات الجسدية على أنها موافقة.",
+        "اتركا مساحة لاختلاف الإيقاع والاهتمامات بينكما، من دون هدف مفروض للنشوة.",
+        "إذا بدا أحدكما غير مرتاح، توقّفا وتحدثا عمّا يريد كل طرف تغييره."
+      ],
+      "source": {
+        "title_en": "4.5: Sexual Arousal and Response",
+        "url": "https://socialsci.libretexts.org/Bookshelves/Gender_Studies/Sexuality_the_Self_and_Society_(Ruhman_Bowman_Jackson_Lushtak_Newman_and_Sunder)/04:_Pleasure_Sexual_Arousal_and_Response/4.05:_Sexual_Arousal_and_Response",
+        "publisher": "Sexuality, the Self, and Society",
+        "author": "Susan Rahman, Nathan Bowman, Dahmitra Jackson, Anna Lushtak, Remi Newman, Prateek Sunder",
+        "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "attribution": "ترجمة عربية محررة من عمل Rahman وآخرين، بترخيص CC BY 4.0؛ لا تعني موافقة المؤلفين على هذه الصياغة.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "fantasies",
+      "audience": "couple",
+      "title_ar": "مشاركة الخيالات بحوار آمن",
+      "summary_ar": "قد يكون الحديث عن الخيال الحميم وسيلة لفهم ما يجذب كل طرف، حتى لو لم يرغب أي منهما في تحويله إلى تجربة. يساعد التدرج في الإفصاح وتوضيح القصد من الحديث على تقليل سوء الفهم والضغط.",
+      "points_ar": [
+        "ابدآ بسؤال بسيط عن موضوع يثير الفضول، واختارا وقتاً هادئاً للحديث.",
+        "وضحا هل تتشاركان فكرة للتقارب فقط أم اقتراحاً تريدان مناقشة تجربته.",
+        "استقبلا ما يقوله الطرف الآخر باحترام، وابحثا عن الجزء المشترك من الرغبات من دون إلزام أو حكم."
+      ],
+      "source": {
+        "title_en": "9.4: Sexual Fantasies and Sexual Desire",
+        "url": "https://socialsci.libretexts.org/Bookshelves/Gender_Studies/Sexuality_the_Self_and_Society_(Ruhman_Bowman_Jackson_Lushtak_Newman_and_Sunder)/09:_Relationship_Styles_Communication_Sexual_Behavior_and_Fantasies/9.04:_Sexual_Fantasies_and_Sexual_Desire",
+        "publisher": "Sexuality, the Self, and Society",
+        "author": "Susan Rahman, Nathan Bowman, Dahmitra Jackson, Anna Lushtak, Remi Newman, Prateek Sunder",
+        "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "attribution": "ترجمة عربية محررة من عمل Rahman وآخرين، بترخيص CC BY 4.0؛ لا تعني موافقة المؤلفين على هذه الصياغة.",
+        "adapted": true
+      }
+    }
+  ]
+}

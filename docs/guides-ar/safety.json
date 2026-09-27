@@ -1,0 +1,27 @@
+{
+  "language": "ar",
+  "updated_at": "2026-09-27",
+  "guides": [
+    {
+      "id": "sti-safety",
+      "audience": "couple",
+      "title_ar": "الوقاية والفحص عند القلق من العدوى",
+      "summary_ar": "قد تنتقل العدوى المنقولة جنسياً عبر أنشطة جنسية مختلفة، بما فيها الجنس الفموي، وقد لا تظهر لها أعراض. الفحص عند القلق، والحماية المناسبة، والتواصل الصريح يساعدون الزوجين على اتخاذ قرار مطلع.",
+      "points_ar": [
+        "إذا ظهرت أعراض أو وُجد احتمال تعرض، استشيرا عيادة صحة جنسية بشأن الفحوص وموعدها المناسب.",
+        "إلى حين الفحص أو التقييم، استخدما واقياً أو حاجزاً فموياً خلال الجنس، بما فيه الفموي، وفق إرشاد العيادة.",
+        "إذا ثبتت عدوى، يحتاج الشريك أو الشريكة إلى معرفة ذلك وإلى الفحص أو العلاج بحسب توجيه المختص."
+      ],
+      "source": {
+        "title_en": "Sexually transmitted infections (STIs)",
+        "url": "https://www.nhs.uk/conditions/sexually-transmitted-infections-stis/",
+        "publisher": "UK public sector information",
+        "author": "Department of Health and Social Care",
+        "license": "OGL 3.0",
+        "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+        "attribution": "Contains public sector information licensed under the Open Government Licence v3.0. هذه صياغة عربية محررة لم تراجعها الجهة الناشرة.",
+        "adapted": true
+      }
+    }
+  ]
+}

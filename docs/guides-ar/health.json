@@ -1,0 +1,132 @@
+{
+  "language": "ar",
+  "updated_at": "2026-09-27",
+  "guides": [
+    {
+      "id": "desire",
+      "audience": "couple",
+      "title_ar": "اختلاف الرغبة الجنسية",
+      "summary_ar": "تتغير الرغبة الجنسية مع الضغط النفسي، النوم، العلاقة، الأدوية وبعض الحالات الصحية. لا يدل انخفاضها وحده على قلة الحب أو وجود خلل في أحد الزوجين؛ فهم السبب أول خطوة للتعامل معه.",
+      "points_ar": [
+        "تحدثا عن التغير من دون لوم، واسألا عما قد يخفف الضغط أو التعب.",
+        "راجعا طبيباً إذا كان انخفاض الرغبة يثير القلق أو بدأ بعد دواء أو استمر بعد الولادة.",
+        "يمكن مناقشة مشكلات الألم أو الانتصاب أو الجفاف مع مختص لأنها قد تؤثر في الرغبة."
+      ],
+      "source": {
+        "title_en": "Low sex drive (loss of libido)",
+        "url": "https://www.nhs.uk/symptoms/loss-of-libido/",
+        "publisher": "UK public sector information",
+        "author": "Department of Health and Social Care",
+        "license": "OGL 3.0",
+        "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+        "attribution": "Contains public sector information licensed under the Open Government Licence v3.0. هذه صياغة عربية محررة لم تراجعها الجهة الناشرة.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "dryness",
+      "audience": "wife",
+      "title_ar": "الجفاف والراحة أثناء العلاقة",
+      "summary_ar": "قد يرتبط الجفاف بتغيرات هرمونية أثناء الرضاعة أو انقطاع الطمث، أو ببعض الأدوية، وقد يجعل العلاقة مؤلمة. توجد خطوات بسيطة لتحسين الراحة، لكن استمرار الأعراض يحتاج تقييماً طبياً.",
+      "points_ar": [
+        "يمكن تجربة مزلق مائي مخصص للعلاقة أو مرطب مهبلي مناسب، وتجنب المنتجات المعطرة حول المهبل.",
+        "امنحا وقتاً كافياً للإثارة وتوقفا إذا ظهر ألم؛ لا داعي لتحمّله لإكمال العلاقة.",
+        "راجعي طبيباً إذا استمر الجفاف لأسابيع، أو صاحبه إفراز غير معتاد أو نزف بعد العلاقة."
+      ],
+      "source": {
+        "title_en": "Vaginal dryness",
+        "url": "https://www.nhs.uk/symptoms/vaginal-dryness/",
+        "publisher": "UK public sector information",
+        "author": "Department of Health and Social Care",
+        "license": "OGL 3.0",
+        "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+        "attribution": "Contains public sector information licensed under the Open Government Licence v3.0. هذه صياغة عربية محررة لم تراجعها الجهة الناشرة.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "vaginismus",
+      "audience": "wife",
+      "title_ar": "ألم الإيلاج والتشنج المهبلي",
+      "summary_ar": "قد يحدث انقباض لا إرادي لعضلات المهبل عند محاولة الإيلاج ويسبب ألماً أو حرقاناً. توجد أسباب أخرى للألم أيضاً، لذا يفيد التقييم المهني بدلاً من افتراض السبب أو الاستمرار رغم الألم.",
+      "points_ar": [
+        "توقفا عند الألم ولا تحوّلا الإيلاج إلى اختبار ينبغي اجتيازه.",
+        "استشارة طبيب أو عيادة صحة جنسية تساعد على استبعاد العدوى أو غيرها من الأسباب.",
+        "قد تشمل المساعدة المتخصصة العلاج النفسي الجنسي وتمارين الاسترخاء أو قاع الحوض، ويمكن إشراك الشريك إذا رغبتِ."
+      ],
+      "source": {
+        "title_en": "Vaginismus",
+        "url": "https://www.nhs.uk/conditions/vaginismus/",
+        "publisher": "UK public sector information",
+        "author": "Department of Health and Social Care",
+        "license": "OGL 3.0",
+        "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+        "attribution": "Contains public sector information licensed under the Open Government Licence v3.0. هذه صياغة عربية محررة لم تراجعها الجهة الناشرة.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "erectile-difficulty",
+      "audience": "husband",
+      "title_ar": "صعوبات الانتصاب المتكررة",
+      "summary_ar": "تحدث صعوبة الانتصاب أحياناً مع الإرهاق أو التوتر، لكن تكرارها قد يرتبط بحالة صحية أو دواء. التعامل معها بهدوء وبلا لوم يساعد الزوجين على طلب المساعدة المناسبة.",
+      "points_ar": [
+        "ناقشا المشكلة بعيداً عن لحظة العلاقة، وابتعدا عن اعتبارها حكماً على الرغبة أو الشريك.",
+        "قد تساعد العناية بالنوم والنشاط البدني وتقليل التدخين والضغط النفسي بحسب الحالة.",
+        "راجِع طبيباً أو عيادة صحة جنسية إذا تكررت المشكلة، قبل شراء أدوية من مواقع مجهولة."
+      ],
+      "source": {
+        "title_en": "Erectile dysfunction (impotence)",
+        "url": "https://www.nhs.uk/conditions/erection-problems-erectile-dysfunction/",
+        "publisher": "UK public sector information",
+        "author": "Department of Health and Social Care",
+        "license": "OGL 3.0",
+        "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+        "attribution": "Contains public sector information licensed under the Open Government Licence v3.0. هذه صياغة عربية محررة لم تراجعها الجهة الناشرة.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "ejaculation",
+      "audience": "husband",
+      "title_ar": "مشكلات القذف والتواصل مع الشريكة",
+      "summary_ar": "قد يكون القذف أسرع أو أبطأ مما يرغبه الزوجان، وتختلف أسبابه من التوتر والمشكلات العاطفية إلى بعض الأدوية والحالات الصحية. النوبات العرضية شائعة؛ أما المشكلة المستمرة فتستحق تقييماً.",
+      "points_ar": [
+        "تحدثا عما يزعج كل طرف من دون تحويل مدة العلاقة إلى مقياس للنجاح.",
+        "إذا تكرر الأمر وأصبح مصدر ضيق، راجع طبيباً لمناقشة الأسباب وخيارات المساعدة.",
+        "لا توقف دواءً موصوفاً بسبب الشك في تأثيره قبل استشارة الطبيب، ويمكن إشراك الشريكة في خطة العلاج."
+      ],
+      "source": {
+        "title_en": "Ejaculation problems",
+        "url": "https://www.nhs.uk/conditions/ejaculation-problems/",
+        "publisher": "UK public sector information",
+        "author": "Department of Health and Social Care",
+        "license": "OGL 3.0",
+        "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+        "attribution": "Contains public sector information licensed under the Open Government Licence v3.0. هذه صياغة عربية محررة لم تراجعها الجهة الناشرة.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "after-birth",
+      "audience": "couple",
+      "title_ar": "العودة إلى العلاقة بعد الولادة",
+      "summary_ar": "لا يوجد موعد واحد مناسب لكل الأزواج لاستئناف العلاقة بعد الولادة. التعب والألم والجفاف وتغير صورة الجسد قد يؤثرون في الرغبة والراحة؛ ويمكن الحفاظ على القرب بطرق أخرى إلى أن يكون الطرفان مستعدين.",
+      "points_ar": [
+        "تحدثا عن القلق والتوقعات، وابدآ فقط حين تشعر الزوجة بالراحة والاستعداد.",
+        "إذا كان الإيلاج مؤلماً، توقّفا؛ قد يفيد المزلق، ويستحق الألم المستمر بعد فحص ما بعد الولادة مراجعة الطبيب.",
+        "ناقشا منع الحمل مبكراً؛ قد يحدث حمل قبل عودة الدورة الشهرية وحتى مع الرضاعة الطبيعية."
+      ],
+      "source": {
+        "title_en": "Sex and contraception after birth",
+        "url": "https://www.nhs.uk/baby/support-and-services/sex-and-contraception-after-birth/",
+        "publisher": "UK public sector information",
+        "author": "Department of Health and Social Care",
+        "license": "OGL 3.0",
+        "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+        "attribution": "Contains public sector information licensed under the Open Government Licence v3.0. هذه صياغة عربية محررة لم تراجعها الجهة الناشرة.",
+        "adapted": true
+      }
+    }
+  ]
+}
