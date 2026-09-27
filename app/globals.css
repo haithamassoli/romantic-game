@@ -1149,3 +1149,803 @@ button.button {
     transition: none;
   }
 }
+
+/* Play: hub */
+
+.end-session {
+  min-height: 2.75rem;
+  padding-inline: 1rem;
+  border: 1px solid color-mix(in srgb, var(--rose) 60%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--wine) 55%, transparent);
+  color: var(--ivory);
+  font: inherit;
+  font-size: 0.88rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.end-session:hover {
+  border-color: var(--gold);
+}
+
+@media (max-width: 479.98px) {
+  .site-header:has(.end-session) .adult-note {
+    display: none;
+  }
+}
+
+.play-head {
+  padding-block: 0.8rem 1.2rem;
+}
+
+.play-head h1 {
+  font-size: clamp(2.5rem, 10vw, 4rem);
+  margin: 0 0 0.5rem;
+}
+
+.play-head p {
+  max-width: 38rem;
+  margin: 0;
+  color: var(--blush);
+}
+
+.play-head .pos-consent {
+  margin-top: 1rem;
+  padding-inline-start: 0.9rem;
+  border-inline-start: 2px solid var(--gold);
+  color: var(--gold-soft);
+  font-size: 0.92rem;
+}
+
+.play-state:not(:empty) {
+  margin-top: 1rem;
+  color: var(--ivory);
+  font-size: 0.92rem;
+}
+
+.play-modes,
+.play-prefs,
+.lib-filter,
+.spin-kinds {
+  margin-block: 0 1.4rem;
+  padding: 0;
+  border: 0;
+}
+
+.play-modes legend,
+.play-prefs legend,
+.lib-filter legend,
+.spin-kinds legend,
+.bounds legend {
+  margin-bottom: 0.5rem;
+  color: var(--gold);
+  font-size: 0.85rem;
+}
+
+.play-modes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+}
+
+.play-modes legend {
+  grid-column: 1 / -1;
+}
+
+.mode {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.2rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  cursor: pointer;
+}
+
+.mode input {
+  position: absolute;
+  opacity: 0;
+}
+
+.mode strong {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+.mode small {
+  color: var(--blush);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.mode:has(:checked) {
+  border-color: var(--gold);
+  background: var(--wine);
+}
+
+.mode:has(:disabled) {
+  border-style: dashed;
+  color: var(--rose);
+  cursor: default;
+}
+
+.mode:has(:focus-visible) {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.play-subtitle {
+  margin: 0 0 0.8rem;
+  font-size: 1.75rem;
+}
+
+.game-list {
+  display: grid;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.game-link {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 1.1rem;
+  background: color-mix(in srgb, var(--plum) 84%, transparent);
+  transition: border-color 200ms ease;
+}
+
+.game-link:hover {
+  border-color: var(--gold);
+}
+
+.game-link > :first-child {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 0.7rem;
+}
+
+.game-link strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.game-link small {
+  display: block;
+  color: var(--blush);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+.play-soon {
+  margin: 1rem 0 2rem;
+  color: var(--rose);
+  font-size: 0.88rem;
+}
+
+/* Play: boundaries on one device */
+
+.bounds {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  max-width: 34rem;
+  padding-block: 1.2rem 3rem;
+}
+
+.bounds h1 {
+  font-size: clamp(2.4rem, 10vw, 3.6rem);
+  margin: 0;
+}
+
+.bounds p {
+  margin: 0;
+  color: var(--blush);
+}
+
+.bounds .bounds-note {
+  padding-inline-start: 0.9rem;
+  border-inline-start: 2px solid var(--gold);
+  color: var(--gold-soft);
+  font-size: 0.92rem;
+}
+
+.bounds-glyph {
+  color: var(--gold-soft);
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.bounds-handoff {
+  min-height: 70svh;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  margin-inline: auto;
+}
+
+.bounds-handoff .bounds-glyph {
+  font-size: 4.5rem;
+  animation: breathe 3.6s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  50% {
+    transform: scale(1.12) rotate(22deg);
+    opacity: 0.7;
+  }
+}
+
+.bounds-who {
+  padding: 0.2rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--gold);
+  font-size: 0.82rem;
+}
+
+.bounds fieldset {
+  width: 100%;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.level-option {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 3.4rem;
+  margin-bottom: 0.5rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  cursor: pointer;
+}
+
+.level-option input {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0;
+  accent-color: var(--gold);
+}
+
+.level-option strong {
+  display: block;
+  font-weight: 500;
+}
+
+.level-option small {
+  display: block;
+  color: var(--blush);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.level-option:has(:checked) {
+  border-color: color-mix(in srgb, var(--gold) 60%, transparent);
+  background: var(--wine);
+}
+
+.level-option:has(:focus-visible) {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.bounds .button {
+  justify-content: center;
+  min-height: 3rem;
+}
+
+.bounds-form .button {
+  width: 100%;
+  margin-top: 0.4rem;
+}
+
+/* Play: shared pieces */
+
+.play-status {
+  min-height: 60svh;
+  color: var(--blush);
+}
+
+.play-empty {
+  display: grid;
+  justify-items: start;
+  gap: 0.9rem;
+  max-width: 34rem;
+  padding-block: 1rem 3rem;
+}
+
+.play-empty h2 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.play-empty p {
+  margin: 0;
+  color: var(--blush);
+}
+
+.play-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-block: 1.2rem;
+}
+
+.play-empty .play-actions {
+  justify-content: start;
+}
+
+.play-actions .button {
+  min-height: 2.9rem;
+}
+
+.ghost-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.9rem;
+  padding-inline: 1.15rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.ghost-button:hover {
+  border-color: var(--gold);
+}
+
+/* The ivory card: every result is a real thing to do, set apart from the screen around it. */
+.act-card {
+  --ink: #2b1720;
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.7rem;
+  width: min(22rem, 100%);
+  margin-inline: auto;
+  padding: 1.6rem 1.5rem 1.4rem;
+  border-radius: 1.2rem;
+  background:
+    radial-gradient(ellipse at 50% 0%, #fffaf4, transparent 70%), var(--ivory);
+  color: var(--ink);
+  box-shadow:
+    inset 0 0 0 0.45rem var(--ivory),
+    inset 0 0 0 calc(0.45rem + 1px) var(--gold),
+    0 30px 60px rgb(0 0 0 / 0.55);
+  transform-origin: 50% 100%;
+  animation: deal 560ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.act-card::after {
+  content: "✳";
+  position: absolute;
+  inset-block-start: 0.95rem;
+  inset-inline-end: 1.1rem;
+  color: var(--wine);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+
+@keyframes deal {
+  from {
+    opacity: 0;
+    transform: perspective(900px) translate(-1.2rem, -0.8rem) rotate(-5deg)
+      rotateY(70deg);
+  }
+}
+
+.act-kind {
+  color: var(--wine);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.act-card h2 {
+  margin: 0;
+  color: var(--wine);
+  font-size: clamp(2rem, 9vw, 2.5rem);
+}
+
+.act-card p {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.9;
+}
+
+.act-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.act-card .act-meta {
+  font-size: 0.8rem;
+}
+
+.act-meta > * {
+  padding-inline: 0.6rem;
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-radius: 999px;
+}
+
+.act-meta [data-level="3"] {
+  border-color: transparent;
+  background: var(--wine);
+  color: var(--ivory);
+}
+
+.timer {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+  padding-top: 1rem;
+  border-top: 1px dashed color-mix(in srgb, var(--wine) 35%, transparent);
+}
+
+.timer .ghost-button {
+  border-color: color-mix(in srgb, var(--wine) 40%, transparent);
+  color: var(--wine);
+}
+
+.timer .ghost-button:hover {
+  border-color: var(--wine);
+}
+
+.act-card .timer-time {
+  color: var(--wine);
+  font-size: 3rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  direction: ltr;
+}
+
+.timer-bar {
+  width: 100%;
+  height: 3px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--wine) 15%, transparent);
+}
+
+.timer-bar > * {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--wine);
+}
+
+.timer-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.act-card .timer-done {
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* Out of the grid while empty, yet still a live region for when time runs out. */
+.act-card .timer-done:empty {
+  position: absolute;
+}
+
+/* Play: cards */
+
+.table {
+  padding-block: 0.4rem 2rem;
+}
+
+/* Portrait, like a real card, whatever is written on it. */
+.card-stage > * {
+  min-height: 27rem;
+}
+
+/* The body takes the slack, so the level and timer sit at the card's foot. */
+.card-stage .act-card {
+  grid-template-rows: auto auto 1fr;
+}
+
+.card-back {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  width: min(22rem, 100%);
+  margin-inline: auto;
+  padding: 1.5rem;
+  border-radius: 1.2rem;
+  background:
+    radial-gradient(circle, var(--wine) 0 32%, transparent 33%),
+    repeating-linear-gradient(
+      45deg,
+      rgb(215 180 140 / 0.16) 0 1px,
+      transparent 1px 13px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgb(215 180 140 / 0.16) 0 1px,
+      transparent 1px 13px
+    ),
+    var(--wine);
+  box-shadow:
+    inset 0 0 0 0.45rem var(--wine),
+    inset 0 0 0 calc(0.45rem + 1px) var(--gold),
+    -7px 7px 0 -1px #3d2231,
+    -14px 14px 0 -2px #2a1822,
+    0 30px 60px rgb(0 0 0 / 0.5);
+  text-align: center;
+}
+
+.card-back > :first-child {
+  color: var(--gold-soft);
+  font-family: var(--font-display);
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.card-back p {
+  max-width: 16rem;
+  margin: 0;
+  color: var(--blush);
+}
+
+.deck-count {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0 1rem;
+  margin: 0;
+  color: var(--rose);
+  font-size: 0.85rem;
+}
+
+.deck-count .text-button {
+  font-size: 0.85rem;
+}
+
+/* Play: wheel */
+
+.wheel-game {
+  padding-bottom: 2rem;
+}
+
+.spin-kinds {
+  text-align: center;
+}
+
+.spin-kinds legend {
+  margin-inline: auto;
+}
+
+.wheel-wrap {
+  position: relative;
+  width: min(20rem, 86vw);
+  aspect-ratio: 1;
+  margin: 1rem auto 0.5rem;
+}
+
+.wheel {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 3px var(--gold),
+    0 0 0 9px var(--plum),
+    0 0 0 10px var(--line),
+    0 30px 60px rgb(0 0 0 / 0.55);
+  transition: transform 4.2s cubic-bezier(0.12, 0.72, 0.08, 1);
+}
+
+.wheel-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  margin-top: -0.75em;
+  padding: 0 0.7rem 0 2.9rem;
+  overflow: hidden;
+  color: var(--ivory);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transform-origin: 0 50%;
+}
+
+.wheel-label.is-flipped {
+  left: auto;
+  right: 50%;
+  padding: 0 2.9rem 0 0.7rem;
+  text-align: left;
+  transform-origin: 100% 50%;
+}
+
+.wheel-pointer {
+  position: absolute;
+  z-index: 2;
+  top: -0.9rem;
+  left: 50%;
+  width: 1.5rem;
+  height: 1.9rem;
+  translate: -50% 0;
+  background: var(--gold);
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+  filter: drop-shadow(0 3px 4px rgb(0 0 0 / 0.5));
+}
+
+.wheel-hub {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: 5rem;
+  height: 5rem;
+  translate: -50% -50%;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    var(--gold-soft),
+    var(--gold) 55%,
+    #9c7a54
+  );
+  box-shadow:
+    0 0 0 4px var(--night),
+    0 8px 20px rgb(0 0 0 / 0.5);
+  color: var(--night);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: scale 160ms ease;
+}
+
+.wheel-hub:active {
+  scale: 0.94;
+}
+
+.wheel-hub:disabled {
+  cursor: progress;
+}
+
+.wheel-game .act-card {
+  margin-top: 1.6rem;
+}
+
+/* Play: library */
+
+.library {
+  padding-bottom: 2.5rem;
+}
+
+.lib-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.lib-list {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lib-item {
+  display: grid;
+  gap: 0.3rem;
+  width: 100%;
+  padding: 0.9rem 1.05rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--plum) 84%, transparent);
+  color: var(--ivory);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: border-color 200ms ease;
+}
+
+.lib-item:hover {
+  border-color: var(--gold);
+}
+
+.lib-item strong {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.lib-item small {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--blush);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.lib-item .act-meta {
+  color: var(--blush);
+}
+
+@media (min-width: 720px) {
+  .game-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .game-link {
+    grid-template-columns: 1fr;
+    align-content: start;
+  }
+
+  .lib-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .act-card,
+  .bounds-handoff .bounds-glyph {
+    animation: none;
+  }
+
+  .wheel,
+  .wheel-hub,
+  .game-link,
+  .lib-item {
+    transition: none;
+  }
+}
+
+/* Landing: playable games open from anywhere on their card. */
+.game-card:has(h3 a) {
+  position: relative;
+}
+
+.game-card h3 a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.game-card:has(h3 a:focus-visible) {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.game-card h3 a:focus-visible {
+  outline: none;
+}
+
+.play-cta {
+  justify-self: start;
+  margin-top: 0.6rem;
+}

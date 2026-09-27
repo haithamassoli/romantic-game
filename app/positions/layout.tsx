@@ -23,7 +23,7 @@ export default function PositionsLayout({
         </Link>
         <nav aria-label="التنقل الرئيسي">
           <Link href="/positions">الوضعيات</Link>
-          <Link href="/#games">الألعاب</Link>
+          <Link href="/play">الألعاب</Link>
         </nav>
         <span className="adult-note">
           للبالغين فقط <b>+18</b>

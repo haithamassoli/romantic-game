@@ -2,13 +2,12 @@
 
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 import { useSyncExternalStore } from "react";
+import { localKeys, PREFIX } from "@/lib/play";
 
 const convex = new ConvexReactClient(
   process.env.NEXT_PUBLIC_CONVEX_URL as string,
 );
 
-// Everything this device remembers lives under `maan:` in localStorage.
-const PREFIX = "maan:";
 const CHANGE = "maan:change";
 
 function subscribe(onChange: () => void) {
@@ -66,12 +65,12 @@ export function ClearDataButton() {
       onClick={() => {
         if (
           !window.confirm(
-            "سيُمسح من هذا الجهاز تأكيد العمر والمفضلة والمستبعدة والتصفية. متابعة؟",
+            "سيُمسح من هذا الجهاز تأكيد العمر والمفضلة والمستبعدة والتصفية وتفضيلات اللعب. متابعة؟",
           )
         )
           return;
-        for (const key of Object.keys(localStorage)) {
-          if (key.startsWith(PREFIX)) localStorage.removeItem(key);
+        for (const key of localKeys(Object.keys(localStorage))) {
+          localStorage.removeItem(key);
         }
         window.dispatchEvent(new Event(CHANGE));
       }}
@@ -104,7 +103,15 @@ function AgeGate({ children }: { children: React.ReactNode }) {
           <button
             type="button"
             className="button"
-            onClick={() => store("age", "18+")}
+            onClick={() => {
+              store("age", "18+");
+              // Land keyboard and screen-reader users on the page they just unlocked.
+              requestAnimationFrame(() => {
+                const heading = document.querySelector<HTMLElement>("main h1");
+                heading?.setAttribute("tabindex", "-1");
+                heading?.focus();
+              });
+            }}
           >
             عمري 18 عامًا أو أكثر، أدخل
           </button>

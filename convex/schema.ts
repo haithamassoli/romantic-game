@@ -12,6 +12,11 @@ const topics = v.array(v.union(...TOPIC_KEYS.map((t) => v.literal(t))));
 const constraints = v.array(
   v.union(...CONSTRAINT_KEYS.map((c) => v.literal(c))),
 );
+export const activityKind = v.union(
+  v.literal("card"),
+  v.literal("challenge"),
+  v.literal("desire"),
+);
 
 export default defineSchema({
   positions: defineTable({
@@ -37,11 +42,7 @@ export default defineSchema({
 
   activities: defineTable({
     slug: v.string(),
-    kind: v.union(
-      v.literal("card"),
-      v.literal("challenge"),
-      v.literal("desire"),
-    ),
+    kind: activityKind,
     status,
     title: v.string(),
     body: v.string(),

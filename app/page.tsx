@@ -48,9 +48,9 @@ export default function Home() {
               <Link className="button" href="/positions">
                 استكشاف الوضعيات <span aria-hidden="true">↙</span>
               </Link>
-              <a className="text-link" href="#games">
+              <Link className="text-link" href="/play">
                 العبا معًا ←
-              </a>
+              </Link>
             </div>
           </div>
           <div className="hero-art">
@@ -176,8 +176,8 @@ export default function Home() {
           </p>
         </div>
         <p className="coming-soon">
-          الألعاب قيد الإعداد وتصل قريبًا. إلى أن تصل، ابدآ بـ
-          <Link href="/positions">دليل الوضعيات</Link>.
+          ثلاث منها جاهزة للعب على جهاز واحد، والبقية تصل قريبًا.{" "}
+          <Link href="/play">ابدآ اللعب</Link>
         </p>
         <div className="games-grid">
           {games.map((game, index) => (
@@ -193,9 +193,15 @@ export default function Home() {
               </div>
               <div className="game-meta">
                 <span>{String(index + 1).padStart(2, "0")} / تجربة</span>
-                <span>قريبًا</span>
+                <span>{game.href ? "جاهزة" : "قريبًا"}</span>
               </div>
-              <h3>{game.title}</h3>
+              <h3>
+                {game.href ? (
+                  <Link href={game.href}>{game.title}</Link>
+                ) : (
+                  game.title
+                )}
+              </h3>
               <p>{game.description}</p>
             </article>
           ))}
@@ -215,6 +221,9 @@ export default function Home() {
             </h2>
           </div>
           <p>تبقيان معًا في الجلسة نفسها، وتظهر لكما النتائج المشتركة فقط.</p>
+          <Link className="button play-cta" href="/play">
+            ابدآ على جهاز واحد <span aria-hidden="true">↙</span>
+          </Link>
         </div>
         <div className="play-grid">
           {playModes.map((mode) => (
