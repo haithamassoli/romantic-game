@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import {
   games,
   IMAGE_SIZE,
@@ -6,6 +7,7 @@ import {
   playModes,
   siteImages,
 } from "../lib/site-images";
+import { ClearDataButton } from "./providers";
 
 export default function Home() {
   return (
@@ -21,7 +23,7 @@ export default function Home() {
             معًا
           </a>
           <nav aria-label="التنقل الرئيسي">
-            <a href="#guide">الدليل</a>
+            <Link href="/positions">الوضعيات</Link>
             <a href="#games">الألعاب</a>
             <a href="#play">اللعب</a>
           </nav>
@@ -43,12 +45,12 @@ export default function Home() {
               وبالإيقاع الذي يريحكما.
             </p>
             <div className="hero-actions">
-              <a className="button" href="#games">
-                اكتشفا الألعاب <span aria-hidden="true">↙</span>
-              </a>
-              <a className="text-link" href="#guide">
-                استكشفا الدليل ←
-              </a>
+              <Link className="button" href="/positions">
+                استكشاف الوضعيات <span aria-hidden="true">↙</span>
+              </Link>
+              <Link className="text-link" href="/play">
+                العبا معًا ←
+              </Link>
             </div>
           </div>
           <div className="hero-art">
@@ -114,9 +116,9 @@ export default function Home() {
               دليل مصوّر يساعدكما على استكشاف الوضعيات وفهم خطواتها ومستوى
               صعوبتها واعتبارات الراحة، لتختارا ما يناسبكما.
             </p>
-            <span className="coming-soon">
-              الدليل قيد الإعداد <span aria-hidden="true">✦</span>
-            </span>
+            <Link className="button guide-cta" href="/positions">
+              افتحا دليل الوضعيات <span aria-hidden="true">↙</span>
+            </Link>
           </div>
         </div>
       </section>
@@ -173,6 +175,10 @@ export default function Home() {
             متى أردتما.
           </p>
         </div>
+        <p className="coming-soon">
+          الست كلها جاهزة، على جهاز واحد أو على هاتفين.{" "}
+          <Link href="/play">ابدآ اللعب</Link>
+        </p>
         <div className="games-grid">
           {games.map((game, index) => (
             <article className="game-card" key={game.title}>
@@ -187,9 +193,11 @@ export default function Home() {
               </div>
               <div className="game-meta">
                 <span>{String(index + 1).padStart(2, "0")} / تجربة</span>
-                <span>قريبًا</span>
+                <span>جاهزة</span>
               </div>
-              <h3>{game.title}</h3>
+              <h3>
+                <Link href={game.href}>{game.title}</Link>
+              </h3>
               <p>{game.description}</p>
             </article>
           ))}
@@ -209,6 +217,9 @@ export default function Home() {
             </h2>
           </div>
           <p>تبقيان معًا في الجلسة نفسها، وتظهر لكما النتائج المشتركة فقط.</p>
+          <Link className="button play-cta" href="/play">
+            ابدآ اللعب <span aria-hidden="true">↙</span>
+          </Link>
         </div>
         <div className="play-grid">
           {playModes.map((mode) => (
@@ -267,6 +278,7 @@ export default function Home() {
           معًا
         </a>
         <p>مساحة خاصة للأزواج البالغين. الرضا والراحة دائمًا أولًا.</p>
+        <ClearDataButton />
         <span>© 2026 معًا</span>
       </footer>
     </main>

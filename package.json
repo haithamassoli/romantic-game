@@ -2,6 +2,7 @@
   "name": "romantic-game",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,7 +10,8 @@
     "lint": "biome check --error-on-warnings .",
     "format": "biome check --write .",
     "typecheck": "next typegen && tsc --noEmit",
-    "check": "pnpm lint && pnpm typecheck"
+    "check": "pnpm lint && pnpm typecheck && pnpm test",
+    "test": "node --test lib/*.test.ts scripts/*.test.mjs"
   },
   "dependencies": {
     "convex": "^1.46.0",

@@ -5,6 +5,10 @@ on: [push, pull_request]
 permissions:
   contents: read
 
+env:
+  # ponytail: public dev URL so CI can build; set the prod URL in the host's env.
+  NEXT_PUBLIC_CONVEX_URL: https://festive-marlin-315.eu-west-1.convex.cloud
+
 jobs:
   check:
     runs-on: ubuntu-latest

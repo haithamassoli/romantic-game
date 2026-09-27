@@ -1,5 +1,8 @@
 export const IMAGE_SIZE = { width: 1280, height: 720 } as const;
 
+// ponytail: every drawing is laid out at this size; lists crop uploads cut differently (globals.css), the detail page shows them whole. Store width/height per image if that ever jars.
+export const POSITION_IMAGE_SIZE = { width: 1145, height: 1374 } as const;
+
 export const siteImages = {
   hero: {
     src: "/images/hero.jpg",
@@ -31,36 +34,42 @@ export const games = [
   {
     title: "بطاقات التحدي",
     description: "أسئلة ولحظات صغيرة تفتح باب الحديث والتجربة معًا.",
+    href: "/play/cards",
     src: "/images/challenge-cards.jpg",
     alt: "ثلاث بطاقات كريمية وعنابية على حرير عاجي بجانب وردة ونجمة ذهبية",
   },
   {
     title: "عجلة الاختيار",
-    description: "دعي المصادفة تقترح فكرة من الخيارات التي تناسبكما.",
+    description: "دعا المصادفة تقترح فكرة من الخيارات التي تناسبكما.",
+    href: "/play/wheel",
     src: "/images/choice-wheel.jpg",
     alt: "عجلة ذهبية مزخرفة بقطاعات وردية وذهبية على منضدة خشبية",
   },
   {
     title: "توافق الرغبات",
     description: "اختياران خاصان، ثم تظهر الرغبات التي تلتقيان عندها فقط.",
+    href: "/play/desires",
     src: "/images/desire-match.jpg",
     alt: "يدان تقتربان فوق منضدة ويضيء بينهما شكل قلب ذهبي",
   },
   {
     title: "اكتشاف الوضعيات",
     description: "تصفّحا الأفكار كلٌ على حدة واكتشفا ما تودّان تجربته معًا.",
+    href: "/play/discover",
     src: "/images/position-match.jpg",
     alt: "إطاران نحاسيان متجاوران على حرير وفي المنتصف علامة اختيار ذهبية",
   },
   {
     title: "مسار الليلة",
     description: "خطوات قصيرة تختاران مدتها وإيقاعها، وتتوقفان متى شئتما.",
+    href: "/play/path",
     src: "/images/night-path.jpg",
     alt: "مسار شموع صغيرة على أرضية غرفة تؤدي إلى سرير مخملي",
   },
   {
     title: "مكتبة التحديات",
     description: "أفكار واقعية تنتقل بكما من الشاشة إلى الوقت الذي يجمعكما.",
+    href: "/play/library",
     src: "/images/challenge-library.jpg",
     alt: "كتاب جلدي مفتوح تخرج من صفحاته ورود مجففة بضوء شمعة",
   },
