@@ -23,6 +23,7 @@ export default function PlayLayout({ children }: LayoutProps<"/play">) {
           </Link>
           <nav aria-label="التنقل الرئيسي">
             <Link href="/positions">الوضعيات</Link>
+            <Link href="/guides">الأدلة</Link>
             <Link href="/play">الألعاب</Link>
           </nav>
           <span className="adult-note">

@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# guide import cache (refetch with scripts/build-guides.mjs)
+/docs/guides-src/en/

@@ -99,3 +99,12 @@ export function isAllowed(item: Tagged, limits: Limits): boolean {
     )
   );
 }
+
+/** "٣ وضعيات" / "١١ وضعية": Arabic counts change the noun. */
+export function positionsLabel(n: number) {
+  if (n === 0) return "لا وضعيات";
+  if (n === 1) return "وضعية واحدة";
+  if (n === 2) return "وضعيتان";
+  if (n <= 10) return `${n} وضعيات`;
+  return `${n} وضعية`;
+}

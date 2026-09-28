@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { extractArticle, sources } from "./build-guides.mjs";
+import {
+  extractArticle,
+  extractBook,
+  extractWiki,
+  guideError,
+} from "./build-guides.mjs";
 
 test("extracts article content without navigation and decodes entities", () => {
   const html = `<main><nav><p>Menu</p></nav><h1>Couples &amp; care</h1>
@@ -9,7 +13,7 @@ test("extracts article content without navigation and decodes entities", () => {
     <p>Ask each other.</p><ul><li>Listen &#38; pause.</li></ul>
     <aside><p>Advertisement</p></aside></article></main>`;
 
-  assert.deepEqual(extractArticle(html, "nhs"), {
+  assert.deepEqual(extractArticle(html, "html"), {
     title: "Couples & care",
     text: 'Start "here".\nTalk\nAsk each other.\nListen & pause.',
   });
@@ -42,15 +46,49 @@ test("limits MedlinePlus extraction to its public-domain Summary", () => {
   });
 });
 
+test("drops Wikipedia reference sections but keeps their subsections' peers", () => {
+  const extract = `Intro line.\n\n== Technique ==\nGo slow.\n=== Detail ===\nBreathe.\n\n== See also ==\nOther page\n== References ==\n^ cite\n== Safety ==\nUse lube.`;
+  assert.equal(
+    extractWiki(extract),
+    "Intro line.\nTechnique\nGo slow.\nDetail\nBreathe.\nSafety\nUse lube.",
+  );
+});
+
+test("cuts one chapter out of a Gutenberg book", () => {
+  const txt = `Header\n*** START OF THE PROJECT GUTENBERG EBOOK X ***\nCHAPTER I.\n\nOn kissing\nwith care.\n\nCHAPTER II.\n\nOn embracing.\n*** END OF THE PROJECT GUTENBERG EBOOK X ***\nLicence`;
+  assert.equal(
+    extractBook(txt, "CHAPTER I.", "CHAPTER II."),
+    "CHAPTER I.\nOn kissing with care.",
+  );
+});
+
+test("accepts only complete Arabic guides", () => {
+  const guide = {
+    title_ar: "عنوان",
+    summary_ar: "ملخص",
+    points_ar: ["نقطة", "أخرى"],
+    sections_ar: [{ heading_ar: "قسم", text_ar: "شرح" }],
+  };
+  assert.equal(guideError(guide), null);
+  assert.equal(guideError({ ...guide, sections_ar: undefined }), null);
+  assert.ok(guideError({ ...guide, points_ar: ["نقطة"] }));
+  assert.ok(guideError({ ...guide, title_ar: "Title" }));
+  assert.ok(
+    guideError({ ...guide, sections_ar: [{ heading_ar: "قسم", text_ar: "" }] }),
+  );
+});
+
 test("every configured source has one Arabic guide with matching rights", async () => {
-  const guides = (
-    await Promise.all(
-      ["relationship", "health", "safety"].map(async (name) => {
-        const file = new URL(`../docs/guides-ar/${name}.json`, import.meta.url);
-        return JSON.parse(await readFile(file, "utf8")).guides;
-      }),
-    )
-  ).flat();
+  const { readFile, readdir } = await import("node:fs/promises");
+  const read = async (url) => JSON.parse(await readFile(url, "utf8"));
+  const out = new URL("../docs/guides-ar/", import.meta.url);
+  const sources = await read(
+    new URL("../docs/guides-src/sources.json", import.meta.url),
+  );
+  const guides = [];
+  for (const name of await readdir(out))
+    if (name.endsWith(".json"))
+      guides.push(...(await read(new URL(name, out))).guides);
   assert.equal(guides.length, sources.length);
   assert.equal(new Set(guides.map((guide) => guide.id)).size, guides.length);
   for (const source of sources) {
@@ -58,6 +96,6 @@ test("every configured source has one Arabic guide with matching rights", async 
     assert.ok(guide, `Missing ${source.id}`);
     assert.equal(guide.source.url, source.url);
     assert.equal(guide.source.license, source.license);
-    assert.ok(guide.points_ar.length >= 2);
+    assert.equal(guideError(guide), null, source.id);
   }
 });

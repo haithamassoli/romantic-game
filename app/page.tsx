@@ -25,6 +25,7 @@ export default function Home() {
           </a>
           <nav aria-label="التنقل الرئيسي">
             <Link href="/positions">الوضعيات</Link>
+            <Link href="/guides">الأدلة</Link>
             <a href="#games">الألعاب</a>
             <a href="#play">اللعب</a>
           </nav>
@@ -120,6 +121,14 @@ export default function Home() {
             <Link className="button guide-cta" href="/positions">
               افتحا دليل الوضعيات <span aria-hidden="true">↙</span>
             </Link>
+            <p className="guide-more">
+              <Link className="text-link" href="/positions/catalog">
+                موسوعة الوضعيات ←
+              </Link>
+              <Link className="text-link" href="/guides">
+                مكتبة الأدلة ←
+              </Link>
+            </p>
           </div>
         </div>
       </section>

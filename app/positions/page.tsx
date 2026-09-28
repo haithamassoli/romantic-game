@@ -14,6 +14,7 @@ import {
   type Level,
   type Limits,
   NO_LIMITS,
+  positionsLabel,
   TOPIC_KEYS,
   TOPICS,
 } from "@/lib/tags";
@@ -47,14 +48,6 @@ function upTo(labels: Record<Level, string>, level: Level) {
   if (level === 1) return `${labels[1]} فقط`;
   if (level === 2) return `${labels[1]} و${labels[2]}`;
   return "الكل";
-}
-
-function countLabel(n: number) {
-  if (n === 0) return "لا وضعيات";
-  if (n === 1) return "وضعية واحدة";
-  if (n === 2) return "وضعيتان";
-  if (n <= 10) return `${n} وضعيات`;
-  return `${n} وضعية`;
 }
 
 function toggle<T>(list: T[], value: T) {
@@ -103,6 +96,14 @@ export default function PositionsPage() {
         <p className="pos-consent">
           اتفقا على كلمة للتوقف قبل أن تبدآ، واجعلا المزلّق قريبًا. أي ألم يعني
           التوقف، لا المتابعة.
+        </p>
+        <p className="guide-more">
+          <Link className="text-link" href="/positions/catalog">
+            موسوعة الوضعيات: أكثر من خمسمئة وضعية ←
+          </Link>
+          <Link className="text-link" href="/guides">
+            مكتبة الأدلة ←
+          </Link>
         </p>
       </section>
 
@@ -187,7 +188,7 @@ export default function PositionsPage() {
 
       <section className="wrap" aria-label="الوضعيات" aria-busy={!positions}>
         <p className="pos-count" aria-live="polite">
-          {positions ? countLabel(shown.length) : "جارٍ تحميل الوضعيات…"}
+          {positions ? positionsLabel(shown.length) : "جارٍ تحميل الوضعيات…"}
         </p>
         {positions && shown.length === 0 && (
           <div className="pos-status">
