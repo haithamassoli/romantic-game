@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ClearDataButton } from "../providers";
+import { SiteNav } from "../site-nav";
 
 export const metadata: Metadata = {
   title: "دليل الوضعيات",
@@ -20,11 +21,11 @@ export default function PositionsLayout({
           <span className="brand-mark" aria-hidden="true" />
           معًا
         </Link>
-        <nav aria-label="التنقل الرئيسي">
+        <SiteNav>
           <Link href="/positions">الوضعيات</Link>
           <Link href="/guides">الأدلة</Link>
           <Link href="/play">الألعاب</Link>
-        </nav>
+        </SiteNav>
         <span className="adult-note">
           للبالغين فقط <b>+18</b>
         </span>
