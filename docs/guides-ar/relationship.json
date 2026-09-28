@@ -1,6 +1,6 @@
 {
   "language": "ar",
-  "updated_at": "2026-09-27",
+  "updated_at": "2026-09-28",
   "guides": [
     {
       "id": "communication",
@@ -83,6 +83,27 @@
         "license": "CC BY 4.0",
         "license_url": "https://creativecommons.org/licenses/by/4.0/",
         "attribution": "ترجمة عربية محررة من عمل Rahman وآخرين، بترخيص CC BY 4.0؛ لا تعني موافقة المؤلفين على هذه الصياغة.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "cancer-body-image",
+      "audience": "couple",
+      "title_ar": "صورة الجسد والقرب بعد السرطان",
+      "summary_ar": "قد يغيّر السرطان وعلاجه شكل الجسد والإحساس به، وهذا قد يؤثر في الثقة بالنفس والرغبة في القرب. الحزن أو القلق بشأن هذه التغيرات مشاعر مفهومة، ويستحقان مساحة للحوار والدعم.",
+      "points_ar": [
+        "استمعا إلى ما يشعر به الطرف المتأثر من دون تقليل أو استعجال التكيف.",
+        "تحدثا عن أشكال القرب التي ما زالت مريحة لكليكما.",
+        "إذا أثرت هذه المشاعر في الحياة اليومية أو العلاقة، اطلبا دعماً من الفريق الطبي أو مستشار مختص."
+      ],
+      "source": {
+        "title_en": "How Cancer Affects Your Self-Image and Sexuality",
+        "url": "https://www.cancer.gov/about-cancer/coping/self-image",
+        "publisher": "National Cancer Institute",
+        "author": "National Cancer Institute",
+        "license": "US public domain (text)",
+        "license_url": "https://www.cancer.gov/policies/copyright-reuse",
+        "attribution": "ملخص عربي معدل من National Cancer Institute. The National Cancer Institute (NCI) does not endorse this translation and no endorsement by NCI should be inferred.",
         "adapted": true
       }
     }
