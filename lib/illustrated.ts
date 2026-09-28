@@ -1,9 +1,8 @@
-// Researched positions, not wired into the app yet. Images are hotlinked from
-// their sources and unlicensed (see imageRights): redraw or get permission
-// before moving any of these into convex/seed.ts.
+// The positions at /positions/illustrated, researched from illustrated guides.
+// Drawings are hotlinked from their sources and unlicensed (see imageRights).
 import type { Constraint, Level, Topic } from "./tags";
 
-type DraftPosition = {
+type IllustratedPosition = {
   slug: string;
   name: string;
   englishName: string;
@@ -21,7 +20,7 @@ type DraftPosition = {
   constraints: Constraint[];
 };
 
-export const positionsDraft: DraftPosition[] = [
+export const ILLUSTRATED: IllustratedPosition[] = [
   {
     slug: "coital-alignment",
     name: "المحاذاة",
@@ -931,6 +930,38 @@ export const positionsDraft: DraftPosition[] = [
     constraints: ["balance", "knees"],
   },
   {
+    slug: "g-whiz",
+    name: "جي ويز",
+    englishName: "The G-Whiz",
+    summary:
+      "تستلقي الزوجة على ظهرها وساقاها على كتفي زوجها الجاثي، لزاوية تصيب الجدار الأمامي مباشرة.",
+    description:
+      "تستلقي الزوجة على ظهرها، ويجثو الزوج بين فخذيها ثم يرفع ساقيها ليضع ربلتيها على كتفيه. ارتفاع الساقين يضيّق المهبل ويميل الحوض، فيلامس العضو الجدار الأمامي حيث منطقة جي، ويأتي الإحساس عميقًا ومركّزًا. تبقى العيون متقابلة واليدان حرّتين للصدر والبظر. تناسب اللحظات التي تريدان فيها عمقًا وحدّة بعد تمهيد جيد.",
+    steps: [
+      "لتستلقِ الزوجة على ظهرها، وليجثُ الزوج بين فخذيها.",
+      "ارفعا ساقيها معًا حتى تستقر ربلتاها على كتفيه، ولتمسك يداه فخذيها.",
+      "ابدآ بإيلاج بطيء، ثم حرّكا الحوض صعودًا وهبوطًا ومن جانب إلى جانب بحثًا عن الزاوية التي تُشعل الجدار الأمامي.",
+      "لتضع الزوجة قدميها على صدره إن أرادت أن تتحكم بالعمق والإيقاع.",
+    ],
+    care: [
+      "الزاوية عميقة؛ ابدآ ببطء، وأي ألم في العمق يعني تخفيف الدفع فورًا.",
+      "وسادة تحت الوركين تخفف ثني الظهر إن لم تكن الساقان مرنتين.",
+      "إن تعبت الساقان فلتنزلا إلى ذراعيه أو حول خصره.",
+    ],
+    imageUrl:
+      "https://hips.hearstapps.com/hmg-prod/images/menshealth-gwhiz-v2-1581102368.jpg",
+    imageAlt:
+      "رسم لامرأة مستلقية على ظهرها وساقاها مرفوعتان على كتفي رجل جاثٍ بين فخذيها.",
+    sourceUrl:
+      "https://www.menshealth.com/sex-women/a19547362/45-sex-positions-guys-should-know/",
+    imageRights:
+      "© Men's Health, not licensed; permission needed before publishing",
+    difficulty: 2,
+    intensity: 3,
+    topics: ["positions"],
+    constraints: ["flexibility", "hips"],
+  },
+  {
     slug: "stairway-to-heaven",
     name: "درجات النشوة",
     englishName: "Stairway to Heaven",
@@ -1023,5 +1054,130 @@ export const positionsDraft: DraftPosition[] = [
     intensity: 2,
     topics: ["positions", "oral"],
     constraints: [],
+  },
+  {
+    slug: "chairman",
+    name: "الرئيس",
+    englishName: "The Chairman",
+    summary:
+      "هو جالس على طرف السرير، وهي في حضنه وظهرها إلى صدره، تقود الإيقاع بهدوء ويداه حرّتان لها.",
+    description:
+      "يجلس الرجل على حافة السرير أو كرسي متين وقدماه على الأرض، وتجلس المرأة على فخذيه موليةً ظهرها له. هي تتحكم بالعمق والسرعة، وتنزلق للأمام والخلف بدل القفز فلا تتعب فخذاها. يحتضنها من الخلف، يقبّل رقبتها وكتفيها، وتصل يداه بسهولة إلى صدرها وبظرها. أمام مرآة يصير المشهد أجمل لكليكما.",
+    steps: [
+      "ليجلس هو على طرف السرير أو كرسي بلا عجلات، وقدماه ثابتتان على الأرض.",
+      "لتجلس هي على فخذيه موليةً ظهرها له، وقدماها على الأرض بين قدميه أو خارجهما، ثم تنزل عليه ببطء.",
+      "حرّكا الحوض معًا بانزلاق أمامي وخلفي، ولتستند بيديها إلى ركبتيه إن احتاجت ثباتًا.",
+      "لتلفّ ذراعاه خصرها، وتداعب يد صدرها والأخرى البظر، وقبّلا الرقبة والأذن بلا عجلة.",
+    ],
+    care: [
+      "اختارا مقعدًا ثابتًا بارتفاع يسمح لقدميها بملامسة الأرض براحة.",
+      "إن تعبت فخذاها فلتسند وزنها عليه وتكتفي بالتمايل الخفيف بدل الصعود والنزول.",
+    ],
+    imageUrl:
+      "https://hips.hearstapps.com/hmg-prod/images/the-chairman-1597950816.png",
+    imageAlt:
+      "رسم لرجل جالس على طرف سرير وامرأة جالسة في حضنه وظهرها إلى صدره، وذراعه تحيط بخصرها.",
+    sourceUrl:
+      "https://www.womenshealthmag.com/sex-and-love/a19907142/crazy-sex-positions/",
+    imageRights:
+      "© Women's Health, not licensed; permission needed before publishing",
+    difficulty: 1,
+    intensity: 3,
+    topics: ["positions", "touch"],
+    constraints: ["strength"],
+  },
+  {
+    slug: "rocking-horse",
+    name: "الحصان الهزّاز",
+    englishName: "Rocking Horse",
+    summary:
+      "هو جالس متربّعًا مائلًا للخلف، وهي في حضنه وجهًا لوجه، تتأرجح عليه بإيقاع هادئ بدل الدفع.",
+    description:
+      "يجلس الرجل متربّعًا ويميل قليلًا إلى الخلف مستندًا إلى يديه أو إلى الجدار، وتجلس المرأة في حضنه مقابلة له وساقاها ملتفّتان حول ظهره. الحركة هنا تأرجح إلى الأمام والخلف، لا صعود ونزول، فيحتكّ البظر بعظم عانته في كل هزّة. الوجهان متقاربان والعيون متلاقية، فالوضعية حميمة بقدر ما هي ممتعة، وتناسب لحظات تريدان فيها البطء والالتصاق.",
+    steps: [
+      "ليجلس هو متربّعًا على السرير، ويميل للخلف مستندًا إلى يديه أو إلى الجدار أو كومة وسائد.",
+      "لتجلس هي في حضنه وجهًا لوجه، وتنزل عليه ببطء ثم تلفّ ساقيها حول ظهره.",
+      "تأرجحا إلى الأمام والخلف كحصان خشبي، واضغطا الحوضين معًا ليحتكّ البظر في كل حركة.",
+      "تبادلا النظر والقبل، ولتمسك يداه وركيها وتوجّه الإيقاع معها.",
+    ],
+    care: [
+      "التربّع الطويل يرهق الوركين والركبتين؛ مدّا ساقيه قليلًا أو ضعا وسادة تحت مقعده.",
+      "ليستند هو إلى الجدار أو الوسائد إن تعب ذراعاه من حمل الميل.",
+    ],
+    imageUrl:
+      "https://www.sheknows.com/wp-content/uploads/2018/10/rocking-horse.jpg",
+    imageAlt:
+      "رسم خطّي لرجل وامرأة جالسين متقابلين متلاصقين، ساقاهما متشابكتان وعيناهما متلاقيتان.",
+    sourceUrl:
+      "https://www.sheknows.com/health-and-wellness/slideshow/9963/g-spot-sex-positions/",
+    imageRights:
+      "© SheKnows, not licensed; permission needed before publishing",
+    difficulty: 2,
+    intensity: 3,
+    topics: ["positions", "kiss", "touch"],
+    constraints: ["hips", "knees", "flexibility"],
+  },
+  {
+    slug: "seashell",
+    name: "الصَّدَفة",
+    englishName: "Seashell",
+    summary:
+      "هي مستلقية على ظهرها وركبتاها مطويتان نحو كتفيها كالصدفة، وهو فوقها لإيلاج عميق وقريب.",
+    description:
+      "تستلقي المرأة على ظهرها وترفع ساقيها عاليًا وتثنيهما نحو صدرها وكتفيها، فينطوي جسدها كالصدفة. يعتلي الرجل فوقها مستندًا إلى ذراعيه، فتنفتح زاوية تسمح بأعمق إيلاج ممكن وبتلاصق الحوضين. هي وضعية لمن يحب الشدة والامتلاء، وتحتاج مرونة؛ من لا تصل ساقاها إلى كتفيها يكفيها أن ترفعهما ما استطاعت أو تسندهما على كتفيه.",
+    steps: [
+      "ابدآ بالوضع التقليدي، ثم لترفع هي ساقيها وتثنِ ركبتيها نحو صدرها، ممسكة بهما بيديها إن أرادت.",
+      "ضعا وسادة تحت وركيها ليرتفع الحوض ويقلّ الضغط على أسفل ظهرها.",
+      "ليدخل هو ببطء مستندًا إلى ذراعيه، وليبدأ بدفعات قصيرة حتى يتضح ما يريحها.",
+      "حرّكا الحوضين بإيقاع يتصاعد تدريجيًا، ولتبقَ الوجوه قريبة للقبل والهمس.",
+    ],
+    care: [
+      "العمق هنا قد يلمس عنق الرحم؛ اتفقا على كلمة أو لمسة تعني: أخفّ.",
+      "لا تجبرا الساقين على أكثر مما تحتمل المرونة؛ إسنادهما على كتفيه نسخة أرفق بالظهر والوركين.",
+      "زلّق وافر ومداعبة طويلة قبلها يجعلان العمق ممتعًا لا مؤلمًا.",
+    ],
+    imageUrl:
+      "https://hips.hearstapps.com/hmg-prod/images/the-shell-yes-sex-position-6436e5d9b31d7.jpg",
+    imageAlt:
+      "رسم لامرأة مستلقية على ظهرها وساقاها مرفوعتان ومثنيّتان نحو رأسها، ووسادة تحت وركيها، ورجل فوقها يستند إلى ذراعيه.",
+    sourceUrl:
+      "https://sex.cosmopolitan.com/pleasure/positions/g38425229/seashell-sex-position/",
+    imageRights:
+      "© Cosmopolitan, not licensed; permission needed before publishing",
+    difficulty: 3,
+    intensity: 3,
+    topics: ["positions", "kiss"],
+    constraints: ["back", "hips", "flexibility"],
+  },
+  {
+    slug: "sultan",
+    name: "السلطان",
+    englishName: "The Sultan",
+    summary:
+      "هو متّكئ على الوسائد كسلطان على أريكته، وهي تعتليه وجهًا لوجه وتقود الإيقاع.",
+    description:
+      "يجلس الرجل على السرير وظهره مسنود إلى كومة وسائد أو إلى رأس السرير، وساقاه ممدودتان، كسلطان مسترخٍ على مجلسه. تعتليه المرأة مقابلة له، قدماها على السرير وركبتاها مثنيتان، فتنزل عليه وتصعد بالسرعة والعمق اللذين تشتهيهما. هو مرتاح تمامًا ويداه حرّتان لخصرها وصدرها، والوجهان على مستوى واحد للقبل. نسخة مسترخية من الفارسة تجمع التحكّم لها والدلال له.",
+    steps: [
+      "ليتّكئ هو على رأس السرير أو كومة وسائد، نصف جالس وساقاه ممدودتان.",
+      "لتعتليه هي وجهًا لوجه، قدماها على السرير عند جانبي وركيه، ثم تنزل عليه ببطء موجّهة إياه بيدها.",
+      "لتصعد وتنزل أو تتمايل بالحوض كما تحب، ولتستند بيديها إلى كتفيه أو صدره.",
+      "لتمسك يداه خصرها وتساعدها على الحركة، ثم تنتقل إلى صدرها وظهرها، وقبّلا كلما اقتربتما.",
+    ],
+    care: [
+      "القرفصاء تتعب الركبتين والفخذين؛ لتنزل على ركبتيها متى شاءت وتكمل بالتمايل.",
+      "وسادة إضافية خلف أسفل ظهره تمنع انزلاقه وتريح عموده الفقري.",
+    ],
+    imageUrl:
+      "https://hips.hearstapps.com/hmg-prod/images/wmh07012019-sex-positions-the-lazy-man-1638985814.png",
+    imageAlt:
+      "رسم لرجل جالس ساقاه ممدودتان وامرأة في حضنه مقابلة له، يتعانقان وجهًا لوجه.",
+    sourceUrl:
+      "https://www.womenshealthmag.com/sex-and-love/a19925956/new-sex-styles/",
+    imageRights:
+      "© Women's Health, not licensed; permission needed before publishing",
+    difficulty: 1,
+    intensity: 3,
+    topics: ["positions", "kiss", "touch"],
+    constraints: ["knees", "strength"],
   },
 ];

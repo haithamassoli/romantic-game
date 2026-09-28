@@ -3,12 +3,14 @@ import type { MetadataRoute } from "next";
 import { api } from "@/convex/_generated/api";
 import { CATALOG } from "@/lib/catalog";
 import { SECTIONS } from "@/lib/guides";
+import { ILLUSTRATED } from "@/lib/illustrated";
 import { SITE_URL } from "@/lib/site";
 
 const pages = [
   "",
   "/positions",
   "/positions/catalog",
+  "/positions/illustrated",
   "/guides",
   "/play",
   "/play/cards",
@@ -25,6 +27,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...pages.map((path) => ({ url: `${SITE_URL}${path}` })),
     ...positions.map((p) => ({ url: `${SITE_URL}/positions/${p.slug}` })),
     ...CATALOG.map((p) => ({ url: `${SITE_URL}/positions/catalog/${p.slug}` })),
+    ...ILLUSTRATED.map((p) => ({
+      url: `${SITE_URL}/positions/illustrated/${p.slug}`,
+    })),
     ...SECTIONS.flatMap((s) => [
       { url: `${SITE_URL}/guides/${s.slug}` },
       ...s.guides.map((g) => ({ url: `${SITE_URL}/guides/${s.slug}/${g.id}` })),

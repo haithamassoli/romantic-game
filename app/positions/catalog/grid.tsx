@@ -9,7 +9,13 @@ import { positionsLabel } from "@/lib/tags";
 
 type Item = Pick<CatalogPosition, "slug" | "name" | "name_en" | "image">;
 
-export function CatalogGrid({ items }: { items: Item[] }) {
+export function CatalogGrid({
+  items,
+  base = "/positions/catalog",
+}: {
+  items: Item[];
+  base?: string;
+}) {
   const [query, setQuery] = useState("");
   const q = useDeferredValue(query.trim().toLowerCase());
   const shown = q
@@ -37,7 +43,7 @@ export function CatalogGrid({ items }: { items: Item[] }) {
       <ul className="pos-grid">
         {shown.map((p, index) => (
           <li key={p.slug}>
-            <Link href={`/positions/catalog/${p.slug}`} className="pos-card">
+            <Link href={`${base}/${p.slug}`} className="pos-card">
               <ViewTransition
                 name={`cat-title-${p.slug}`}
                 share="morph"
@@ -57,6 +63,8 @@ export function CatalogGrid({ items }: { items: Item[] }) {
                   <Image
                     src={p.image}
                     alt=""
+                    // Hotlinked drawings skip the optimizer, which only knows our hosts.
+                    unoptimized={p.image.startsWith("http")}
                     {...POSITION_IMAGE_SIZE}
                     sizes="(max-width: 720px) 50vw, (max-width: 1080px) 33vw, 25vw"
                     loading={index < 2 ? "eager" : "lazy"}
