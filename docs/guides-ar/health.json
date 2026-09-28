@@ -1,6 +1,6 @@
 {
   "language": "ar",
-  "updated_at": "2026-09-27",
+  "updated_at": "2026-09-28",
   "guides": [
     {
       "id": "desire",
@@ -125,6 +125,195 @@
         "license": "OGL 3.0",
         "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
         "attribution": "Contains public sector information licensed under the Open Government Licence v3.0. هذه صياغة عربية محررة لم تراجعها الجهة الناشرة.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "sexual-wellbeing",
+      "audience": "couple",
+      "title_ar": "الصحة الجنسية جزء من العافية",
+      "summary_ar": "ترتبط الصحة الجنسية بالعاطفة والقرب والصحة الجسدية. قد تؤثر الأمراض المزمنة والأدوية والقلق من الحمل أو العدوى أو الخصوبة في تجربة الزوجين.",
+      "points_ar": [
+        "تحدثا عما تغيّر في الراحة أو الرغبة من دون لوم.",
+        "إذا ظهر أثر محتمل لدواء أو مرض، ناقشاه مع مختص ولا توقفا العلاج من تلقاء نفسيكما.",
+        "ناقشا الوقاية من الحمل والعدوى والفحوص عند الحاجة لاتخاذ قرار مشترك."
+      ],
+      "source": {
+        "title_en": "Sexual Health",
+        "url": "https://medlineplus.gov/sexualhealth.html",
+        "publisher": "MedlinePlus",
+        "author": "National Library of Medicine",
+        "license": "US public domain (Health Topic Summary)",
+        "license_url": "https://medlineplus.gov/about/using/usingcontent/",
+        "attribution": "Source: MedlinePlus, National Library of Medicine. ملخص عربي محرر من قسم Summary العام؛ لم تراجعه المكتبة الوطنية للطب.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "women-sexual-concerns",
+      "audience": "wife",
+      "title_ar": "فهم الصعوبات الجنسية لدى الزوجة",
+      "summary_ar": "قد تشمل الصعوبات انخفاض الرغبة أو الإثارة أو المتعة أو الألم أثناء العلاقة. يمكن أن تتداخل أسباب جسدية مثل الهرمونات والأدوية مع الضغط النفسي أو مشكلات العلاقة.",
+      "points_ar": [
+        "تحدثا عن العرض الذي يزعج الزوجة من دون افتراض سبب واحد له.",
+        "توقفا عند الألم، ولا تجعلا الاستمرار في العلاقة واجباً.",
+        "إذا استمرت المشكلة أشهراً أو سببت ضيقاً، فاستشارة مختص تساعد على تقييم الأسباب المناسبة."
+      ],
+      "source": {
+        "title_en": "Sexual Problems in Women",
+        "url": "https://medlineplus.gov/sexualproblemsinwomen.html",
+        "publisher": "MedlinePlus",
+        "author": "National Library of Medicine",
+        "license": "US public domain (Health Topic Summary)",
+        "license_url": "https://medlineplus.gov/about/using/usingcontent/",
+        "attribution": "Source: MedlinePlus, National Library of Medicine. ملخص عربي محرر من قسم Summary العام؛ لم تراجعه المكتبة الوطنية للطب.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "contraception-choice",
+      "audience": "couple",
+      "title_ar": "اختيار وسيلة منع الحمل معاً",
+      "summary_ar": "تتنوع وسائل منع الحمل بين وسائل حاجزة وهرمونية وطويلة المفعول ودائمة. يختلف الاختيار المناسب بحسب الخطط الإنجابية والحالة الصحية وسهولة الاستخدام والحاجة إلى الوقاية من العدوى.",
+      "points_ar": [
+        "ناقشا متى ترغبان في الحمل وما إذا كنتما تفضلان وسيلة قابلة للإيقاف.",
+        "تذكرا أن معظم وسائل منع الحمل لا تقي من العدوى المنقولة جنسياً، بينما قد يساعد الواقي في الوقاية.",
+        "راجعا مختصاً لموازنة الفاعلية والآثار الجانبية والملاءمة الصحية قبل اختيار الوسيلة."
+      ],
+      "source": {
+        "title_en": "Birth Control",
+        "url": "https://medlineplus.gov/birthcontrol.html",
+        "publisher": "MedlinePlus",
+        "author": "National Library of Medicine",
+        "license": "US public domain (Health Topic Summary)",
+        "license_url": "https://medlineplus.gov/about/using/usingcontent/",
+        "attribution": "Source: MedlinePlus, National Library of Medicine. ملخص عربي محرر من قسم Summary العام؛ لم تراجعه المكتبة الوطنية للطب.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "fertility",
+      "audience": "couple",
+      "title_ar": "التعامل مع تأخر الحمل دون لوم",
+      "summary_ar": "قد تتعلق صعوبة الحمل بأحد الزوجين أو كليهما، وأحياناً لا يظهر سبب واضح. يشمل التقييم الطبي التاريخ الصحي والفحوص المناسبة لكل طرف، وقد يخفف الدعم النفسي الضغط المصاحب.",
+      "points_ar": [
+        "اطلبا تقييماً بعد سنة من المحاولة المنتظمة دون حمل، أو بعد ستة أشهر إذا كان عمر الزوجة 35 عاماً فأكثر؛ وقد تستدعي ظروف معينة مراجعة أبكر.",
+        "تعاملَا مع الفحوص بوصفها شأناً مشتركاً يشمل الزوج والزوجة.",
+        "ناقشا التوتر والدعم المتاح إلى جانب الخيارات الطبية التي يحددها المختص."
+      ],
+      "source": {
+        "title_en": "Infertility",
+        "url": "https://medlineplus.gov/infertility.html",
+        "publisher": "MedlinePlus",
+        "author": "National Library of Medicine",
+        "license": "US public domain (Health Topic Summary)",
+        "license_url": "https://medlineplus.gov/about/using/usingcontent/",
+        "attribution": "Source: MedlinePlus, National Library of Medicine. ملخص عربي محرر من قسم Summary العام؛ لم تراجعه المكتبة الوطنية للطب.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "menopause-basics",
+      "audience": "couple",
+      "title_ar": "فهم مرحلة انقطاع الطمث",
+      "summary_ar": "تمر بعض النساء بتغيرات جسدية ونفسية قبل انقطاع الدورة الشهرية وبعده، وقد تختلف شدتها من امرأة لأخرى. معرفة المرحلة تساعد الزوجين على فهم أثر النوم أو الأعراض الجسدية في القرب والراحة.",
+      "points_ar": [
+        "اسألا عن الأعراض التي تؤثر فعلياً في الحياة اليومية بدلاً من افتراض أن التجربة واحدة للجميع.",
+        "تحدثا عن التعب والراحة وتعديل التوقعات أثناء مرحلة الانتقال.",
+        "إذا كانت الأعراض مزعجة، فاستشارة مختص تساعد على مناقشة خيارات ملائمة للحالة الصحية."
+      ],
+      "source": {
+        "title_en": "Menopause",
+        "url": "https://medlineplus.gov/menopause.html",
+        "publisher": "MedlinePlus",
+        "author": "National Library of Medicine",
+        "license": "US public domain (Health Topic Summary)",
+        "license_url": "https://medlineplus.gov/about/using/usingcontent/",
+        "attribution": "Source: MedlinePlus, National Library of Medicine. ملخص عربي محرر من قسم Summary العام؛ لم تراجعه المكتبة الوطنية للطب.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "menopause-intimacy",
+      "audience": "couple",
+      "title_ar": "الحميمية قبل انقطاع الطمث وبعده",
+      "summary_ar": "قد تزيد المتعة لدى بعض النساء أو تقل لدى أخريات خلال هذه المرحلة. يمكن أن يسبب الجفاف وتغير سرعة الإثارة انزعاجاً، ويساعد الحوار عن الراحة والتوقيت وطرق القرب المناسبة.",
+      "points_ar": [
+        "تحدثا عما يبدو مريحاً الآن، فقد تتغير التفضيلات عما كانت عليه سابقاً.",
+        "امنحا وقتاً للإثارة، وتوقفا إذا أصبحت العلاقة مؤلمة.",
+        "إذا استمر الجفاف أو الضيق، ناقشا خيارات المساعدة مع مختص بحسب التاريخ الصحي."
+      ],
+      "source": {
+        "title_en": "Menopause and sexuality",
+        "url": "https://womenshealth.gov/menopause/menopause-and-sexuality",
+        "publisher": "Office on Women's Health",
+        "author": "U.S. Department of Health and Human Services",
+        "license": "US public domain (government text)",
+        "license_url": "https://womenshealth.gov/about-us/work-us/collaborate-us",
+        "attribution": "المصدر: Office on Women's Health, U.S. Department of Health and Human Services, womenshealth.gov. ملخص عربي محرر غير معتمد من الجهة الناشرة.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "postpartum-recovery",
+      "audience": "couple",
+      "title_ar": "دعم التعافي بعد الولادة",
+      "summary_ar": "تحتاج الأم بعد الولادة إلى راحة ودعم جسدي وعاطفي. مشاركة الزوج في رعاية الطفل وأعمال المنزل قد تتيح وقتاً للتعافي وتخفف الضغط على العلاقة.",
+      "points_ar": [
+        "اتفقا على توزيع الزيارات والمهام المنزلية بما يتيح للأم الراحة.",
+        "لا تضغطا لاستئناف العلاقة الحميمة قبل شعور الأم بالاستعداد واتباع إرشادات فريق الرعاية.",
+        "إذا ظهرت مشاعر حزن شديد أو صعوبة في رعاية النفس أو الطفل، اطلبا تقييماً طبياً."
+      ],
+      "source": {
+        "title_en": "Recovering from birth",
+        "url": "https://womenshealth.gov/pregnancy/childbirth-and-beyond/recovering-birth",
+        "publisher": "Office on Women's Health",
+        "author": "U.S. Department of Health and Human Services",
+        "license": "US public domain (government text)",
+        "license_url": "https://womenshealth.gov/about-us/work-us/collaborate-us",
+        "attribution": "المصدر: Office on Women's Health, U.S. Department of Health and Human Services, womenshealth.gov. ملخص عربي محرر غير معتمد من الجهة الناشرة.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "cancer-women-intimacy",
+      "audience": "wife",
+      "title_ar": "الحميمية أثناء علاج السرطان لدى الزوجة",
+      "summary_ar": "قد يؤثر علاج السرطان في الطاقة والرغبة والجفاف أو الألم، ويعتمد ذلك على نوع العلاج والحالة الصحية. يمكن للزوجين الحفاظ على القرب وطرح أسئلة محددة على الفريق المعالج.",
+      "points_ar": [
+        "اسألا الفريق المعالج عن التغيرات المتوقعة ومتى تكون العلاقة آمنة أثناء العلاج.",
+        "اذكرا الألم أو الجفاف أو التعب للطبيب لمناقشة خيارات تناسب نوع السرطان والعلاج.",
+        "تحدثا عن وسائل القرب المريحة وعن الحاجة إلى منع الحمل أو استخدام الواقي وفق توجيه الفريق."
+      ],
+      "source": {
+        "title_en": "Sexual Health Issues in Women with Cancer",
+        "url": "https://www.cancer.gov/about-cancer/treatment/side-effects/sexuality-women",
+        "publisher": "National Cancer Institute",
+        "author": "National Cancer Institute",
+        "license": "US public domain (text)",
+        "license_url": "https://www.cancer.gov/policies/copyright-reuse",
+        "attribution": "ملخص عربي معدل من National Cancer Institute. The National Cancer Institute (NCI) does not endorse this translation and no endorsement by NCI should be inferred.",
+        "adapted": true
+      }
+    },
+    {
+      "id": "cancer-men-intimacy",
+      "audience": "husband",
+      "title_ar": "الحميمية أثناء علاج السرطان لدى الزوج",
+      "summary_ar": "قد يغيّر علاج السرطان الرغبة أو الانتصاب أو الطاقة لدى الرجل، وقد تكون التغيرات مؤقتة أو أطول أمداً. تساعد الأسئلة المباشرة للفريق المعالج والحوار الهادئ بين الزوجين على إيجاد دعم مناسب.",
+      "points_ar": [
+        "اسألا الطبيب عن أثر العلاج المتوقع في الوظيفة الجنسية والخصوبة.",
+        "ناقشا الحاجة إلى الواقي أو منع الحمل والوقت الآمن للعلاقة بحسب نوع العلاج.",
+        "إذا استمرت صعوبة الانتصاب أو التعب، اطلُبا خيارات العلاج أو الإحالة إلى مختص من الفريق المعالج."
+      ],
+      "source": {
+        "title_en": "Sexual Health Issues in Men with Cancer",
+        "url": "https://www.cancer.gov/about-cancer/treatment/side-effects/sexuality-men",
+        "publisher": "National Cancer Institute",
+        "author": "National Cancer Institute",
+        "license": "US public domain (text)",
+        "license_url": "https://www.cancer.gov/policies/copyright-reuse",
+        "attribution": "ملخص عربي معدل من National Cancer Institute. The National Cancer Institute (NCI) does not endorse this translation and no endorsement by NCI should be inferred.",
         "adapted": true
       }
     }

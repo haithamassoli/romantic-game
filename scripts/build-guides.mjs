@@ -10,7 +10,7 @@ const book =
 const authors =
   "Susan Rahman, Nathan Bowman, Dahmitra Jackson, Anna Lushtak, Remi Newman, Prateek Sunder";
 
-const sources = [
+export const sources = [
   {
     id: "communication",
     file: "relationship.json",
@@ -114,19 +114,113 @@ const sources = [
     kind: "nhs",
     url: "https://www.nhs.uk/conditions/sexually-transmitted-infections-stis/",
   },
-].map((source) =>
-  source.kind === "nhs"
-    ? {
-        ...source,
-        publisher: "UK public sector information",
-        author: "Department of Health and Social Care",
-        license: "OGL 3.0",
-        licenseUrl: ogLicense,
-        attribution:
-          "Contains public sector information licensed under the Open Government Licence v3.0. هذه صياغة عربية محررة لم تراجعها الجهة الناشرة.",
-      }
-    : source,
-);
+  {
+    id: "sexual-wellbeing",
+    file: "health.json",
+    audience: "couple",
+    kind: "medline",
+    url: "https://medlineplus.gov/sexualhealth.html",
+  },
+  {
+    id: "women-sexual-concerns",
+    file: "health.json",
+    audience: "wife",
+    kind: "medline",
+    url: "https://medlineplus.gov/sexualproblemsinwomen.html",
+  },
+  {
+    id: "contraception-choice",
+    file: "health.json",
+    audience: "couple",
+    kind: "medline",
+    url: "https://medlineplus.gov/birthcontrol.html",
+  },
+  {
+    id: "fertility",
+    file: "health.json",
+    audience: "couple",
+    kind: "medline",
+    url: "https://medlineplus.gov/infertility.html",
+  },
+  {
+    id: "menopause-basics",
+    file: "health.json",
+    audience: "couple",
+    kind: "medline",
+    url: "https://medlineplus.gov/menopause.html",
+  },
+  {
+    id: "menopause-intimacy",
+    file: "health.json",
+    audience: "couple",
+    kind: "owh",
+    url: "https://womenshealth.gov/menopause/menopause-and-sexuality",
+  },
+  {
+    id: "postpartum-recovery",
+    file: "health.json",
+    audience: "couple",
+    kind: "owh",
+    url: "https://womenshealth.gov/pregnancy/childbirth-and-beyond/recovering-birth",
+  },
+  {
+    id: "cancer-women-intimacy",
+    file: "health.json",
+    audience: "wife",
+    kind: "nci",
+    url: "https://www.cancer.gov/about-cancer/treatment/side-effects/sexuality-women",
+  },
+  {
+    id: "cancer-men-intimacy",
+    file: "health.json",
+    audience: "husband",
+    kind: "nci",
+    url: "https://www.cancer.gov/about-cancer/treatment/side-effects/sexuality-men",
+  },
+  {
+    id: "cancer-body-image",
+    file: "relationship.json",
+    audience: "couple",
+    kind: "nci",
+    url: "https://www.cancer.gov/about-cancer/coping/self-image",
+  },
+].map((source) => ({
+  ...source,
+  ...{
+    nhs: {
+      publisher: "UK public sector information",
+      author: "Department of Health and Social Care",
+      license: "OGL 3.0",
+      licenseUrl: ogLicense,
+      attribution:
+        "Contains public sector information licensed under the Open Government Licence v3.0. هذه صياغة عربية محررة لم تراجعها الجهة الناشرة.",
+    },
+    medline: {
+      publisher: "MedlinePlus",
+      author: "National Library of Medicine",
+      license: "US public domain (Health Topic Summary)",
+      licenseUrl: "https://medlineplus.gov/about/using/usingcontent/",
+      attribution:
+        "Source: MedlinePlus, National Library of Medicine. ملخص عربي محرر من قسم Summary العام؛ لم تراجعه المكتبة الوطنية للطب.",
+    },
+    owh: {
+      publisher: "Office on Women's Health",
+      author: "U.S. Department of Health and Human Services",
+      license: "US public domain (government text)",
+      licenseUrl: "https://womenshealth.gov/about-us/work-us/collaborate-us",
+      attribution:
+        "المصدر: Office on Women's Health, U.S. Department of Health and Human Services, womenshealth.gov. ملخص عربي محرر غير معتمد من الجهة الناشرة.",
+    },
+    nci: {
+      publisher: "National Cancer Institute",
+      author: "National Cancer Institute",
+      license: "US public domain (text)",
+      licenseUrl: "https://www.cancer.gov/policies/copyright-reuse",
+      attribution:
+        "ملخص عربي معدل من National Cancer Institute. The National Cancer Institute (NCI) does not endorse this translation and no endorsement by NCI should be inferred.",
+    },
+  }[source.kind],
+}));
 
 const entities = {
   amp: "&",
@@ -163,28 +257,40 @@ function cleanText(html) {
 }
 
 export function extractArticle(html, kind, focus) {
-  const title = cleanText(
-    html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1] ?? "",
-  );
   const start =
     kind === "libretexts"
       ? html.indexOf('class="mt-content-container"')
-      : html.search(/<main\b/i);
-  if (!title || start < 0) throw new Error("Article title or body not found");
+      : kind === "medline"
+        ? html.search(/<h1\b/i)
+        : html.search(/<main\b/i);
+  if (start < 0) throw new Error("Article body not found");
 
-  const end = html.indexOf(
-    kind === "libretexts" ? "</article>" : "</main>",
-    start,
-  );
+  const end =
+    kind === "medline"
+      ? -1
+      : html.indexOf(kind === "libretexts" ? "</article>" : "</main>", start);
   let body = html.slice(start, end < 0 ? undefined : end);
-  if (kind === "nhs") {
-    body = body.replace(/<nav\b[\s\S]*?<\/nav>/gi, "");
+  const title = cleanText(
+    (kind === "libretexts" ? html : body).match(
+      /<h1\b[^>]*>([\s\S]*?)<\/h1>/i,
+    )?.[1] ?? "",
+  );
+  if (!title) throw new Error("Article title not found");
+  if (kind === "medline") {
+    const summary = [...body.matchAll(/<h2\b[^>]*>([\s\S]*?)<\/h2>/gi)].find(
+      (match) => cleanText(match[1]) === "Summary",
+    );
+    if (!summary) throw new Error("MedlinePlus Summary not found");
+    body = body.slice(summary.index + summary[0].length);
+    const nextSection = body.search(/<h2\b/i);
+    body = body.slice(0, nextSection < 0 ? undefined : nextSection);
   }
   body = body
+    .replace(/<nav\b[\s\S]*?<\/nav>/gi, "")
     .replace(/<(aside|script|style|footer)\b[\s\S]*?<\/\1>/gi, "")
     .replace(/<h1\b[\s\S]*?<\/h1>/i, "")
     .replace(/\\\([\s\S]*?\\\)/g, "");
-  const text = [...body.matchAll(/<(h2|h3|p|li)\b[^>]*>([\s\S]*?)<\/\1>/gi)]
+  const text = [...body.matchAll(/<(h2|h3|p|li|td)\b[^>]*>([\s\S]*?)<\/\1>/gi)]
     .map((match) => cleanText(match[2]))
     .filter(Boolean)
     .join("\n");
@@ -194,7 +300,14 @@ export function extractArticle(html, kind, focus) {
 }
 
 async function fetchArticle(source) {
-  const response = await fetch(source.url, {
+  const fetchUrl =
+    source.kind === "medline"
+      ? source.url.replace(
+          "https://medlineplus.gov/",
+          "https://www.medlineplus.gov/",
+        )
+      : source.url;
+  const response = await fetch(fetchUrl, {
     headers: { "User-Agent": "romantic-game-editorial-import/1.0" },
     signal: AbortSignal.timeout(20000),
   });
@@ -206,7 +319,7 @@ async function fetchArticle(source) {
   );
   if (article.text.length < 300)
     throw new Error(`${source.url}: article too short`);
-  return { ...article, url: response.url };
+  return { ...article, url: source.url };
 }
 
 async function translateArticle(source, article) {
