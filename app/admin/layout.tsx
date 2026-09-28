@@ -12,9 +12,7 @@ export default function AdminLayout({ children }: LayoutProps<"/admin">) {
       <div className="grain" aria-hidden="true" />
       <header className="site-header wrap">
         <Link className="brand" href="/" aria-label="معًا، الصفحة الرئيسية">
-          <span className="brand-mark" aria-hidden="true">
-            ✳
-          </span>
+          <span className="brand-mark" aria-hidden="true" />
           معًا
         </Link>
         <span className="adult-note">إدارة المحتوى</span>

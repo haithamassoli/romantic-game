@@ -50,7 +50,6 @@ export default function PositionPage({
 
   return (
     <article className="wrap pos-detail">
-      <title>{`${position.name} — دليل الوضعيات — معًا`}</title>
       <Link className="back-link" href="/positions">
         <span aria-hidden="true">→</span> كل الوضعيات
       </Link>

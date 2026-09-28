@@ -6,6 +6,7 @@ import { EndSession, Session } from "./session";
 
 export const metadata: Metadata = {
   title: "العبا معًا",
+  alternates: { canonical: "/play" },
   description:
     "بطاقات وعجلة وتوافق رغبات ووضعيات ومسار لليلة لزوجين بالغين، لا يظهر فيها إلا ما يقبله كلاكما.",
 };
@@ -17,9 +18,7 @@ export default function PlayLayout({ children }: LayoutProps<"/play">) {
         <div className="grain" aria-hidden="true" />
         <header className="site-header wrap">
           <Link className="brand" href="/" aria-label="معًا، الصفحة الرئيسية">
-            <span className="brand-mark" aria-hidden="true">
-              ✳
-            </span>
+            <span className="brand-mark" aria-hidden="true" />
             معًا
           </Link>
           <nav aria-label="التنقل الرئيسي">
@@ -35,9 +34,7 @@ export default function PlayLayout({ children }: LayoutProps<"/play">) {
         <NeedsLimits>{children}</NeedsLimits>
         <footer className="site-footer wrap">
           <Link className="brand" href="/">
-            <span className="brand-mark" aria-hidden="true">
-              ✳
-            </span>
+            <span className="brand-mark" aria-hidden="true" />
             معًا
           </Link>
           <p>

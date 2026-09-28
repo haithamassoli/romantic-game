@@ -139,8 +139,9 @@ h2 em {
 }
 
 .brand-mark {
-  color: var(--gold-soft);
-  font-size: 0.95em;
+  width: 0.95em;
+  height: 0.95em;
+  background: url("/mark.svg") center / contain no-repeat;
 }
 
 nav {

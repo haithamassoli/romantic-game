@@ -95,9 +95,7 @@ function AgeGate({ children }: { children: React.ReactNode }) {
     <main className="gate">
       <div className="gate-card">
         <span className="brand">
-          <span className="brand-mark" aria-hidden="true">
-            ✳
-          </span>
+          <span className="brand-mark" aria-hidden="true" />
           معًا
         </span>
         <h1>قبل أن تدخلا</h1>

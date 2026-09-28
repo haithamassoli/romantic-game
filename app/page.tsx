@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -9,6 +10,8 @@ import {
 } from "../lib/site-images";
 import { ClearDataButton } from "./providers";
 
+export const metadata: Metadata = { alternates: { canonical: "/" } };
+
 export default function Home() {
   return (
     <main>
@@ -17,9 +20,7 @@ export default function Home() {
       <div className="site-shell" id="top">
         <header className="site-header wrap">
           <a className="brand" href="#top" aria-label="معًا، العودة إلى البداية">
-            <span className="brand-mark" aria-hidden="true">
-              ✳
-            </span>
+            <span className="brand-mark" aria-hidden="true" />
             معًا
           </a>
           <nav aria-label="التنقل الرئيسي">
@@ -272,9 +273,7 @@ export default function Home() {
 
       <footer className="site-footer wrap">
         <a className="brand" href="#top">
-          <span className="brand-mark" aria-hidden="true">
-            ✳
-          </span>
+          <span className="brand-mark" aria-hidden="true" />
           معًا
         </a>
         <p>مساحة خاصة للأزواج البالغين. الرضا والراحة دائمًا أولًا.</p>

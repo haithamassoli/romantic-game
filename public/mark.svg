@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>معًا</title>
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="42%" r="62%">
+      <stop offset="0" stop-color="#5a3346"/>
+      <stop offset="1" stop-color="#1c1419"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3dfbd"/>
+      <stop offset="1" stop-color="#d7b48c"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#gold)">
+    <g id="long"><path d="M32 6c3.8 9 5 17.5 0 26-5-8.5-3.8-17 0-26z"/></g>
+    <use href="#long" transform="rotate(90 32 32)"/>
+    <use href="#long" transform="rotate(180 32 32)"/>
+    <use href="#long" transform="rotate(270 32 32)"/>
+    <g id="short" transform="rotate(45 32 32)"><path d="M32 13.5c3.2 6.5 4 12 0 18.5-4-6.5-3.2-12 0-18.5z"/></g>
+    <use href="#short" transform="rotate(90 32 32)"/>
+    <use href="#short" transform="rotate(180 32 32)"/>
+    <use href="#short" transform="rotate(270 32 32)"/>
+  </g>
+</svg>

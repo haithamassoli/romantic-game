@@ -4,6 +4,7 @@ import { ClearDataButton } from "../providers";
 
 export const metadata: Metadata = {
   title: "دليل الوضعيات",
+  alternates: { canonical: "/positions" },
   description:
     "وضعيات مرسومة مع شرح مباشر وخطوات واعتبارات الراحة والسلامة، للأزواج البالغين.",
 };
@@ -16,9 +17,7 @@ export default function PositionsLayout({
       <div className="grain" aria-hidden="true" />
       <header className="site-header wrap">
         <Link className="brand" href="/" aria-label="معًا، الصفحة الرئيسية">
-          <span className="brand-mark" aria-hidden="true">
-            ✳
-          </span>
+          <span className="brand-mark" aria-hidden="true" />
           معًا
         </Link>
         <nav aria-label="التنقل الرئيسي">
@@ -32,9 +31,7 @@ export default function PositionsLayout({
       {children}
       <footer className="site-footer wrap">
         <Link className="brand" href="/">
-          <span className="brand-mark" aria-hidden="true">
-            ✳
-          </span>
+          <span className="brand-mark" aria-hidden="true" />
           معًا
         </Link>
         <p>المفضلة والمستبعدة محفوظة على هذا الجهاز وحده، من دون حساب.</p>

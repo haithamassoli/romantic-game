@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Amiri, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
+import { SITE_URL } from "../lib/site";
 import { Providers } from "./providers";
 
 const display = Amiri({
@@ -18,12 +19,38 @@ const sans = IBM_Plex_Sans_Arabic({
   display: "swap",
 });
 
+const description =
+  "أفكار وألعاب للحظات تجمعكما، تختارانها معًا وفق رغباتكما وحدودكما. للأزواج البالغين.";
+
 export const metadata: Metadata = {
-  // Absolute links for the share image: set SITE_URL to the public address.
-  metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3100"),
+  // Absolute links for share images, canonical, and the sitemap.
+  metadataBase: new URL(SITE_URL),
   title: { default: "معًا — مساحة لكما وحدكما", template: "%s — معًا" },
-  description:
-    "أفكار وألعاب للحظات تجمعكما، تختارانها معًا وفق رغباتكما وحدودكما. للأزواج البالغين.",
+  description,
+  applicationName: "معًا",
+  openGraph: {
+    type: "website",
+    siteName: "معًا",
+    locale: "ar_AR",
+  },
+  twitter: { card: "summary_large_image" },
+  // Tells SafeSearch this is adult content, so it is only shown to adults.
+  other: { rating: "adult" },
+};
+
+// Outside the age gate, so crawlers read it in the first HTML.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "معًا",
+  url: SITE_URL,
+  inLanguage: "ar",
+  isFamilyFriendly: false,
+};
+
+export const viewport: Viewport = {
+  themeColor: "#110c10",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -35,6 +62,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${display.variable} ${sans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
         <Providers>{children}</Providers>
       </body>
     </html>
