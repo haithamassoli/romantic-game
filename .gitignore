@@ -42,3 +42,7 @@ next-env.d.ts
 
 # guide import cache (refetch with scripts/build-guides.mjs)
 /docs/guides-src/en/
+
+# showreel renders (rebuild with node showreel/render.mjs)
+/showreel/showreel.mp4*
+/showreel/stills/
