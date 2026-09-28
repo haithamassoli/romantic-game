@@ -198,6 +198,12 @@
       "sourceType": "github",
       "skillPath": "skills/convex-verify/SKILL.md",
       "computedHash": "dbe65a37ca2e9a5afa55669b8928ce1dc3ac765151452008f9105bde049228f7"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "89496d5dd00f4810205f351759594fc2742bf8eea85a2f2b2d1de59f4bd91576"
     }
   }
 }
