@@ -102,6 +102,9 @@ export default function PositionsPage() {
           <Link className="text-link" href="/positions/catalog">
             موسوعة الوضعيات: أكثر من خمسمئة وضعية ←
           </Link>
+          <Link className="text-link" href="/positions/illustrated">
+            وضعيات مصوّرة جديدة ←
+          </Link>
           <Link className="text-link" href="/guides">
             مكتبة الأدلة ←
           </Link>

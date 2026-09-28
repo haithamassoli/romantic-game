@@ -1,0 +1,2279 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <title>معًا — Motion Reel</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=block"
+    />
+    <style>
+      :root {
+        --night: #110c10;
+        --plum: #1c1419;
+        --wine: #5a3346;
+        --rose: #c48b96;
+        --blush: #edd4c8;
+        --ivory: #f7eee6;
+        --gold: #d7b48c;
+        --gold-soft: #e8d0a8;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #000;
+      }
+
+      body {
+        font-family: "IBM Plex Sans Arabic", sans-serif;
+        color: var(--ivory);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      #stage,
+      .scene,
+      .fill,
+      #fx,
+      #hud,
+      #flash,
+      #fade,
+      #vignette,
+      .grain {
+        position: absolute;
+        inset: 0;
+      }
+
+      #stage {
+        overflow: hidden;
+        background: var(--night);
+      }
+
+      .scene {
+        overflow: hidden;
+      }
+
+      .abs {
+        position: absolute;
+      }
+
+      .display {
+        font-family: Amiri, serif;
+        font-weight: 400;
+      }
+
+      .mono {
+        font-family: "IBM Plex Mono", monospace;
+        direction: ltr;
+      }
+
+      .room {
+        background:
+          radial-gradient(ellipse at 72% 18%, rgb(90 51 70 / 0.5), transparent 52%),
+          radial-gradient(ellipse at 20% 90%, rgb(90 51 70 / 0.28), transparent 50%),
+          linear-gradient(180deg, #17101a, var(--night));
+      }
+
+      .room::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url("/public/images/texture.jpg") center / cover;
+        opacity: 0.1;
+        mix-blend-mode: screen;
+      }
+
+      .line {
+        display: block;
+        overflow: hidden;
+        padding: 0.06em 0.04em 0.2em;
+        margin-bottom: -0.2em;
+      }
+
+      .w {
+        display: inline-block;
+        transform-origin: 100% 100%;
+      }
+
+      em {
+        font-style: italic;
+        color: var(--gold-soft);
+      }
+
+      .kicker {
+        color: var(--gold);
+        font-size: 24px;
+        font-weight: 500;
+      }
+
+      .kicker .mono {
+        display: inline-block;
+        direction: rtl;
+        margin-left: 0.55em;
+        letter-spacing: 0.18em;
+        font-size: 20px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        border-radius: 999px;
+        border: 1.5px solid rgb(215 180 140 / 0.55);
+        background: var(--wine);
+        color: var(--ivory);
+        padding: 14px 30px;
+        font-size: 28px;
+      }
+
+      .mark svg {
+        display: block;
+        overflow: visible;
+      }
+
+      /* 00 — ignition */
+      #dark0 {
+        background: radial-gradient(circle at 50% 50%, rgb(17 12 16 / 0.5), rgb(8 5 7 / 0.94) 75%);
+      }
+
+      #spark {
+        left: 760px;
+        top: 340px;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgb(255 236 200 / 1) 0,
+          rgb(255 196 130 / 0.55) 8%,
+          rgb(215 150 110 / 0.16) 30%,
+          transparent 62%
+        );
+        mix-blend-mode: screen;
+      }
+
+      #mark0 {
+        left: 810px;
+        top: 390px;
+        width: 300px;
+        height: 300px;
+        filter: drop-shadow(0 0 18px rgb(232 208 168 / 0.55))
+          drop-shadow(0 0 60px rgb(215 150 110 / 0.35));
+      }
+
+      #intro-title {
+        left: 0;
+        right: 0;
+        top: 760px;
+        text-align: center;
+        color: var(--gold-soft);
+      }
+
+      #intro-title .who {
+        display: block;
+        font-weight: 500;
+        font-size: 30px;
+      }
+
+      #intro-title small {
+        display: block;
+        margin-top: 14px;
+        font-size: 15px;
+        letter-spacing: 0.5em;
+        color: var(--gold);
+      }
+
+      /* 01 — headline */
+      #hero-img {
+        width: 1920px;
+        height: 1080px;
+        object-fit: cover;
+        object-position: 60% center;
+      }
+
+      #hero-shade {
+        background:
+          linear-gradient(0deg, rgb(17 12 16 / 0.9), transparent 30%),
+          linear-gradient(270deg, rgb(17 12 16 / 0.78), transparent 58%);
+      }
+
+      #hero-copy {
+        right: 150px;
+        top: 230px;
+        width: 1060px;
+      }
+
+      #hero-copy h1 {
+        font-size: 176px;
+        line-height: 1.12;
+        letter-spacing: -0.01em;
+        text-shadow: 0 4px 40px rgb(17 12 16 / 0.85);
+      }
+
+      #swash {
+        display: block;
+        margin: -10px 0 26px auto;
+        overflow: visible;
+      }
+
+      #hero-p {
+        width: 760px;
+        font-size: 32px;
+        font-weight: 300;
+        line-height: 1.75;
+        color: var(--blush);
+      }
+
+      #hero-cta {
+        margin-top: 44px;
+        transform-origin: 100% 50%;
+      }
+
+      /* 02 — deck */
+      #deck {
+        perspective: 2200px;
+      }
+
+      .card {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 340px;
+        height: 400px;
+        transform-style: preserve-3d;
+      }
+
+      .face {
+        position: absolute;
+        inset: 0;
+        border-radius: 22px;
+        backface-visibility: hidden;
+        overflow: hidden;
+      }
+
+      .front {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 42px 36px 30px;
+        color: #3a2530;
+        background:
+          radial-gradient(circle at 20% 110%, rgb(196 139 150 / 0.3), transparent 55%),
+          #f2e4d8;
+        box-shadow:
+          inset 0 0 0 11px #f2e4d8,
+          inset 0 0 0 12.5px rgb(90 51 70 / 0.35),
+          0 30px 60px rgb(0 0 0 / 0.5);
+      }
+
+      .front b {
+        font-family: Amiri, serif;
+        font-size: 44px;
+        font-weight: 700;
+        line-height: 1.25;
+        color: var(--wine);
+      }
+
+      .front span {
+        font-size: 24px;
+        line-height: 1.8;
+      }
+
+      .front i {
+        margin-top: auto;
+        align-self: flex-end;
+        font-style: normal;
+        font-size: 26px;
+        color: var(--rose);
+      }
+
+      .back {
+        transform: rotateY(180deg);
+        display: grid;
+        place-items: center;
+        background:
+          repeating-linear-gradient(45deg, rgb(215 180 140 / 0.08) 0 1.5px, transparent 1.5px 20px),
+          repeating-linear-gradient(-45deg, rgb(215 180 140 / 0.08) 0 1.5px, transparent 1.5px 20px),
+          radial-gradient(circle, #6d3d54, var(--wine) 70%);
+        box-shadow:
+          inset 0 0 0 12px var(--wine),
+          inset 0 0 0 14px rgb(232 208 168 / 0.6),
+          inset 0 0 0 22px var(--wine),
+          inset 0 0 0 23px rgb(232 208 168 / 0.3),
+          0 30px 60px rgb(0 0 0 / 0.5);
+      }
+
+      .back .mark {
+        width: 120px;
+        height: 120px;
+        filter: drop-shadow(0 0 12px rgb(232 208 168 / 0.4));
+      }
+
+      .tint {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+      }
+
+      #deck-kicker {
+        right: 150px;
+        top: 120px;
+      }
+
+      #deck-caption {
+        left: 0;
+        right: 0;
+        top: 930px;
+        text-align: center;
+        font-size: 30px;
+        color: var(--blush);
+      }
+
+      /* 03 — wheel */
+      #wheel-wrap {
+        left: 0;
+        top: 0;
+        width: 900px;
+        height: 900px;
+        filter: drop-shadow(0 40px 60px rgb(0 0 0 / 0.55));
+      }
+
+      #wheel-wrap svg {
+        overflow: visible;
+      }
+
+      #wheel-copy {
+        right: 150px;
+        top: 250px;
+        width: 700px;
+      }
+
+      #wheel-copy h2 {
+        margin-top: 18px;
+        font-size: 128px;
+        line-height: 1.15;
+      }
+
+      #wheel-copy .lede {
+        margin-top: 64px;
+        font-size: 30px;
+        font-weight: 300;
+        line-height: 1.7;
+        color: var(--blush);
+      }
+
+      #wheel-result {
+        margin-top: 44px;
+        transform-origin: 100% 50%;
+        background: var(--gold-soft);
+        color: var(--wine);
+        font-weight: 500;
+      }
+
+      #wheel-result .pick {
+        font-family: Amiri, serif;
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      /* 04 — desire match */
+      #s4-base {
+        background:
+          radial-gradient(ellipse at 50% 48%, #4a2838, var(--night) 72%);
+      }
+
+      #s4-flood {
+        background: var(--wine);
+      }
+
+      #d-kicker {
+        left: 0;
+        right: 0;
+        top: 96px;
+        text-align: center;
+      }
+
+      .col-head {
+        width: 420px;
+        top: 196px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 26px;
+        color: var(--rose);
+      }
+
+      .col-head .num {
+        display: grid;
+        place-items: center;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        border: 1.5px solid var(--gold);
+        color: var(--gold-soft);
+        font-size: 26px;
+      }
+
+      .chip {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 420px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 0 22px;
+        border-radius: 999px;
+        border: 1.5px solid rgb(215 180 140 / 0.35);
+        background: rgb(247 238 230 / 0.06);
+        font-size: 30px;
+        color: var(--blush);
+      }
+
+      .chip .check {
+        flex: none;
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1.5px solid rgb(215 180 140 / 0.5);
+        color: var(--wine);
+        font-size: 24px;
+        font-weight: 600;
+      }
+
+      .tick {
+        font-style: normal;
+      }
+
+      .lock {
+        width: 120px;
+        height: 120px;
+        margin: -60px 0 0 -60px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: rgb(17 12 16 / 0.7);
+        border: 1.5px solid var(--gold);
+      }
+
+      #heart {
+        overflow: visible;
+      }
+
+      #d-caption {
+        left: 0;
+        right: 0;
+        top: 930px;
+        text-align: center;
+        font-size: 32px;
+        color: var(--blush);
+      }
+
+      /* 05 — montage */
+      .shot {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+
+      .pic,
+      .tile i {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+      }
+
+      #shade5 {
+        background:
+          linear-gradient(0deg, rgb(17 12 16 / 0.85), transparent 45%),
+          linear-gradient(270deg, rgb(17 12 16 / 0.55), transparent 50%);
+      }
+
+      .mtitle {
+        right: 150px;
+        bottom: 130px;
+        white-space: nowrap;
+      }
+
+      .mtitle h3 {
+        font-size: 150px;
+        line-height: 1.15;
+        text-shadow: 0 4px 40px rgb(17 12 16 / 0.8);
+      }
+
+      .mtitle p {
+        margin-top: 28px;
+        font-size: 30px;
+        font-weight: 300;
+        color: var(--blush);
+      }
+
+      #odo {
+        left: 140px;
+        bottom: 150px;
+        display: flex;
+        align-items: flex-end;
+        gap: 14px;
+      }
+
+      #odo .digits {
+        display: flex;
+        height: 190px;
+        overflow: hidden;
+        font-size: 190px;
+        line-height: 190px;
+        font-weight: 500;
+        color: transparent;
+        -webkit-text-stroke: 2px var(--gold-soft);
+      }
+
+      #odo .col {
+        display: flex;
+        flex-direction: column;
+      }
+
+      #odo small {
+        font-size: 26px;
+        letter-spacing: 0.2em;
+        color: var(--gold);
+        padding-bottom: 26px;
+      }
+
+      .tile {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 520px;
+        height: 292px;
+        overflow: hidden;
+        border-radius: 16px;
+        box-shadow:
+          0 0 0 1.5px rgb(215 180 140 / 0.35),
+          0 30px 60px rgb(0 0 0 / 0.5);
+      }
+
+      .tile b {
+        position: absolute;
+        right: 22px;
+        bottom: 14px;
+        font-family: Amiri, serif;
+        font-size: 38px;
+        font-weight: 400;
+        text-shadow: 0 2px 16px rgb(0 0 0 / 0.9);
+      }
+
+      #grid-title {
+        left: 0;
+        right: 0;
+        top: 800px;
+        text-align: center;
+        font-size: 136px;
+        line-height: 1.1;
+        text-shadow: 0 4px 40px rgb(17 12 16 / 0.9);
+      }
+
+      /* 06 — phones */
+      #phones {
+        perspective: 1800px;
+      }
+
+      .phone {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 340px;
+        height: 700px;
+        border-radius: 58px;
+        background: linear-gradient(145deg, #34232d, #0c080b 60%);
+        box-shadow:
+          inset 0 0 0 2px rgb(232 208 168 / 0.6),
+          inset 0 0 0 9px #0b0709,
+          0 60px 100px rgb(0 0 0 / 0.65);
+      }
+
+      .screen {
+        position: absolute;
+        inset: 13px;
+        border-radius: 46px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 26px;
+        padding: 96px 28px 30px;
+        background: radial-gradient(circle at 50% 0%, #432636, #150e13 72%);
+      }
+
+      .notch {
+        position: absolute;
+        top: 26px;
+        left: 50%;
+        width: 100px;
+        height: 28px;
+        margin-left: -50px;
+        border-radius: 20px;
+        background: #050304;
+      }
+
+      .screen .lbl {
+        font-size: 24px;
+        color: var(--rose);
+      }
+
+      .code,
+      .boxes {
+        display: flex;
+        gap: 12px;
+        direction: ltr;
+      }
+
+      .slot,
+      .box {
+        width: 60px;
+        height: 86px;
+        border-radius: 14px;
+        overflow: hidden;
+        text-align: center;
+        font-size: 62px;
+        line-height: 86px;
+        font-weight: 500;
+        color: var(--gold-soft);
+      }
+
+      .reel div {
+        height: 86px;
+      }
+
+      .slot {
+        background: rgb(247 238 230 / 0.06);
+        box-shadow: inset 0 0 0 1.5px rgb(215 180 140 / 0.3);
+      }
+
+      .box {
+        position: relative;
+        box-shadow: inset 0 0 0 1.5px rgb(215 180 140 / 0.45);
+      }
+
+      .box .caret {
+        position: absolute;
+        left: 50%;
+        top: 22px;
+        width: 2.5px;
+        height: 42px;
+        margin-left: -1px;
+        background: var(--gold);
+      }
+
+      .keys {
+        display: grid;
+        grid-template-columns: repeat(3, 72px);
+        gap: 10px;
+        direction: ltr;
+      }
+
+      .keys span {
+        display: grid;
+        place-items: center;
+        height: 56px;
+        border-radius: 14px;
+        background: rgb(247 238 230 / 0.07);
+        font-size: 28px;
+        color: var(--blush);
+      }
+
+      .hint {
+        font-size: 20px;
+        color: var(--blush);
+        opacity: 0.8;
+      }
+
+      .status {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-radius: 999px;
+        padding: 10px 20px;
+        font-size: 20px;
+        color: var(--gold-soft);
+        border: 1px solid rgb(215 180 140 / 0.4);
+      }
+
+      .synced {
+        position: absolute;
+        left: 26px;
+        right: 26px;
+        bottom: 96px;
+        padding: 26px 24px;
+        border-radius: 20px;
+        background: #f2e4d8;
+        color: #3a2530;
+        font-size: 19px;
+        line-height: 1.7;
+      }
+
+      .synced b {
+        display: block;
+        font-family: Amiri, serif;
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--wine);
+      }
+
+      .screen-flash {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle, rgb(255 236 200 / 0.9), rgb(215 180 140 / 0.4));
+        opacity: 0;
+      }
+
+      #p-copy {
+        left: 0;
+        right: 0;
+        top: 70px;
+        text-align: center;
+      }
+
+      #p-copy h2 {
+        margin-top: 6px;
+        font-size: 96px;
+        line-height: 1.15;
+      }
+
+      /* 07 — finale */
+      #glow7 {
+        left: 460px;
+        top: -180px;
+        width: 1000px;
+        height: 1000px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgb(215 150 110 / 0.34), rgb(90 51 70 / 0.2) 35%, transparent 65%);
+        mix-blend-mode: screen;
+      }
+
+      #mark7 {
+        left: 830px;
+        top: 190px;
+        width: 260px;
+        height: 260px;
+        filter: drop-shadow(0 0 16px rgb(232 208 168 / 0.6))
+          drop-shadow(0 0 70px rgb(215 150 110 / 0.4));
+      }
+
+      #word7 {
+        left: 0;
+        right: 0;
+        top: 545px;
+        text-align: center;
+        font-size: 230px;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      #word7 span {
+        display: inline-block;
+        padding: 0.35em 0.12em 0.1em;
+        margin-top: -0.35em;
+        background: linear-gradient(
+          100deg,
+          #c9a57c 0%,
+          var(--gold-soft) 38%,
+          #fffaf0 50%,
+          var(--gold-soft) 62%,
+          #c9a57c 100%
+        );
+        background-size: 300% 100%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+
+      #tag7 {
+        left: 0;
+        right: 0;
+        top: 835px;
+        text-align: center;
+        font-size: 40px;
+        font-weight: 300;
+        color: var(--blush);
+      }
+
+      #badge7 {
+        left: 50%;
+        top: 915px;
+        width: 260px;
+        margin-left: -130px;
+        justify-content: center;
+        padding: 8px 22px;
+        font-size: 20px;
+        background: none;
+        color: var(--rose);
+      }
+
+      #badge7 b {
+        color: var(--gold-soft);
+        font-weight: 500;
+      }
+
+      #credit7 {
+        left: 0;
+        right: 0;
+        top: 990px;
+        text-align: center;
+        font-size: 15px;
+        letter-spacing: 0.42em;
+        color: rgb(215 180 140 / 0.75);
+        white-space: pre;
+      }
+
+      /* Finish: light, grain, lens, HUD */
+      #fx {
+        pointer-events: none;
+      }
+
+      .leak {
+        position: absolute;
+        width: 1400px;
+        height: 1400px;
+        margin: -700px 0 0 -700px;
+        border-radius: 50%;
+        mix-blend-mode: screen;
+      }
+
+      #vignette {
+        background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgb(0 0 0 / 0.5) 100%);
+      }
+
+      .grain {
+        opacity: 0.075;
+        mix-blend-mode: overlay;
+        background-repeat: repeat;
+      }
+
+      #flash {
+        background: radial-gradient(circle, rgb(255 240 215), rgb(232 208 168 / 0.6));
+        mix-blend-mode: screen;
+        opacity: 0;
+      }
+
+      #fade {
+        background: #000;
+        opacity: 0;
+      }
+
+      #hud {
+        color: rgb(232 208 168 / 0.8);
+        font-size: 15px;
+      }
+
+      .corner {
+        position: absolute;
+        width: 34px;
+        height: 34px;
+        border: 0 solid rgb(215 180 140 / 0.55);
+      }
+
+      #hud-tl {
+        left: 100px;
+        top: 58px;
+        letter-spacing: 0.3em;
+      }
+
+      #hud-tr {
+        right: 100px;
+        top: 50px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: Amiri, serif;
+        font-size: 28px;
+        color: var(--gold-soft);
+      }
+
+      #hud-tr .mark {
+        width: 24px;
+        height: 24px;
+      }
+
+      #hud-bl {
+        left: 100px;
+        bottom: 56px;
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        letter-spacing: 0.16em;
+      }
+
+      #beat-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--gold-soft);
+      }
+
+      #hud-br {
+        right: 100px;
+        bottom: 50px;
+        height: 32px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 22px;
+      }
+
+      #hud-br .mono {
+        font-size: 15px;
+        letter-spacing: 0.2em;
+      }
+
+      #progress {
+        left: 760px;
+        bottom: 64px;
+        width: 400px;
+        height: 2px;
+        background: rgb(215 180 140 / 0.18);
+      }
+
+      #progress i {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: var(--gold-soft);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div class="fill room"></div>
+      <div id="glow" class="fill"></div>
+
+
+      <section class="scene" id="s1">
+        <img id="hero-img" class="abs" src="/public/images/hero.jpg" alt="" />
+        <div id="hero-dark" class="fill"></div>
+        <div id="hero-shade" class="fill"></div>
+        <div id="hero-copy" class="abs">
+          <h1 class="display">
+            <span class="line split">اقتربا أكثر،</span>
+            <span class="line split"><em>على طريقتكما.</em></span>
+          </h1>
+          <svg id="swash" width="560" height="40" viewBox="0 0 560 40" aria-hidden="true">
+            <path
+              pathLength="1"
+              d="M556 22c-90-14-190-18-290-10C176 19 90 30 6 20c40 4 90 8 140 4"
+              fill="none"
+              stroke="#d7b48c"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+          </svg>
+          <p id="hero-p" class="split">
+            أفكار وألعاب للحظات تجمعكما، تختارانها معًا وفق رغباتكما وحدودكما، وبالإيقاع الذي يريحكما.
+          </p>
+          <div id="hero-cta" class="pill">العبا معًا <span>←</span></div>
+        </div>
+      </section>
+
+      <section class="scene" id="s0">
+        <div id="dark0" class="fill"></div>
+        <div id="spark" class="abs"></div>
+        <svg class="abs" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true">
+          <defs>
+            <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="7" />
+            </filter>
+          </defs>
+          <g id="thread-glow" filter="url(#soft)" stroke="#e8b87a" stroke-width="7" fill="none"></g>
+          <g id="thread-core" stroke="#fbe9c9" stroke-width="2.2" fill="none"></g>
+        </svg>
+        <div id="mark0" class="abs mark"></div>
+        <div id="intro-title" class="abs mono">
+          <b class="who">CLAUDE</b>
+          <small>MOTION DESIGN REEL — 2026</small>
+        </div>
+      </section>
+
+      <section class="scene" id="s2">
+        <div class="fill room"></div>
+        <div id="deck" class="fill"></div>
+        <div id="deck-kicker" class="abs kicker">
+          <span class="mono">01 /</span>بطاقات التحدي
+        </div>
+        <div id="deck-caption" class="abs split">اسحبا بطاقة، ودعا الحديث يبدأ.</div>
+      </section>
+
+      <section class="scene" id="s3">
+        <div id="s3-room" class="fill room"></div>
+        <div id="wheel-zoom" class="fill">
+          <div id="wheel-wrap" class="abs"></div>
+          <div id="wheel-copy" class="abs">
+            <div class="kicker"><span class="mono">02 /</span>عجلة الاختيار</div>
+            <h2 class="display">
+              <span class="line split">دعا المصادفة</span>
+              <span class="line split"><em>تقترح.</em></span>
+            </h2>
+            <p class="split lede">فكرة من الخيارات التي تناسبكما وحدكما.</p>
+            <div id="wheel-result" class="pill">الليلة: <b class="pick">همسة</b></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene" id="s4">
+        <div id="s4-base" class="fill"></div>
+        <div id="s4-flood" class="fill"></div>
+        <div id="s4-zoom" class="fill">
+          <div id="d-kicker" class="abs kicker">
+            <span class="mono">03 /</span>توافق الرغبات
+          </div>
+          <div id="chips"></div>
+          <svg id="heart" class="abs" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true">
+            <defs>
+              <radialGradient id="heart-fill" cx="50%" cy="45%" r="60%">
+                <stop offset="0" stop-color="#e8d0a8" stop-opacity="0.34" />
+                <stop offset="1" stop-color="#5a3346" stop-opacity="0.1" />
+              </radialGradient>
+              <filter id="heart-blur" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="1.1" />
+              </filter>
+            </defs>
+            <g transform="translate(540 150) scale(8.4)">
+              <path id="heart-fill-path" fill="url(#heart-fill)" opacity="0" />
+              <g id="heart-lines" fill="none"></g>
+            </g>
+          </svg>
+          <div id="d-caption" class="abs split">
+            تظهر لكما فقط الرغبات التي تلتقيان عندها.
+          </div>
+        </div>
+      </section>
+
+      <section class="scene" id="s5">
+        <div id="s5-room" class="fill room"></div>
+        <div id="shots" class="fill"></div>
+        <div id="shade5" class="fill"></div>
+        <div id="mtitles"></div>
+        <div id="odo" class="abs mono">
+          <div class="digits">
+            <span>0</span>
+            <span class="col"></span>
+          </div>
+          <small>/ 06</small>
+        </div>
+        <div id="tiles" class="fill"></div>
+        <div id="grid-title" class="abs display split">
+          ست طرق <em>لتبدآ.</em>
+        </div>
+      </section>
+
+      <section class="scene" id="s6">
+        <div id="p-copy" class="abs">
+          <div class="kicker"><span class="mono">04 /</span>كيف تلعبان</div>
+          <h2 class="display">
+            <span class="line split">جهاز واحد، <em>أو هاتفان.</em></span>
+          </h2>
+        </div>
+        <div id="phones" class="fill">
+          <div class="phone" id="phone-a">
+            <div class="screen">
+              <i class="notch"></i>
+              <span class="lbl">رمز الجلسة</span>
+              <div class="code"></div>
+              <span class="hint">أرسل الرمز إلى شريكك</span>
+              <div class="status"><span>بانتظار الطرف الثاني</span></div>
+              <div class="synced">
+                <b>أول رغبة</b>ليحكِ كلٌّ منكما عن أول تفصيل في الآخر أيقظ رغبته.
+              </div>
+              <i class="screen-flash"></i>
+            </div>
+          </div>
+          <div class="phone" id="phone-b">
+            <div class="screen">
+              <i class="notch"></i>
+              <span class="lbl">أدخل الرمز</span>
+              <div class="boxes"></div>
+              <div class="keys"></div>
+              <div class="status"><span>بانتظار الرمز</span></div>
+              <div class="synced">
+                <b>أول رغبة</b>ليحكِ كلٌّ منكما عن أول تفصيل في الآخر أيقظ رغبته.
+              </div>
+              <i class="screen-flash"></i>
+            </div>
+          </div>
+        </div>
+        <svg class="abs" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true">
+          <defs>
+            <mask id="chain-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
+              <path id="chain-reveal" pathLength="1" stroke="#fff" stroke-width="30" fill="none" />
+            </mask>
+          </defs>
+          <g mask="url(#chain-mask)" fill="none" stroke-linecap="round">
+            <path id="chain-glow" stroke="#e8b87a" stroke-width="10" opacity="0.45" filter="url(#soft)" />
+            <path id="chain-core" stroke="#e8d0a8" stroke-width="2.5" />
+            <path id="chain-links" stroke="#d7b48c" stroke-width="7" stroke-dasharray="12 9" opacity="0.8" />
+          </g>
+          <g id="pulse"></g>
+        </svg>
+      </section>
+
+      <section class="scene" id="s7">
+        <div id="glow7" class="abs"></div>
+        <div id="mark7" class="abs mark"></div>
+        <div id="word7" class="abs display"><span>معًا</span></div>
+        <div id="tag7" class="abs split">مساحة لكما وحدكما.</div>
+        <div id="badge7" class="abs pill">للبالغين فقط <b>+18</b></div>
+        <div id="credit7" class="abs mono"></div>
+      </section>
+
+      <canvas id="fx" width="1920" height="1080"></canvas>
+      <div id="leaks" class="fill">
+        <i class="leak" id="leak-a"></i>
+        <i class="leak" id="leak-b"></i>
+      </div>
+    </div>
+
+    <div id="vignette"></div>
+    <div id="grains"></div>
+    <div id="hud">
+      <i class="corner" style="left: 56px; top: 44px; border-left-width: 1.5px; border-top-width: 1.5px"></i>
+      <i class="corner" style="right: 56px; top: 44px; border-right-width: 1.5px; border-top-width: 1.5px"></i>
+      <i class="corner" style="left: 56px; bottom: 44px; border-left-width: 1.5px; border-bottom-width: 1.5px"></i>
+      <i class="corner" style="right: 56px; bottom: 44px; border-right-width: 1.5px; border-bottom-width: 1.5px"></i>
+      <div id="hud-tl" class="abs mono">CLAUDE — MOTION REEL ’26</div>
+      <div id="hud-tr" class="abs"><span class="mark" id="hud-mark"></span>معًا</div>
+      <div id="hud-bl" class="abs mono">
+        <i id="beat-dot"></i><span id="tc"></span><span>128 BPM</span>
+      </div>
+      <div id="hud-br" class="abs">
+        <span id="scene-name"></span><span id="scene-no" class="mono"></span>
+      </div>
+      <div id="progress" class="abs"><i></i></div>
+    </div>
+    <div id="flash"></div>
+    <div id="fade"></div>
+
+    <script type="module">
+      import { BEAT, b, CUES, DURATION, FPS, HITS, pegTimes, SCENES, SEGMENTS, SPIN, spin, WINNER } from "./timeline.mjs";
+
+      // ——— Motion toolkit ———
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const clamp = (x, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, x));
+      const lerp = (from, to, u) => from + (to - from) * u;
+      const span = (t, from, to) => clamp((t - from) / (to - from));
+      const rad = (deg) => (deg * Math.PI) / 180;
+      const ease = {
+        outExpo: (u) => (u >= 1 ? 1 : 1 - 2 ** (-10 * u)),
+        inExpo: (u) => (u <= 0 ? 0 : 2 ** (10 * u - 10)),
+        inOutExpo: (u) =>
+          u <= 0 ? 0 : u >= 1 ? 1 : u < 0.5 ? 2 ** (20 * u - 10) / 2 : (2 - 2 ** (-20 * u + 10)) / 2,
+        outCubic: (u) => 1 - (1 - u) ** 3,
+        inCubic: (u) => u ** 3,
+        inOutCubic: (u) => (u < 0.5 ? 4 * u ** 3 : 1 - (-2 * u + 2) ** 3 / 2),
+        inOutSine: (u) => -(Math.cos(Math.PI * u) - 1) / 2,
+        outBack: (u) => 1 + 2.70158 * (u - 1) ** 3 + 1.70158 * (u - 1) ** 2,
+      };
+      /** Step response of a damped spring: 0 before t0, overshoots, settles at 1. */
+      function spring(t, t0, freq = 1.8, damp = 0.45) {
+        const dt = t - t0;
+        if (dt <= 0) return 0;
+        const w = 2 * Math.PI * freq;
+        const wd = w * Math.sqrt(1 - damp * damp);
+        return 1 - Math.exp(-damp * w * dt) * (Math.cos(wd * dt) + ((damp * w) / wd) * Math.sin(wd * dt));
+      }
+      /** A heartbeat-shaped bump that starts at dt = 0. */
+      const pulse = (dt) => (dt <= 0 ? 0 : Math.exp(-dt * 9) * Math.sin(Math.min(dt * 24, Math.PI)));
+      function rng(seed) {
+        let s = seed;
+        return () => {
+          s ^= s << 13;
+          s ^= s >>> 17;
+          s ^= s << 5;
+          return (s >>> 0) / 4294967296;
+        };
+      }
+      const on = (el, visible) => {
+        el.style.display = visible ? "" : "none";
+        return visible;
+      };
+      /** Words rise out of their line, sharpening as they land. */
+      function rise(el, t, t0, dur = 0.75) {
+        const u = span(t, t0, t0 + dur);
+        const e = ease.outExpo(u);
+        el.style.transform = `translateY(${(1 - e) * 115}%) rotate(${(1 - e) * -7}deg)`;
+        el.style.opacity = Math.min(1, u * 4);
+        el.style.filter = e < 0.995 ? `blur(${(1 - e) * 12}px)` : "none";
+      }
+      const words = (root) => [...root.querySelectorAll(".w")];
+
+      // Split every .split into word spans (Arabic stays joined inside each word).
+      for (const el of document.querySelectorAll(".split")) {
+        const walk = (node) => {
+          for (const child of [...node.childNodes]) {
+            if (child.nodeType === 3) {
+              const parts = child.textContent.split(/(\s+)/).filter(Boolean);
+              child.replaceWith(
+                ...parts.map((part) => {
+                  if (/^\s+$/.test(part)) return document.createTextNode(" ");
+                  const span = document.createElement("span");
+                  span.className = "w";
+                  span.textContent = part;
+                  return span;
+                }),
+              );
+            } else walk(child);
+          }
+        };
+        walk(el);
+      }
+
+      // ——— The mark, petal by petal ———
+      const LONG = "M32 6c3.8 9 5 17.5 0 26-5-8.5-3.8-17 0-26z";
+      const SHORT = "M32 13.5c3.2 6.5 4 12 0 18.5-4-6.5-3.2-12 0-18.5z";
+      const PETAL_ANGLES = [0, 90, 180, 270, 45, 135, 225, 315];
+      let markId = 0;
+      function buildMark(host) {
+        const id = `mg${markId++}`;
+        host.innerHTML = `<svg viewBox="0 0 64 64" width="100%" height="100%"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbe9c9"/><stop offset="1" stop-color="#d7b48c"/></linearGradient></defs><g fill="url(#${id})">${PETAL_ANGLES.map((a, i) => `<path d="${i < 4 ? LONG : SHORT}" transform="rotate(${a} 32 32)"/>`).join("")}</g></svg>`;
+        return [...host.querySelectorAll("path")];
+      }
+      function petals(paths, t, start, stagger, turn = -40) {
+        paths.forEach((path, i) => {
+          const s = Math.max(0, spring(t, start + i * stagger, 2.1, 0.38));
+          const a = PETAL_ANGLES[i] + (1 - Math.min(1, s)) * turn;
+          path.setAttribute("transform", `rotate(${a} 32 32) translate(32 32) scale(${s}) translate(-32 -32)`);
+        });
+      }
+      const petals0 = buildMark($("#mark0"));
+      const petals7 = buildMark($("#mark7"));
+      buildMark($("#hud-mark"));
+
+      // ——— 00 Ignition ———
+      const threads = CUES.threads.map((start, j) => {
+        const a = j * 45 + 20;
+        const p = (r, deg) => `${960 + r * Math.sin(rad(deg))} ${540 - r * Math.cos(rad(deg))}`;
+        const d = `M${p(1300, a)} C${p(760, a + 55)} ${p(300, a + 105)} 960 540`;
+        const make = (group) => {
+          const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          path.setAttribute("d", d);
+          path.setAttribute("pathLength", "1");
+          $(group).append(path);
+          return path;
+        };
+        const core = make("#thread-core");
+        return { start, core, glow: make("#thread-glow"), len: core.getTotalLength(), head: null };
+      });
+
+      function intro(t) {
+        if (!on($("#s0"), t < b(8.3))) return;
+        for (const th of threads) {
+          const head = ease.inOutCubic(span(t, th.start, th.start + 1.05));
+          const tail = ease.inCubic(span(t, th.start + 0.28, th.start + 1.22));
+          const dash = `0 ${tail} ${Math.max(0, head - tail)} 3`;
+          th.core.setAttribute("stroke-dasharray", dash);
+          th.glow.setAttribute("stroke-dasharray", dash);
+          th.head = head > 0 && head < 1 ? th.core.getPointAtLength(head * th.len) : null;
+        }
+        const build = CUES.petals[0];
+        const antic = ease.inCubic(span(t, b(6.5), b(8)));
+        const burst = span(t, b(8), b(8) + 0.14);
+        petals(petals0, t, build, BEAT / 4);
+        const rot = lerp(-80, 0, spring(t, build, 0.75, 0.55)) + 55 * antic + 40 * burst;
+        const scale = (1 - 0.34 * antic) * (1 + burst * 0.9) * (1 + 0.04 * pulse(t - b(5)));
+        $("#dark0").style.opacity = 1 - burst;
+        const mark = $("#mark0");
+        mark.style.transform = `rotate(${rot}deg) scale(${scale})`;
+        mark.style.opacity = 1 - burst;
+        const flick = 1 + 0.07 * Math.sin(t * 23) * Math.sin(t * 7.3);
+        const grow = 0.12 + 0.5 * ease.outCubic(span(t, 0.9, 1.6)) + 0.9 * antic;
+        const spark = $("#spark");
+        spark.style.transform = `scale(${grow * flick})`;
+        spark.style.opacity = span(t, 0.05, 0.4) * (1 - burst);
+        const title = $("#intro-title");
+        const tu = ease.outExpo(span(t, b(5), b(7)));
+        const tout = span(t, b(6.8), b(7.6));
+        title.style.opacity = span(t, b(5), b(5.6)) * (1 - tout);
+        title.style.filter = `blur(${(1 - span(t, b(5), b(5.8))) * 10 + tout * 8}px)`;
+        $(".who", title).style.letterSpacing = `${lerp(1.6, 0.62, tu)}em`;
+        title.style.transform = `translateY(${tout * -20}px)`;
+      }
+
+      // ——— 01 Headline ———
+      const heroWords = words($("#hero-copy h1"));
+      const heroP = words($("#hero-p"));
+      const whip = (t) => ease.inOutExpo(span(t, b(15), b(17)));
+
+      function hero(t) {
+        if (!on($("#s1"), t >= b(8) && t < b(16.9))) return;
+        const pan = whip(t);
+        $("#s1").style.transform = `translateX(${pan * 1920}px)`;
+        $("#hero-img").style.transform = `scale(${lerp(1.2, 1.05, ease.outCubic(span(t, b(8), b(16))))})`;
+        const k = ease.outExpo(span(t, b(8), b(9.6)));
+        const drift = ease.inOutCubic(span(t, b(8.4), b(12.5)));
+        const lx = lerp(960, 610, drift) + 38 * Math.sin(t * 1.3);
+        const ly = lerp(540, 470, drift) + 22 * Math.sin(t * 1.7 + 1);
+        const fl = k * (1 + 0.04 * Math.sin(t * 9.1) * Math.sin(t * 3.7));
+        $("#hero-dark").style.background =
+          `radial-gradient(circle at ${lx}px ${ly}px, rgb(255 176 112 / ${0.16 * k}) 0, rgb(17 12 16 / 0.36) ${190 * fl}px, rgb(17 12 16 / 0.86) ${560 * fl}px, rgb(17 12 16 / 0.97) ${980 * fl}px)`;
+        $("#hero-copy").style.transform = `translate(${(lx - 610) * -0.03}px, ${(ly - 470) * -0.03}px)`;
+        const at = [8.5, 8.75, 10, 10.25];
+        heroWords.forEach((w, i) => { rise(w, t, b(at[i]), 0.9); });
+        const swash = $("#swash path");
+        swash.setAttribute("stroke-dasharray", "1 1");
+        swash.setAttribute("stroke-dashoffset", 1 - ease.inOutCubic(span(t, b(10.8), b(12))));
+        heroP.forEach((w, i) => {
+          const u = ease.outCubic(span(t, b(11.75) + i * 0.035, b(11.75) + i * 0.035 + 0.6));
+          w.style.opacity = u;
+          w.style.transform = `translateY(${(1 - u) * 18}px)`;
+          w.style.filter = u < 1 ? `blur(${(1 - u) * 6}px)` : "none";
+        });
+        const cta = spring(t, b(13), 1.6, 0.5);
+        $("#hero-cta").style.transform = `scale(${cta})`;
+        $("#hero-cta").style.opacity = Math.min(1, cta * 3);
+      }
+
+      // ——— 02 Deck ———
+      const CARDS = [
+        ["لمسة لا تُنسى", "ليتذكر كلٌّ منكما لمسة من الآخر ما زالت عالقة في جسده."],
+        ["موضع للقبلة", "ليُشِر كلٌّ منكما إلى موضع يحب أن يُقبَّل فيه ولا يحظى بذلك كثيرًا."],
+        ["نظرة بلا كلام", "اجلسا متقابلين، وانظرا في العينين دقيقتين كاملتين. الضحك مسموح."],
+        ["أول رغبة", "ليحكِ كلٌّ منكما عن أول تفصيل في الآخر أيقظ رغبته: نظرة، أو صوت، أو طريقة مشي."],
+        ["أمسية على مقاسكما", "ليصف كلٌّ منكما أمسيته المثالية معًا، من أول نظرة حتى النوم."],
+        ["ثلاثة أشياء", "ليقل كلٌّ منكما للآخر ثلاثة أشياء يحبها فيه، وعيناه في عينيه."],
+        ["ما يريحك", "ليذكر كلٌّ منكما شيئًا واحدًا يجعله يسترخي وينفتح أكثر."],
+        ["رسالة على الظهر", "ليكتب أحدكما بإصبعه كلمة على ظهر الآخر، حرفًا حرفًا وببطء."],
+      ];
+      const FEATURE = 3;
+      const SEG_COLORS = ["#5a3346", "#edd4c8", "#c48b96", "#e8d0a8"];
+      const cards = CARDS.map(([title, body], i) => {
+        const el = document.createElement("div");
+        el.className = "card";
+        el.innerHTML = `<div class="face front"><b>${title}</b><span>${body}</span><i>✦</i><div class="tint" style="background:${SEG_COLORS[i % 4]}"></div></div><div class="face back"><div class="mark"></div></div>`;
+        buildMark($(".back .mark", el));
+        $("#deck").append(el);
+        return { el, faces: [...el.querySelectorAll(".face")], tint: $(".tint", el) };
+      });
+      const CX = 960;
+      const CY = 560;
+
+      function deck(t) {
+        if (!on($("#s2"), t > b(15) && t < b(24.4))) return;
+        const pan = whip(t);
+        $("#s2").style.transform = `translateX(${(pan - 1) * 1920}px)`;
+        const ring = ease.inOutCubic(span(t, b(22), b(23.2)));
+        const dim = ease.outCubic(span(t, b(21), b(21.6))) * (1 - ring);
+        const tint = span(t, b(22.6), b(23.8));
+        const fade = 1 - span(t, b(23.85), b(24.15));
+        cards.forEach((card, i) => {
+          const lag = 1 - ease.outCubic(span(t, b(15.4) + i * 0.035, b(17.3) + i * 0.035));
+          let x = CX - i * 9 - lag * (500 + i * 150);
+          let y = CY + i * 5;
+          let r = -i * 2.2 - lag * 30;
+          let s = 1;
+          let z = 0;
+          const f = spring(t, b(18) + i * 0.02, 1.2, 0.55);
+          const a = lerp(33, -33, i / 7);
+          x = lerp(x, CX + 900 * Math.sin(rad(a)), f);
+          y = lerp(y, CY + 930 - 900 * Math.cos(rad(a)), f);
+          r = lerp(r, a, f);
+          s = lerp(s, 0.9, f);
+          const flipAt = CUES.flips[i];
+          const ry = 180 * (1 - spring(t, flipAt, 1.5, 0.5));
+          z += 90 * Math.sin(Math.PI * span(t, flipAt, flipAt + 0.4));
+          if (i === FEATURE) {
+            const e = spring(t, b(21), 1.3, 0.6) * (1 - ring);
+            x = lerp(x, CX, e);
+            y = lerp(y, 520, e);
+            r = lerp(r, 0, e);
+            s = lerp(s, 1.34, e);
+            z += 220 * e;
+          }
+          const phi = i * 45 + 22.5 + spin(t);
+          x = lerp(x, CX + 245 * Math.sin(rad(phi)), ring);
+          y = lerp(y, CY - 245 * Math.cos(rad(phi)), ring);
+          r = lerp(r, phi, ring);
+          s = lerp(s, 0.56, ring);
+          z = lerp(z, 0, ring);
+          card.el.style.transform = `translate3d(${x - 170}px, ${y - 200}px, ${z}px) rotate(${r}deg) rotateY(${ry}deg) scale(${s})`;
+          card.el.style.zIndex = i === FEATURE && dim > 0.01 ? 50 : t < b(18) ? 20 - i : 10 + i;
+          card.el.style.opacity = fade;
+          const blur = i === FEATURE ? 0 : dim;
+          for (const face of card.faces) face.style.filter = blur > 0.01 ? `blur(${blur * 6}px) brightness(${1 - blur * 0.45})` : "none";
+          card.tint.style.opacity = tint;
+        });
+        const kick = $("#deck-kicker");
+        kick.style.opacity = span(t, b(17), b(17.6)) * (1 - span(t, b(22), b(22.6)));
+        kick.style.transform = `translateY(${(1 - ease.outExpo(span(t, b(17), b(18)))) * 30}px)`;
+        words($("#deck-caption")).forEach((w, i) => {
+          const u = ease.outExpo(span(t, b(19.5) + i * 0.05, b(20.5) + i * 0.05)) * (1 - span(t, b(21.8), b(22.4)));
+          w.style.opacity = u;
+          w.style.transform = `translateY(${(1 - u) * 24}px)`;
+        });
+      }
+
+      // ——— 03 Wheel ———
+      const LABELS = ["عناق طويل", "ريشة", "قبلة لدقيقة", "موعد أول", "همسة", "نظرة", "حلم دافئ", "رسالة"];
+      const WR = 390;
+      {
+        const arc = (i) => {
+          const a0 = rad(i * 45);
+          const a1 = rad(i * 45 + 45);
+          return `M0 0L${WR * Math.sin(a0)} ${-WR * Math.cos(a0)}A${WR} ${WR} 0 0 1 ${WR * Math.sin(a1)} ${-WR * Math.cos(a1)}Z`;
+        };
+        const segs = LABELS.map((label, i) => {
+          const c = i * 45 + 22.5;
+          const dark = i % 4 === 0;
+          return `<g id="seg-${i}"><path d="${arc(i)}" fill="${SEG_COLORS[i % 4]}"/><path class="shine" d="${arc(i)}" fill="#fff6e6" opacity="0"/><text transform="rotate(${c}) translate(0 -292)" text-anchor="middle" dominant-baseline="middle" font-family="Amiri" font-weight="700" font-size="36" fill="${dark ? "#e8d0a8" : "#5a3346"}">${label}</text></g>`;
+        });
+        const spokes = Array.from({ length: SEGMENTS }, (_, i) => {
+          const a = rad(i * 45);
+          return `<line x1="${80 * Math.sin(a)}" y1="${-80 * Math.cos(a)}" x2="${WR * Math.sin(a)}" y2="${-WR * Math.cos(a)}"/>`;
+        }).join("");
+        const bulbs = Array.from({ length: 24 }, (_, k) => {
+          const a = rad(k * 15 + 7.5);
+          return `<circle cx="${406 * Math.sin(a)}" cy="${-406 * Math.cos(a)}" r="6.5"/>`;
+        }).join("");
+        $("#wheel-wrap").innerHTML = `<svg viewBox="-450 -450 900 900" width="900" height="900">
+          <defs>
+            <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbe9c9"/><stop offset=".5" stop-color="#b38a5e"/><stop offset="1" stop-color="#e8d0a8"/></linearGradient>
+            <radialGradient id="hub" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#7a4560"/><stop offset="1" stop-color="#2a1820"/></radialGradient>
+            <radialGradient id="sheen" cx="35%" cy="25%" r="80%"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></radialGradient>
+            <filter id="bulb-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="6"/></filter>
+          </defs>
+          <circle r="436" fill="#1a1116"/>
+          <g id="wheel-rot">
+            ${segs.join("")}
+            <g stroke="#d7b48c" stroke-width="3" opacity=".85">${spokes}</g>
+            <circle r="${WR}" fill="none" stroke="#fbe9c9" stroke-width="2" opacity=".7"/>
+            <circle r="406" fill="none" stroke="url(#rim)" stroke-width="28"/>
+            <g id="bulb-glow-g" fill="#ffd9a0" filter="url(#bulb-glow)">${bulbs}</g>
+            <g id="bulb-g">${bulbs}</g>
+            <circle r="78" fill="url(#hub)" stroke="url(#rim)" stroke-width="6"/>
+            <g id="hub-mark" transform="translate(-44 -44) scale(1.375)"></g>
+          </g>
+          <circle id="sheen-disc" r="${WR}" fill="url(#sheen)" pointer-events="none"/>
+          <g id="pointer">
+            <path d="M0 -372C-30 -410 -34 -438 0 -460C34 -438 30 -410 0 -372Z" fill="url(#rim)" stroke="#5a3346" stroke-width="2"/>
+            <circle cy="-436" r="8" fill="#5a3346"/>
+          </g>
+        </svg>`;
+        const hub = $("#hub-mark");
+        hub.innerHTML = `<g fill="#e8d0a8">${PETAL_ANGLES.map((a, i) => `<path d="${i < 4 ? LONG : SHORT}" transform="rotate(${a} 32 32)"/>`).join("")}</g>`;
+      }
+      const bulbs = [...document.querySelectorAll("#bulb-g circle")];
+      const bulbGlows = [...document.querySelectorAll("#bulb-glow-g circle")];
+      const pegs = pegTimes();
+      const wheelX = (t) => lerp(960, 690, spring(t, b(25), 0.9, 0.7));
+      const WY = 560;
+
+      function wheel(t) {
+        if (!on($("#s3"), t > b(23.8) && t < b(32.05))) return;
+        const theta = spin(t);
+        $("#wheel-rot").setAttribute("transform", `rotate(${theta})`);
+        $("#s3-room").style.opacity = span(t, b(24.1), b(24.3));
+        const appear = span(t, b(23.85), b(24.15));
+        const wx = wheelX(t);
+        const wrap = $("#wheel-wrap");
+        wrap.style.opacity = appear;
+        wrap.style.transform = `translate(${wx - 450}px, ${WY - 450}px) scale(${lerp(0.95, 1, appear)})`;
+        let last = -1;
+        for (const p of pegs) if (p <= t) last = p;
+        const settle = t > SPIN.stop ? 6 * Math.exp(-(t - SPIN.stop) * 5) * Math.sin((t - SPIN.stop) * 26) : 0;
+        const deflect = last < 0 ? 0 : -26 * Math.exp(-(t - last) * 16);
+        $("#pointer").setAttribute("transform", `rotate(${deflect + settle} 0 -436)`);
+        const won = t >= SPIN.stop;
+        const chase = Math.floor(t * 10 + theta / 15);
+        bulbs.forEach((bulb, k) => {
+          const lit = won ? (Math.floor((t - SPIN.stop) * 8) + k) % 2 === 0 : (k + chase) % 3 === 0;
+          bulb.setAttribute("fill", lit ? "#fff3d6" : "#6b4a3a");
+          bulbGlows[k].setAttribute("opacity", lit ? 1 : 0);
+        });
+        const pop = spring(t, SPIN.stop, 1.6, 0.4);
+        const c = rad(WINNER * 45 + 22.5);
+        $(`#seg-${WINNER}`).setAttribute("transform", `translate(${Math.sin(c) * 20 * pop} ${-Math.cos(c) * 20 * pop})`);
+        $(`#seg-${WINNER} .shine`).setAttribute("opacity", won ? 0.5 * Math.exp(-(t - SPIN.stop) * 4) : 0);
+
+        const copy = $("#wheel-copy");
+        copy.style.opacity = 1 - span(t, b(30.5), b(31));
+        const kick = $(".kicker", copy);
+        kick.style.opacity = span(t, b(25.3), b(25.8));
+        words(copy.querySelector("h2")).forEach((w, i) => { rise(w, t, b(25.5 + i * 0.25), 0.9); });
+        words(copy.querySelector("p")).forEach((w, i) => {
+          const u = ease.outCubic(span(t, b(26.5) + i * 0.04, b(26.5) + i * 0.04 + 0.5));
+          w.style.opacity = u;
+          w.style.transform = `translateY(${(1 - u) * 16}px)`;
+        });
+        const res = spring(t, b(29.25), 1.7, 0.45);
+        $("#wheel-result").style.transform = `scale(${res})`;
+        $("#wheel-result").style.opacity = Math.min(1, res * 3);
+
+        const zoom = ease.inExpo(span(t, b(30.5), b(32)));
+        const fx = wx;
+        const fy = WY - 175 - 20 * pop;
+        $("#sheen-disc").setAttribute("opacity", 1 - zoom);
+        const z = $("#wheel-zoom");
+        z.style.transformOrigin = `${fx}px ${fy}px`;
+        z.style.transform = `translate(${(960 - fx) * zoom}px, ${(540 - fy) * zoom}px) scale(${1 + 19 * zoom})`;
+      }
+
+      // ——— 04 Desire match ———
+      const DESIRES = ["تقبيل بلا عجلة", "عناق طويل", "تدليك بالزيت", "دش مشترك", "عصابة العين", "ريشة على الجلد"];
+      const SIDES = [
+        { x: 1420, order: [0, 1, 2, 3, 4, 5], picks: [0, 2, 3, 5], dir: 1 },
+        { x: 500, order: [3, 0, 5, 1, 4, 2], picks: [0, 1, 4, 2], dir: -1 },
+      ];
+      const MATCHES = [0, 2];
+      const chips = [];
+      SIDES.forEach((side, s) => {
+        const head = document.createElement("div");
+        head.className = "abs col-head";
+        head.style.left = `${side.x - 210}px`;
+        head.innerHTML = `<span class="num">${s ? "٢" : "١"}</span><span>اختيار خاص</span>`;
+        $("#chips").append(head);
+        side.head = head;
+        const lock = document.createElement("div");
+        lock.className = "abs lock";
+        lock.style.left = `${side.x}px`;
+        lock.style.top = "560px";
+        lock.innerHTML = `<svg width="46" height="54" viewBox="0 0 46 54" fill="none" stroke="#e8d0a8" stroke-width="3"><rect x="4" y="22" width="38" height="29" rx="6" fill="#5a3346"/><path d="M12 22v-7a11 11 0 0 1 22 0v7"/></svg>`;
+        $("#chips").append(lock);
+        side.lock = lock;
+        let pickNo = 0;
+        side.order.forEach((item, row) => {
+          const el = document.createElement("div");
+          el.className = "chip";
+          el.innerHTML = `<span class="check"><i class="tick">✓</i></span><span>${DESIRES[item]}</span>`;
+          $("#chips").append(el);
+          const picked = side.picks.includes(item);
+          const pickAt = picked ? CUES.picks[s * 4 + pickNo++] : null;
+          chips.push({ el, check: $(".check", el), mark: $(".tick", el), s, item, row, side, pickAt, match: MATCHES.indexOf(item) });
+        });
+      });
+      {
+        const left = "M50 88C20 65 0 45 0 25C0 10 12 0 26 0C38 0 46 8 50 16";
+        const right = "M50 88C80 65 100 45 100 25C100 10 88 0 74 0C62 0 54 8 50 16";
+        $("#heart-lines").innerHTML = [left, right]
+          .map(
+            (d) =>
+              `<path d="${d}" pathLength="1" stroke="#e8b87a" stroke-width="1.4" opacity=".6" filter="url(#heart-blur)"/><path d="${d}" pathLength="1" stroke="#fbe9c9" stroke-width="0.42"/>`,
+          )
+          .join("");
+        $("#heart-fill-path").setAttribute("d", `${left}C54 8 62 0 74 0C88 0 100 10 100 25C100 45 80 65 50 88Z`);
+      }
+      const heartLines = [...document.querySelectorAll("#heart-lines path")];
+      const HEART_SVG = `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 90" preserveAspectRatio="none"><path d="M50 88C20 65 0 45 0 25C0 10 12 0 26 0C38 0 46 8 50 16C54 8 62 0 74 0C88 0 100 10 100 25C100 45 80 65 50 88Z"/></svg>')}")`;
+      const heartbeat = (t) => pulse(t - b(38)) + 0.6 * pulse(t - b(38.35)) + pulse(t - b(39)) + 0.6 * pulse(t - b(39.35));
+      const pushScale = (t) => lerp(1, 34, ease.inExpo(span(t, b(39.5), b(40))));
+
+      function desire(t) {
+        if (!on($("#s4"), t >= b(32) && t < b(40.05))) return;
+        $("#s4-flood").style.opacity = 1 - ease.inOutSine(span(t, b(32), b(33.2)));
+        const zoom = $("#s4-zoom");
+        zoom.style.transformOrigin = "960px 520px";
+        zoom.style.transform = `scale(${(1 + 0.05 * heartbeat(t)) * pushScale(t)})`;
+        const kick = $("#d-kicker");
+        kick.style.opacity = span(t, b(32.5), b(33));
+        kick.style.transform = `translateY(${(1 - ease.outExpo(span(t, b(32.5), b(33.5)))) * 30}px)`;
+        const reveal = b(36.25);
+        for (const side of SIDES) {
+          side.head.style.opacity = span(t, b(32.6), b(33.2)) * (1 - span(t, reveal, reveal + 0.3));
+        }
+        const hide0 = span(t, b(34.75), b(35)) * (1 - span(t, reveal, reveal + 0.2));
+        const hide1 = span(t, b(36.15), b(36.3)) * (1 - span(t, reveal, reveal + 0.2));
+        SIDES[0].lock.style.opacity = hide0;
+        SIDES[0].lock.style.transform = `scale(${spring(t, b(34.75), 2, 0.4) * (1 - span(t, reveal, reveal + 0.2))})`;
+        SIDES[1].lock.style.opacity = 0;
+        for (const c of chips) {
+          const enter = spring(t, b(32.2) + c.row * 0.045 + c.s * 0.08, 1.3, 0.62);
+          let x = c.side.x + (1 - enter) * 1000 * c.side.dir;
+          let y = 300 + c.row * 98;
+          let rot = 0;
+          let op = Math.min(1, enter * 2);
+          let scale = 1;
+          const sel = c.pickAt === null ? 0 : span(t, c.pickAt, c.pickAt + 0.1);
+          if (c.pickAt !== null) scale += 0.07 * Math.sin(Math.PI * span(t, c.pickAt, c.pickAt + 0.28));
+          let blur = c.s === 0 ? hide0 * 9 : hide1 * 9;
+          if (c.match < 0) {
+            const at = reveal + c.row * 0.03 + c.s * 0.05;
+            const drop = ease.inCubic(span(t, at, at + 0.45));
+            y += drop * 360;
+            rot = drop * 10 * c.side.dir;
+            op *= 1 - drop;
+          } else {
+            const fly = ease.inOutCubic(span(t, b(36.35), b(37)));
+            x = lerp(x, 960, fly);
+            y = lerp(y, c.match === 0 ? 472 : 568, fly);
+            blur *= 1 - fly;
+            if (c.s === 1 && t >= b(37)) op = 0;
+          }
+          const merged = c.match >= 0 && c.s === 0 ? span(t, b(37), b(37.15)) : 0;
+          c.el.style.transform = `translate(${x - 210}px, ${y - 40}px) rotate(${rot}deg) scale(${scale + 0.08 * pulse(t - b(37)) * (c.match >= 0 ? 1 : 0)})`;
+          c.el.style.opacity = op;
+          c.el.style.filter = blur > 0.05 ? `blur(${blur}px)` : "none";
+          c.el.style.background = merged
+            ? `rgb(232 208 168 / ${merged})`
+            : sel
+              ? `rgb(90 51 70 / ${0.06 + 0.9 * sel})`
+              : "rgb(247 238 230 / 0.06)";
+          c.el.style.borderColor = sel || merged ? "rgb(232 208 168 / 0.9)" : "rgb(215 180 140 / 0.35)";
+          c.el.style.color = merged > 0.5 ? "#5a3346" : "";
+          c.check.style.background = sel ? "var(--gold-soft)" : "transparent";
+          c.check.style.borderColor = sel ? "var(--gold-soft)" : "rgb(215 180 140 / 0.5)";
+          const pop = c.pickAt === null ? 0 : spring(t, c.pickAt, 2.4, 0.35);
+          c.mark.style.display = pop > 0 ? "" : "none";
+          c.check.style.transform = `scale(${1 + 0.25 * Math.sin(Math.PI * clamp(pop))})`;
+          c.mark.style.transform = `scale(${pop})`;
+          if (merged) c.check.style.background = "var(--wine)";
+          if (merged) c.mark.style.color = "var(--gold-soft)";
+        }
+        const draw = ease.inOutCubic(span(t, b(37), b(37.9)));
+        for (const path of heartLines) {
+          path.setAttribute("stroke-dasharray", `${draw} 2`);
+          path.style.display = draw > 0 ? "" : "none";
+        }
+        $("#heart-fill-path").setAttribute("opacity", span(t, b(37.6), b(38.3)));
+        words($("#d-caption")).forEach((w, i) => {
+          const u = ease.outExpo(span(t, b(38) + i * 0.04, b(38.8) + i * 0.04));
+          w.style.opacity = u * (1 - span(t, b(39.3), b(39.6)));
+          w.style.transform = `translateY(${(1 - u) * 26}px)`;
+        });
+      }
+
+      // ——— 05 Montage ———
+      const GAMES = [
+        ["بطاقات التحدي", "أسئلة ولحظات صغيرة تفتح باب الحديث.", "challenge-cards"],
+        ["عجلة الاختيار", "دعا المصادفة تقترح فكرة تناسبكما.", "choice-wheel"],
+        ["توافق الرغبات", "تظهر فقط الرغبات التي تلتقيان عندها.", "desire-match"],
+        ["اكتشاف الوضعيات", "تصفّحا كلٌّ على حدة، واكتشفا ما تودّانه معًا.", "position-match"],
+        ["مسار الليلة", "خطوات قصيرة، وتتوقفان متى شئتما.", "night-path"],
+        ["مكتبة التحديات", "من الشاشة إلى الوقت الذي يجمعكما.", "challenge-library"],
+      ];
+      const src = (name) => `/public/images/${name}.jpg`;
+      const shots = GAMES.map(([, , img]) => {
+        const el = document.createElement("div");
+        el.className = "shot";
+        el.innerHTML = `<div class="pic" style="background-image:url(${src(img)})"></div>`;
+        $("#shots").append(el);
+        return { el, pic: $(".pic", el) };
+      });
+      const mtitles = GAMES.map(([title, desc], j) => {
+        const el = document.createElement("div");
+        el.className = "abs mtitle";
+        el.innerHTML = `<div class="kicker"><span class="mono">0${j + 1} /</span>تجربة</div><h3 class="display"><span class="line">${title
+          .split(" ")
+          .map((w) => `<span class="w">${w}</span>`)
+          .join(" ")}</span></h3><p>${desc}</p>`;
+        $("#mtitles").append(el);
+        return el;
+      });
+      $("#odo .col").innerHTML = "0123456789".split("").map((d) => `<span>${d}</span>`).join("");
+      const SLOT = (k) => ({ x: 144 + (2 - (k % 3)) * 556, y: 150 + Math.floor(k / 3) * 328 });
+      const tiles = GAMES.map(([title, , img], k) => {
+        const el = document.createElement("div");
+        el.className = "tile";
+        el.innerHTML = `<i style="background-image:url(${src(img)})"></i><b>${title}</b>`;
+        $("#tiles").append(el);
+        return el;
+      });
+      const cutAt = (j) => (j === 0 ? b(40) : CUES.cuts[j - 1]);
+      const kenBurns = (t, j) => lerp(1.24, 1.06, ease.outCubic(span(t, cutAt(j), cutAt(j) + 1.4)));
+
+      function clipFor(j, u) {
+        if (j === 1) {
+          const pts = [];
+          for (let k = 0; k < 8; k++) {
+            const h = 1080 * ease.outExpo(clamp(u * 1.6 - k * 0.08));
+            const x0 = 1920 - k * 240;
+            pts.push(`${x0}px 0`, `${x0}px ${h}px`, `${x0 - 240}px ${h}px`, `${x0 - 240}px 0`);
+          }
+          return `polygon(${pts.join(",")})`;
+        }
+        if (j === 2) return `circle(${u * 1150}px at 50% 50%)`;
+        if (j === 3) {
+          const top = lerp(2300, -400, u);
+          return `polygon(${top}px 0, 2400px 0, 2400px 1080px, ${top - 400}px 1080px)`;
+        }
+        if (j === 4) {
+          const side = lerp(900, -200, u);
+          const r = 960 - side;
+          return `inset(${lerp(1080, -1200, u)}px ${side}px 0 ${side}px round ${r}px ${r}px 0 0)`;
+        }
+        if (j === 5) {
+          const a = 1920 * u;
+          return `polygon(0 0, ${a}px 0, ${a}px 540px, ${1920 - a}px 540px, ${1920 - a}px 1080px, 1920px 1080px, 1920px 540px, 0 540px)`;
+        }
+        return "none";
+      }
+
+      function montage(t) {
+        if (!on($("#s5"), t > b(38.8) && t < b(48.8))) return;
+        const s5 = $("#s5");
+        if (t < b(40)) {
+          const s = pushScale(t);
+          const w = 840 * s;
+          const h = 739 * s;
+          s5.style.maskImage = HEART_SVG;
+          s5.style.maskRepeat = "no-repeat";
+          s5.style.maskSize = `${w}px ${h}px`;
+          s5.style.maskPosition = `${960 - 420 * s}px ${520 - 370 * s}px`;
+          s5.style.opacity = span(t, b(38.8), b(39.6));
+        } else {
+          s5.style.maskImage = "none";
+          s5.style.opacity = 1;
+        }
+        const gridAt = b(46);
+        $("#s5-room").style.display = t >= gridAt ? "" : "none";
+        const inGrid = t >= gridAt + 0.02;
+        on($("#shots"), !inGrid);
+        on($("#shade5"), !inGrid);
+        on($("#mtitles"), !inGrid);
+        if (!inGrid) {
+          shots.forEach((shot, j) => {
+            const at = cutAt(j);
+            const next = j < 5 ? cutAt(j + 1) : gridAt;
+            if (!on(shot.el, t >= (j === 0 ? b(38.8) : at) && t < next + 0.45)) return;
+            const u = j === 0 ? 1 : span(t, at, at + 0.36);
+            shot.el.style.clipPath = clipFor(j, ease.outExpo(u));
+            const push = j === 0 ? lerp(1.5, 1, ease.outCubic(span(t, b(39.3), b(40.2)))) : 1;
+            const punch = j === 0 ? 1 : lerp(1.18, 1, ease.outExpo(u));
+            shot.pic.style.transform = `scale(${kenBurns(t, j) * push * punch}) translateX(${(t - at) * (j % 2 ? 14 : -14)}px)`;
+          });
+          mtitles.forEach((el, j) => {
+            const at = cutAt(j);
+            const next = j < 5 ? cutAt(j + 1) : gridAt;
+            if (!on(el, t >= at && t < next)) return;
+            words(el).forEach((w, i) => { rise(w, t, at + 0.02 + i * 0.06, 0.45); });
+            const out = span(t, next - 0.1, next);
+            el.style.opacity = 1 - out;
+            const k = ease.outExpo(span(t, at, at + 0.4));
+            $(".kicker", el).style.opacity = k;
+            $("p", el).style.opacity = k * 0.95;
+            $("p", el).style.transform = `translateY(${(1 - k) * 20}px)`;
+          });
+        }
+        let v = 0;
+        for (let j = 1; j < 6; j++) v += ease.outBack(span(t, cutAt(j), cutAt(j) + 0.3));
+        $("#odo .col").style.transform = `translateY(${-(v + 1) * 190}px)`;
+        const odo = $("#odo");
+        odo.style.opacity = span(t, b(40), b(40.3)) * (1 - span(t, gridAt - 0.1, gridAt + 0.1));
+
+        const exit = (k) => ease.inExpo(span(t, b(47.4) + k * 0.03, b(48.3) + k * 0.03));
+        on($("#tiles"), t >= gridAt);
+        tiles.forEach((el, k) => {
+          const slot = SLOT(k);
+          let e;
+          let x;
+          let y;
+          let s;
+          let r = 0;
+          if (k === 5) {
+            e = spring(t, gridAt, 1.2, 0.78);
+            s = lerp(1920 / 520, 1, e);
+            x = lerp(0, slot.x, e);
+            y = lerp(0, slot.y, e);
+          } else {
+            e = spring(t, gridAt + 0.05 + (4 - k) * 0.05, 1.4, 0.62);
+            x = slot.x;
+            y = slot.y + (1 - e) * 800;
+            s = lerp(0.7, 1, e);
+            r = (1 - e) * (k % 2 ? 14 : -14);
+          }
+          const cx = slot.x + 260 - 960;
+          const cy = slot.y + 146 - 470;
+          const out = exit(k);
+          x += cx * 2.2 * out;
+          y += cy * 2.8 * out + 300 * out;
+          r += (k % 2 ? 30 : -30) * out;
+          s *= 1 - 0.5 * out;
+          el.style.transformOrigin = "0 0";
+          el.style.transform = `translate(${x}px, ${y}px) rotate(${r}deg) scale(${s})`;
+          el.style.borderRadius = `${(16 * e) / Math.max(1, s)}px`;
+          el.style.opacity = 1 - out;
+          $("b", el).style.opacity = k === 5 ? span(t, gridAt + 0.3, gridAt + 0.5) : 1;
+        });
+        const gt = $("#grid-title");
+        on(gt, t >= gridAt);
+        words(gt).forEach((w, i) => { rise(w, t, gridAt + 0.18 + i * 0.12, 0.8); });
+        const gout = ease.inCubic(span(t, b(47.4), b(48.1)));
+        gt.style.transform = `scale(${1 + gout * 0.35})`;
+        gt.style.opacity = 1 - gout;
+        gt.style.filter = gout > 0 ? `blur(${gout * 14}px)` : "none";
+      }
+
+      // ——— 06 Phones ———
+      const AR = "٠١٢٣٤٥٦٧٨٩";
+      const CODE = [4, 8, 2, 7];
+      $("#phone-a .code").innerHTML = CODE.map(
+        () => `<div class="slot"><div class="reel">${Array.from({ length: 40 }, (_, i) => `<div>${AR[i % 10]}</div>`).join("")}</div></div>`,
+      ).join("");
+      $("#phone-b .boxes").innerHTML = CODE.map((d) => `<div class="box"><span>${AR[d]}</span><i class="caret"></i></div>`).join("");
+      $("#phone-b .keys").innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9, null, 0, null]
+        .map((d) => `<span${d === null ? ' style="visibility:hidden"' : ""}>${d === null ? "" : AR[d]}</span>`)
+        .join("");
+      const reels = [...document.querySelectorAll("#phone-a .reel")];
+      const boxes = [...document.querySelectorAll("#phone-b .box")];
+      const keyEls = [...document.querySelectorAll("#phone-b .keys span")];
+      const keyIndex = (d) => (d === 0 ? 10 : d - 1);
+      const phoneA = $("#phone-a");
+      const phoneB = $("#phone-b");
+
+      function phonePose(t, which) {
+        const enter = spring(t, which ? b(47.85) : b(47.6), 1.05, 0.62);
+        const exit = ease.inCubic(span(t, b(55), b(56)));
+        const settle = ease.inOutCubic(span(t, b(54.2), b(55)));
+        const dir = which ? 1 : -1;
+        const home = which ? 590 : 1330;
+        const x = lerp(lerp(home, home - dir * 60, settle), 960, exit);
+        const y = 600 + (1 - enter) * 950 + 12 * Math.sin(t * 2.1 + which * 1.7) * (1 - exit);
+        const ry = lerp(dir * 22 * (1 - settle * 0.4), 0, exit) + (1 - enter) * dir * 40;
+        const rz = dir * -2.5 * (1 - exit) + (1 - enter) * dir * -12;
+        const s = 1 - exit;
+        return { x, y, ry, rz, s };
+      }
+
+      function phones(t) {
+        if (!on($("#s6"), t > b(47.5) && t < b(56.1))) return;
+        const poses = [phonePose(t, 0), phonePose(t, 1)];
+        [phoneA, phoneB].forEach((el, i) => {
+          const p = poses[i];
+          el.style.transform = `translate3d(${p.x - 170}px, ${p.y - 350}px, 0) rotateY(${p.ry}deg) rotateX(7deg) rotateZ(${p.rz}deg) scale(${p.s})`;
+        });
+        const copy = $("#p-copy");
+        $(".kicker", copy).style.opacity = span(t, b(48), b(48.5));
+        words(copy).forEach((w, i) => { rise(w, t, b(48.25 + i * 0.25), 0.9); });
+        const cout = ease.inCubic(span(t, b(55), b(55.8)));
+        copy.style.opacity = 1 - cout;
+        copy.style.transform = `translateY(${-cout * 40}px)`;
+
+        reels.forEach((reel, k) => {
+          const land = CUES.digits[k];
+          const v = (CODE[k] + 30) * ease.outCubic(span(t, b(48.5), land));
+          reel.style.transform = `translateY(${-v * 86}px)`;
+          reel.style.filter = t < land - 0.12 ? "blur(1.5px)" : "none";
+        });
+        boxes.forEach((box, k) => {
+          const at = CUES.typing[k];
+          const typed = t >= at;
+          const digit = $("span", box);
+          digit.style.opacity = typed ? 1 : 0;
+          digit.style.display = "inline-block";
+          digit.style.transform = `scale(${typed ? 1 + 0.5 * Math.exp(-(t - at) * 14) : 1})`;
+          const active = t >= (k === 0 ? b(50.5) : CUES.typing[k - 1]) && t < at;
+          $(".caret", box).style.opacity = active && Math.floor(t * 4) % 2 === 0 ? 1 : 0;
+          box.style.boxShadow = typed ? "inset 0 0 0 1.5px #e8d0a8" : "";
+        });
+        keyEls.forEach((key) => {
+          key.style.background = "";
+          key.style.transform = "";
+        });
+        CODE.forEach((d, k) => {
+          const dt = t - CUES.typing[k];
+          if (dt >= -0.02 && dt < 0.18) {
+            const key = keyEls[keyIndex(d)];
+            key.style.background = "rgb(232 208 168 / 0.45)";
+            key.style.transform = "scale(0.92)";
+          }
+        });
+
+        // The chain hangs between the phones' inner edges and follows them.
+        const ax = poses[0].x - 165 * poses[0].s * Math.cos(rad(poses[0].ry));
+        const bx = poses[1].x + 165 * poses[1].s * Math.cos(rad(poses[1].ry));
+        const cy = (poses[0].y + poses[1].y) / 2 + 80 * poses[0].s;
+        const sag = 190 * poses[0].s;
+        const d = `M${ax} ${poses[0].y + 80 * poses[0].s}C${lerp(ax, bx, 0.3)} ${cy + sag} ${lerp(ax, bx, 0.7)} ${cy + sag} ${bx} ${poses[1].y + 80 * poses[1].s}`;
+        for (const id of ["chain-reveal", "chain-glow", "chain-core", "chain-links"]) $(`#${id}`).setAttribute("d", d);
+        const draw = ease.inOutCubic(span(t, b(52.25), b(53)));
+        const reveal = $("#chain-reveal");
+        reveal.setAttribute("stroke-dasharray", `${draw} 2`);
+        const core = $("#chain-core");
+        const len = core.getTotalLength();
+        const pu = ease.inOutSine(span(t, b(53), b(54)));
+        let dots = "";
+        if (t > b(53) && t < b(54.1)) {
+          for (let k = 0; k < 10; k++) {
+            const at = clamp(pu - k * 0.025);
+            const p = core.getPointAtLength(at * len);
+            dots += `<circle cx="${p.x}" cy="${p.y}" r="${9 - k * 0.8}" fill="#fff4dc" opacity="${(1 - k / 10) * 0.9}"/>`;
+          }
+        }
+        $("#pulse").innerHTML = dots;
+        const connected = t >= CUES.connect;
+        for (const el of [phoneA, phoneB]) {
+          $(".screen-flash", el).style.opacity = connected ? 0.9 * Math.exp(-(t - CUES.connect) * 6) : 0;
+          const sync = ease.outExpo(span(t, CUES.connect + 0.15, CUES.connect + 0.6));
+          const card = $(".synced", el);
+          card.style.opacity = sync;
+          card.style.transform = `translateY(${(1 - sync) * 80}px)`;
+          $(".status span", el).textContent = connected ? "متصلان ✓" : el === phoneA ? "بانتظار الطرف الثاني" : "بانتظار الرمز";
+          $(".status", el).style.background = connected ? "rgb(232 208 168 / 0.16)" : "";
+        }
+      }
+
+      // ——— 07 Finale ———
+      const CREDIT = "MOTION DESIGN — CLAUDE    ·    SHOWREEL 2026";
+
+      function finale(t) {
+        if (!on($("#s7"), t > b(55.9))) return;
+        const start = CUES.bloom[0];
+        petals(petals7, t, start, BEAT / 4, -70);
+        const m = $("#mark7");
+        const breathe = 1 + 0.015 * Math.sin((t - start) * 3);
+        m.style.transform = `rotate(${lerp(-140, 0, spring(t, start, 0.6, 0.62))}deg) scale(${breathe})`;
+        $("#glow7").style.opacity = span(t, start, start + 0.5) * (0.85 + 0.15 * Math.sin(t * 5.3) * Math.sin(t * 2.1));
+        $("#glow7").style.transform = `scale(${lerp(0.4, 1, ease.outExpo(span(t, start, start + 1.5)))})`;
+        const word = $("#word7");
+        const wu = ease.outExpo(span(t, b(57), b(58.5)));
+        word.style.clipPath = `inset(-20% 0 -30% ${(1 - wu) * 100}%)`;
+        word.style.transform = `translateX(${(1 - wu) * 60}px)`;
+        word.style.filter = wu < 1 ? `blur(${(1 - wu) * 8}px)` : "none";
+        const shine = ease.inOutSine(span(t, b(58.5), b(61)));
+        $("span", word).style.backgroundPosition = `${lerp(100, 0, shine)}% 0`;
+        words($("#tag7")).forEach((w, i) => {
+          const u = ease.outExpo(span(t, b(58) + i * 0.08, b(59.5) + i * 0.08));
+          w.style.opacity = u;
+          w.style.transform = `translateY(${(1 - u) * 24}px)`;
+          w.style.filter = u < 1 ? `blur(${(1 - u) * 8}px)` : "none";
+        });
+        const badge = spring(t, b(59), 1.6, 0.5);
+        $("#badge7").style.transform = `scale(${badge})`;
+        $("#badge7").style.opacity = Math.min(1, badge * 3);
+        const typed = Math.floor(span(t, b(59.5), b(61.5)) * CREDIT.length);
+        const cursor = typed < CREDIT.length && t > b(59.3) && Math.floor(t * 6) % 2 === 0 ? "▍" : " ";
+        $("#credit7").textContent = CREDIT.slice(0, typed) + cursor;
+      }
+
+      // ——— Particles, light and lens ———
+      const ctx = $("#fx").getContext("2d");
+      const sprite = (r, g, bl) => {
+        const c = document.createElement("canvas");
+        c.width = c.height = 64;
+        const x = c.getContext("2d");
+        const grad = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+        grad.addColorStop(0, `rgba(255,255,255,1)`);
+        grad.addColorStop(0.18, `rgba(${r},${g},${bl},0.9)`);
+        grad.addColorStop(0.5, `rgba(${r},${g},${bl},0.22)`);
+        grad.addColorStop(1, `rgba(${r},${g},${bl},0)`);
+        x.fillStyle = grad;
+        x.fillRect(0, 0, 64, 64);
+        return c;
+      };
+      const GOLD = sprite(255, 200, 130);
+      const ROSE = sprite(236, 150, 170);
+      const dot = (img, x, y, r, a) => {
+        if (a <= 0.003 || r <= 0) return;
+        ctx.globalAlpha = Math.min(1, a);
+        ctx.drawImage(img, x - r, y - r, r * 2, r * 2);
+      };
+
+      const R = rng(20260928);
+      const dust = Array.from({ length: 120 }, () => ({
+        x: R() * 2120,
+        y: R() * 1280,
+        vx: (R() - 0.5) * 16,
+        vy: -8 - R() * 18,
+        z: R(),
+        ph: R() * 6.28,
+        big: R() < 0.12,
+      }));
+      function makeBurst(n, opts) {
+        return Array.from({ length: n }, () => {
+          const a = opts.angle !== undefined ? opts.angle + (R() - 0.5) * opts.cone : R() * Math.PI * 2;
+          const v = opts.vmin + R() ** 1.6 * (opts.vmax - opts.vmin);
+          return {
+            vx: Math.cos(a) * v,
+            vy: Math.sin(a) * v,
+            life: opts.life * (0.5 + R() * 0.8),
+            size: opts.size * (0.4 + R()),
+            tw: 10 + R() * 30,
+            ph: R() * 6.28,
+            rose: R() < (opts.rose ?? 0.2),
+            spin: (R() - 0.5) * 20,
+            hue: R(),
+          };
+        });
+      }
+      const bursts = [
+        { at: b(8), x: 960, y: 540, g: -40, drag: 2.4, parts: makeBurst(460, { vmin: 120, vmax: 1900, life: 2.8, size: 9 }) },
+        { at: b(37), x: 960, y: 472, g: 60, drag: 3, parts: makeBurst(120, { vmin: 80, vmax: 1100, life: 1.6, size: 7, rose: 0.5 }) },
+        { at: b(37), x: 960, y: 568, g: 60, drag: 3, parts: makeBurst(120, { vmin: 80, vmax: 1100, life: 1.6, size: 7, rose: 0.5 }) },
+        { at: CUES.connect, x: 590, y: 600, g: 80, drag: 3, parts: makeBurst(70, { vmin: 80, vmax: 800, life: 1.2, size: 6 }) },
+        { at: CUES.connect, x: 1330, y: 600, g: 80, drag: 3, parts: makeBurst(70, { vmin: 80, vmax: 800, life: 1.2, size: 6 }) },
+      ];
+      const confetti = makeBurst(150, { angle: -Math.PI / 2, cone: 2.2, vmin: 500, vmax: 1700, life: 2.2, size: 1 });
+      const CONFETTI_COLORS = ["#e8d0a8", "#c48b96", "#f7eee6", "#d7b48c", "#5a3346"];
+      const orbit = Array.from({ length: 300 }, () => ({
+        a: R() * Math.PI * 2,
+        ro: 200 + R() ** 0.7 * 420,
+        peak: 1.3 + R() * 1.6,
+        w: (0.25 + R() * 0.6) * (R() < 0.85 ? 1 : -1),
+        size: 2 + R() * 7,
+        ph: R() * 6.28,
+        rose: R() < 0.2,
+      }));
+      const rings = [
+        { at: b(3), x: 960, y: 540, max: 420, dur: 1.1 },
+        { at: b(8), x: 960, y: 540, max: 1300, dur: 1.2 },
+        { at: b(8.12), x: 960, y: 540, max: 900, dur: 1.2 },
+        { at: SPIN.stop, x: () => wheelX(SPIN.stop), y: WY, max: 700, dur: 0.9 },
+        { at: b(37), x: 960, y: 520, max: 900, dur: 1 },
+        { at: b(56), x: 960, y: 320, max: 1300, dur: 1.4 },
+        { at: b(56.25), x: 960, y: 320, max: 1000, dur: 1.4 },
+        { at: b(56.5), x: 960, y: 320, max: 700, dur: 1.4 },
+      ];
+      /** Anamorphic star: two squashed radial glows, soft all the way to their tips. */
+      const beam = (() => {
+        const c = document.createElement("canvas");
+        c.width = c.height = 256;
+        const x = c.getContext("2d");
+        const g = x.createRadialGradient(128, 128, 0, 128, 128, 128);
+        g.addColorStop(0, "rgba(255,248,230,1)");
+        g.addColorStop(0.08, "rgba(255,224,180,0.75)");
+        g.addColorStop(0.35, "rgba(255,190,130,0.18)");
+        g.addColorStop(1, "rgba(255,170,110,0)");
+        x.fillStyle = g;
+        x.fillRect(0, 0, 256, 256);
+        return c;
+      })();
+      function flare(x, y, size, a, rot = 0) {
+        if (a <= 0.01) return;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rot);
+        ctx.globalAlpha = Math.min(1, a);
+        ctx.drawImage(beam, -size, -size * 0.022, size * 2, size * 0.044);
+        ctx.drawImage(beam, -size * 0.014, -size * 0.45, size * 0.028, size * 0.9);
+        ctx.restore();
+        dot(GOLD, x, y, size * 0.1, a * 0.8);
+      }
+
+      function fx(t) {
+        ctx.clearRect(0, 0, 1920, 1080);
+        ctx.globalCompositeOperation = "lighter";
+        const amb = span(t, 0.5, 2) * (1 - span(t, DURATION - 1.2, DURATION));
+        for (const p of dust) {
+          const x = ((((p.x + p.vx * t + 30 * Math.sin(t * 0.4 + p.ph)) % 2120) + 2120) % 2120) - 100;
+          const y = ((((p.y + p.vy * t) % 1280) + 1280) % 1280) - 100;
+          if (p.big) dot(ROSE, x, y, 40 + p.z * 50, 0.05 * amb);
+          else dot(GOLD, x, y, 2 + p.z * 5, (0.12 + 0.3 * p.z) * amb * (0.6 + 0.4 * Math.sin(t * 2 + p.ph)));
+        }
+        for (const th of threads) {
+          if (!th.head) continue;
+          dot(GOLD, th.head.x, th.head.y, 34, 0.9);
+          dot(GOLD, th.head.x, th.head.y, 10, 1);
+        }
+        for (const bu of bursts) {
+          const dt = t - bu.at;
+          if (dt < 0 || dt > 4) continue;
+          const f = (1 - Math.exp(-bu.drag * dt)) / bu.drag;
+          for (const p of bu.parts) {
+            if (dt > p.life) continue;
+            const x = bu.x + p.vx * f;
+            const y = bu.y + p.vy * f + 0.5 * bu.g * dt * dt;
+            const a = (1 - dt / p.life) ** 1.5 * (0.65 + 0.35 * Math.sin(dt * p.tw + p.ph));
+            dot(p.rose ? ROSE : GOLD, x, y, p.size * (1 - 0.5 * dt / p.life), a);
+          }
+        }
+        for (const r of rings) {
+          const u = span(t, r.at, r.at + r.dur);
+          if (u <= 0 || u >= 1) continue;
+          const e = ease.outExpo(u);
+          ctx.globalAlpha = (1 - u) ** 2 * 0.8;
+          ctx.strokeStyle = "#f3d9b0";
+          ctx.lineWidth = 3 * (1 - u) + 0.5;
+          ctx.beginPath();
+          ctx.arc(typeof r.x === "function" ? r.x() : r.x, r.y, r.max * e, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        // Thread convergence and the burst get a star.
+        flare(960, 540, 260, span(t, 1.2, 1.5) * (1 - span(t, 1.5, 2.2)) * 0.8, 0.2);
+        flare(960, 540, 900, Math.exp(-Math.max(0, t - b(8)) * 5) * (t >= b(8) ? 1 : 0));
+        flare(wheelX(SPIN.stop), WY - 436, 420, t >= SPIN.stop ? Math.exp(-(t - SPIN.stop) * 4) : 0, 0.1);
+        flare(960, 520, 700, t >= b(37) ? Math.exp(-(t - b(37)) * 5) : 0);
+        flare(960, 320, 1300, t >= b(56) ? 0.85 * Math.exp(-(t - b(56)) * 3) : 0, -0.1);
+
+        const cdt = t - SPIN.stop;
+        if (cdt > 0 && cdt < 2.6) {
+          ctx.globalCompositeOperation = "source-over";
+          const f = (1 - Math.exp(-1.6 * cdt)) / 1.6;
+          const ox = wheelX(SPIN.stop);
+          confetti.forEach((p, i) => {
+            if (cdt > p.life * 1.3) return;
+            const x = ox + p.vx * f + 40 * Math.sin(cdt * 3 + p.ph);
+            const y = WY - 440 + p.vy * f + 0.5 * 1500 * cdt * cdt;
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(p.spin * cdt + p.ph);
+            ctx.scale(Math.cos(cdt * p.tw * 0.6 + p.ph), 1);
+            ctx.globalAlpha = clamp(1 - cdt / (p.life * 1.3)) ** 0.6;
+            ctx.fillStyle = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
+            ctx.fillRect(-5, -9, 10, 18);
+            ctx.restore();
+          });
+          ctx.globalCompositeOperation = "lighter";
+        }
+
+        const odt = t - b(56);
+        if (odt > 0) {
+          const flat = lerp(1, 0.3, ease.inOutCubic(span(odt, 0.15, 1.8)));
+          const fade = 1 - span(t, DURATION - 1.4, DURATION - 0.2);
+          for (const p of orbit) {
+            const r = p.ro + (p.ro * p.peak * (1 - Math.exp(-6 * odt)) - p.ro) * Math.exp(-1.3 * odt);
+            const a = p.a + p.w * odt + 2.4 * (1 - Math.exp(-2 * odt));
+            const x = 960 + r * Math.cos(a);
+            const y = 320 + r * Math.sin(a) * flat;
+            const behind = Math.sin(a) < 0 ? 0.45 : 1;
+            const tw = 0.6 + 0.4 * Math.sin(odt * 7 + p.ph);
+            dot(p.rose ? ROSE : GOLD, x, y, p.size, 0.8 * tw * behind * fade * span(odt, 0, 0.1));
+          }
+        }
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = "source-over";
+      }
+
+      // Light leaks swell at every transition.
+      const LEAK_AT = [b(8), b(16), b(24), b(31.8), b(39.9), b(47.5), b(56)];
+      function lens(t) {
+        let swell = 0;
+        for (const at of LEAK_AT) swell += Math.exp(-(((t - at) / 0.35) ** 2));
+        const base = 0.16 * span(t, 3, 5);
+        const a = $("#leak-a");
+        const bl = $("#leak-b");
+        a.style.left = `${1500 + 260 * Math.sin(t * 0.35)}px`;
+        a.style.top = `${120 + 120 * Math.cos(t * 0.27)}px`;
+        a.style.background = "radial-gradient(circle, rgb(255 160 90 / 0.55), transparent 60%)";
+        a.style.opacity = base + 0.55 * swell;
+        bl.style.left = `${300 + 300 * Math.cos(t * 0.3)}px`;
+        bl.style.top = `${950 + 100 * Math.sin(t * 0.42)}px`;
+        bl.style.background = "radial-gradient(circle, rgb(220 110 150 / 0.5), transparent 60%)";
+        bl.style.opacity = base + 0.45 * swell;
+        $("#glow").style.background = `radial-gradient(ellipse at ${50 + 20 * Math.sin(t * 0.21)}% ${40 + 15 * Math.cos(t * 0.17)}%, rgb(90 51 70 / 0.35), transparent 60%)`;
+
+        let shx = 0;
+        let shy = 0;
+        let punch = 0;
+        let flash = 0;
+        for (const h of HITS) {
+          const dt = t - h;
+          if (dt < 0 || dt > 0.8) continue;
+          const k = Math.exp(-dt * 8);
+          shx += 16 * k * Math.sin(dt * 83);
+          shy += 11 * k * Math.sin(dt * 71 + 1);
+          punch += 0.035 * k;
+          flash += 0.5 * Math.exp(-dt * 16);
+        }
+        $("#stage").style.transform = `translate(${shx}px, ${shy}px) scale(${1 + punch})`;
+        $("#flash").style.opacity = flash;
+        $("#fade").style.opacity = ease.inOutSine(span(t, DURATION - 1.6, DURATION - 0.1)) + (1 - span(t, 0, 0.12));
+        const frame = Math.floor(t * 24);
+        grains.forEach((g, i) => {
+          g.style.display = i === frame % grains.length ? "" : "none";
+        });
+        const gr = rng(frame + 1);
+        grains[frame % grains.length].style.backgroundPosition = `${Math.floor(gr() * 256)}px ${Math.floor(gr() * 256)}px`;
+      }
+      const grains = Array.from({ length: 6 }, (_, i) => {
+        const c = document.createElement("canvas");
+        c.width = c.height = 256;
+        const x = c.getContext("2d");
+        const img = x.createImageData(256, 256);
+        const r = rng(i * 7919 + 13);
+        for (let p = 0; p < img.data.length; p += 4) {
+          const v = r() * 255;
+          img.data[p] = img.data[p + 1] = img.data[p + 2] = v;
+          img.data[p + 3] = 255;
+        }
+        x.putImageData(img, 0, 0);
+        const el = document.createElement("div");
+        el.className = "grain";
+        el.style.backgroundImage = `url(${c.toDataURL()})`;
+        $("#grains").append(el);
+        return el;
+      });
+
+      function hud(t) {
+        const vis = span(t, b(8.2), b(9)) * (1 - span(t, b(55.4), b(56)));
+        const el = $("#hud");
+        if (!on(el, vis > 0)) return;
+        el.style.opacity = vis;
+        const f = Math.floor(t * FPS + 1e-6);
+        const pad = (n) => String(n).padStart(2, "0");
+        $("#tc").textContent = `TC 00:00:${pad(Math.floor(f / FPS))}:${pad(f % FPS)}`;
+        $("#beat-dot").style.opacity = 0.25 + 0.75 * Math.exp(-(t % BEAT) * 9);
+        $("#beat-dot").style.transform = `scale(${1 + 0.6 * Math.exp(-(t % BEAT) * 12)})`;
+        let idx = 0;
+        SCENES.forEach((s, i) => {
+          if (t >= b(s.at)) idx = i;
+        });
+        const since = ease.outExpo(span(t, b(SCENES[idx].at), b(SCENES[idx].at) + 0.4));
+        const br = $("#hud-br");
+        $("#scene-name").textContent = SCENES[idx].name;
+        $("#scene-no").textContent = `${pad(idx)} / 07`;
+        br.style.transform = `translateY(${(1 - since) * 30}px)`;
+        br.style.opacity = since;
+        $("#progress i").style.width = `${(t / DURATION) * 100}%`;
+      }
+
+      window.render = (t) => {
+        hero(t);
+        intro(t);
+        deck(t);
+        wheel(t);
+        desire(t);
+        montage(t);
+        phones(t);
+        finale(t);
+        fx(t);
+        lens(t);
+        hud(t);
+      };
+
+      const faces = [
+        "400 40px Amiri",
+        "700 40px Amiri",
+        "italic 400 40px Amiri",
+        "300 40px 'IBM Plex Sans Arabic'",
+        "400 40px 'IBM Plex Sans Arabic'",
+        "500 40px 'IBM Plex Sans Arabic'",
+        "600 40px 'IBM Plex Sans Arabic'",
+        "400 40px 'IBM Plex Mono'",
+        "500 40px 'IBM Plex Mono'",
+      ];
+      const images = ["hero", "texture", ...GAMES.map((g) => g[2])].map((name) => {
+        const img = new Image();
+        img.src = src(name);
+        return img.decode();
+      });
+      window.ready = Promise.all([...faces.map((f) => document.fonts.load(f, "معًا abc ٤")), ...images])
+        .then(() => document.fonts.ready)
+        .then(() => {
+          window.render(0);
+          return true;
+        });
+
+      // Open index.html#play to watch it live (no motion blur, no sound).
+      if (location.hash === "#play") {
+        window.ready.then(() => {
+          const t0 = performance.now();
+          const tick = () => {
+            window.render(((performance.now() - t0) / 1000) % DURATION);
+            requestAnimationFrame(tick);
+          };
+          tick();
+        });
+      }
+    </script>
+  </body>
+</html>
