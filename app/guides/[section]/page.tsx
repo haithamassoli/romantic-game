@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ViewTransition } from "react";
 import {
   AUDIENCE,
   type Guide,
@@ -40,7 +41,13 @@ export default async function SectionPage({
         <Link className="back-link" href="/guides">
           <span aria-hidden="true">→</span> كل الأقسام
         </Link>
-        <h1 id="section-title">{section.title}</h1>
+        <ViewTransition
+          name={`section-${section.slug}`}
+          share="morph"
+          default="none"
+        >
+          <h1 id="section-title">{section.title}</h1>
+        </ViewTransition>
         <p>{section.blurb}</p>
       </section>
 
@@ -70,7 +77,13 @@ export default async function SectionPage({
                 {guides.map((g) => (
                   <li key={g.id}>
                     <Link href={`/guides/${section.slug}/${g.id}`}>
-                      <h3>{g.title_ar}</h3>
+                      <ViewTransition
+                        name={`guide-${section.slug}-${g.id}`}
+                        share="morph"
+                        default="none"
+                      >
+                        <h3>{g.title_ar}</h3>
+                      </ViewTransition>
                       <p>{g.summary_ar}</p>
                     </Link>
                   </li>

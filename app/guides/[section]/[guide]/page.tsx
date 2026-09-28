@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ViewTransition } from "react";
 import { AUDIENCE, SECTIONS, sectionBySlug } from "@/lib/guides";
 
 // Unknown slugs 404 (Next logs a harmless NoFallbackError for each).
@@ -49,7 +50,13 @@ export default async function GuidePage({
           {index + 1} من {section.guides.length}
         </span>
       </p>
-      <h1>{guide.title_ar}</h1>
+      <ViewTransition
+        name={`guide-${section.slug}-${guide.id}`}
+        share="morph"
+        default="none"
+      >
+        <h1>{guide.title_ar}</h1>
+      </ViewTransition>
       <p className="guides-lead">{guide.summary_ar}</p>
 
       {guide.sections_ar?.map((s) => (

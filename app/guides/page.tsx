@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ViewTransition } from "react";
 import { GUIDE_COUNT, guidesLabel, SECTIONS } from "@/lib/guides";
 
 export default function GuidesPage() {
@@ -20,7 +21,13 @@ export default function GuidesPage() {
         {SECTIONS.map((s) => (
           <li key={s.slug}>
             <Link className="guides-section-card" href={`/guides/${s.slug}`}>
-              <h2>{s.title}</h2>
+              <ViewTransition
+                name={`section-${s.slug}`}
+                share="morph"
+                default="none"
+              >
+                <h2>{s.title}</h2>
+              </ViewTransition>
               <span className="guides-count">
                 {guidesLabel(s.guides.length)}
               </span>

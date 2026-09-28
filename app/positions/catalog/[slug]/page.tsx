@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ViewTransition } from "react";
 import { CATALOG } from "@/lib/catalog";
 import { POSITION_IMAGE_SIZE } from "@/lib/site-images";
 
@@ -43,15 +44,21 @@ export default async function CatalogPositionPage({
       </Link>
       <div className="pos-detail-grid">
         {position.image ? (
-          <div className="pos-figure">
-            <Image
-              src={position.image}
-              alt={`رسم توضيحي لوضعية ${position.name}.`}
-              {...POSITION_IMAGE_SIZE}
-              sizes="(max-width: 720px) 100vw, 45vw"
-              loading="eager"
-            />
-          </div>
+          <ViewTransition
+            name={`cat-img-${position.slug}`}
+            share="morph"
+            default="none"
+          >
+            <div className="pos-figure">
+              <Image
+                src={position.image}
+                alt={`رسم توضيحي لوضعية ${position.name}.`}
+                {...POSITION_IMAGE_SIZE}
+                sizes="(max-width: 720px) 100vw, 45vw"
+                loading="eager"
+              />
+            </div>
+          </ViewTransition>
         ) : (
           <span className="catalog-blank" aria-hidden="true">
             ✦
@@ -59,7 +66,13 @@ export default async function CatalogPositionPage({
         )}
 
         <div className="pos-body">
-          <h1>{position.name}</h1>
+          <ViewTransition
+            name={`cat-title-${position.slug}`}
+            share="morph"
+            default="none"
+          >
+            <h1>{position.name}</h1>
+          </ViewTransition>
           <p className="catalog-en" lang="en">
             {position.name_en}
           </p>

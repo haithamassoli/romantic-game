@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useDeferredValue, useState } from "react";
+import { useDeferredValue, useState, ViewTransition } from "react";
 import type { CatalogPosition } from "@/lib/catalog";
 import { POSITION_IMAGE_SIZE } from "@/lib/site-images";
 import { positionsLabel } from "@/lib/tags";
@@ -38,18 +38,30 @@ export function CatalogGrid({ items }: { items: Item[] }) {
         {shown.map((p, index) => (
           <li key={p.slug}>
             <Link href={`/positions/catalog/${p.slug}`} className="pos-card">
-              <span className="pos-name">{p.name}</span>
+              <ViewTransition
+                name={`cat-title-${p.slug}`}
+                share="morph"
+                default="none"
+              >
+                <span className="pos-name">{p.name}</span>
+              </ViewTransition>
               <span className="catalog-en" lang="en">
                 {p.name_en}
               </span>
               {p.image ? (
-                <Image
-                  src={p.image}
-                  alt=""
-                  {...POSITION_IMAGE_SIZE}
-                  sizes="(max-width: 720px) 50vw, (max-width: 1080px) 33vw, 25vw"
-                  loading={index < 2 ? "eager" : "lazy"}
-                />
+                <ViewTransition
+                  name={`cat-img-${p.slug}`}
+                  share="morph"
+                  default="none"
+                >
+                  <Image
+                    src={p.image}
+                    alt=""
+                    {...POSITION_IMAGE_SIZE}
+                    sizes="(max-width: 720px) 50vw, (max-width: 1080px) 33vw, 25vw"
+                    loading={index < 2 ? "eager" : "lazy"}
+                  />
+                </ViewTransition>
               ) : (
                 <span className="catalog-blank" aria-hidden="true">
                   ✦

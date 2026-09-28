@@ -3,7 +3,7 @@
 import { useQuery } from "convex/react";
 import Image from "next/image";
 import Link from "next/link";
-import { use, useRef, useState } from "react";
+import { use, useRef, useState, ViewTransition } from "react";
 import { api } from "@/convex/_generated/api";
 import { POSITION_IMAGE_SIZE } from "@/lib/site-images";
 import { CONSTRAINTS, DIFFICULTY } from "@/lib/tags";
@@ -13,7 +13,11 @@ export default function PositionPage({
   params,
 }: PageProps<"/positions/[slug]">) {
   const { slug } = use(params);
-  const position = useQuery(api.positions.get, { slug });
+  // The list is already cached when coming from /positions, so the page renders
+  // in the navigation's own commit and the card morphs into it.
+  // ponytail: a direct visit loads the whole list (≤200 rows); fine at this size.
+  const list = useQuery(api.positions.list);
+  const position = list && (list.find((p) => p.slug === slug) ?? null);
   const favorites = readList(useStored("favorites"));
   const excluded = readList(useStored("excluded"));
   const zoom = useRef<HTMLDialogElement>(null);
@@ -60,12 +64,20 @@ export default function PositionPage({
           onClick={() => zoom.current?.showModal()}
           aria-haspopup="dialog"
         >
-          <Image {...image} loading="eager" />
+          <ViewTransition name={`pos-img-${slug}`} share="morph" default="none">
+            <Image {...image} loading="eager" />
+          </ViewTransition>
           <span className="zoom-hint">اضغطا لتكبير الرسم</span>
         </button>
 
         <div className="pos-body">
-          <h1>{position.name}</h1>
+          <ViewTransition
+            name={`pos-title-${slug}`}
+            share="morph"
+            default="none"
+          >
+            <h1>{position.name}</h1>
+          </ViewTransition>
           <p className="pos-summary">{position.summary}</p>
           <dl className="pos-facts">
             <div>

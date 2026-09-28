@@ -3,6 +3,7 @@
 import { useQuery } from "convex/react";
 import Image from "next/image";
 import Link from "next/link";
+import { ViewTransition } from "react";
 import { api } from "@/convex/_generated/api";
 import { POSITION_IMAGE_SIZE } from "@/lib/site-images";
 import {
@@ -212,7 +213,13 @@ export default function PositionsPage() {
                   href={`/positions/${p.slug}`}
                   className={`pos-card${isExcluded ? " is-excluded" : ""}`}
                 >
-                  <span className="pos-name">{p.name}</span>
+                  <ViewTransition
+                    name={`pos-title-${p.slug}`}
+                    share="morph"
+                    default="none"
+                  >
+                    <span className="pos-name">{p.name}</span>
+                  </ViewTransition>
                   <span className="pos-meta">
                     <span>
                       <span className="sr-only">الصعوبة: </span>
@@ -226,13 +233,19 @@ export default function PositionsPage() {
                   )}
                   {isExcluded && <span className="pos-flag">مستبعدة</span>}
                   {/* After the text so the link reads its name first; CSS shows it on top. */}
-                  <Image
-                    src={p.image}
-                    alt={p.imageAlt}
-                    {...POSITION_IMAGE_SIZE}
-                    sizes="(max-width: 720px) 50vw, (max-width: 1080px) 33vw, 25vw"
-                    loading={index < 2 ? "eager" : "lazy"}
-                  />
+                  <ViewTransition
+                    name={`pos-img-${p.slug}`}
+                    share="morph"
+                    default="none"
+                  >
+                    <Image
+                      src={p.image}
+                      alt={p.imageAlt}
+                      {...POSITION_IMAGE_SIZE}
+                      sizes="(max-width: 720px) 50vw, (max-width: 1080px) 33vw, 25vw"
+                      loading={index < 2 ? "eager" : "lazy"}
+                    />
+                  </ViewTransition>
                 </Link>
               </li>
             );

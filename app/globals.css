@@ -2987,3 +2987,34 @@ button.button {
 .admin-gate .button {
   width: 100%;
 }
+
+/* Shared titles and drawings morph between a list and its detail page. */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-group(.morph) {
+    animation-duration: 400ms;
+  }
+
+  ::view-transition-image-pair(.morph) {
+    animation-name: via-blur;
+  }
+}
+
+@keyframes via-blur {
+  30% {
+    filter: blur(3px);
+  }
+}
+
+/* Clicks during a morph reach the page instead of the overlay. */
+::view-transition {
+  pointer-events: none;
+}
+
+/* Without motion the pages swap at once. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
+  }
+}
