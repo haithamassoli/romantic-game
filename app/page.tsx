@@ -8,6 +8,7 @@ import {
   playModes,
   siteImages,
 } from "../lib/site-images";
+import { Hero } from "./hero";
 import { ClearDataButton } from "./providers";
 import { SiteNav } from "./site-nav";
 
@@ -35,38 +36,7 @@ export default function Home() {
           </span>
         </header>
 
-        <section className="hero wrap" aria-labelledby="hero-title">
-          <div className="hero-copy">
-            <span className="eyebrow">✦ مساحة لكما وحدكما</span>
-            <h1 id="hero-title">
-              اقتربا أكثر،
-              <br />
-              <em>على طريقتكما.</em>
-            </h1>
-            <p>
-              أفكار وألعاب للحظات تجمعكما، تختارانها معًا وفق رغباتكما وحدودكما،
-              وبالإيقاع الذي يريحكما.
-            </p>
-            <div className="hero-actions">
-              <Link className="button" href="/positions">
-                استكشاف الوضعيات <span aria-hidden="true">↙</span>
-              </Link>
-              <Link className="text-link" href="/play">
-                العبا معًا ←
-              </Link>
-            </div>
-          </div>
-          <div className="hero-art">
-            <Image
-              src={siteImages.hero.src}
-              alt={siteImages.hero.alt}
-              width={IMAGE_SIZE.width}
-              height={IMAGE_SIZE.height}
-              sizes="(max-width: 720px) 100vw, 50vw"
-              preload
-            />
-          </div>
-        </section>
+        <Hero />
       </div>
 
       <section className="values wrap" aria-label="قيم التجربة">
