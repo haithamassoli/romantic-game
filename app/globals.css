@@ -175,6 +175,54 @@ nav a:hover::after {
   transform: scaleX(1);
 }
 
+/* Full-bleed bar, content still lined up with .wrap. */
+.site-header.wrap {
+  width: 100%;
+  padding-inline: max(1rem, calc((100% - var(--wrap)) / 2));
+}
+
+.menu-toggle {
+  order: 1;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: none;
+  color: var(--gold-soft);
+  cursor: pointer;
+}
+
+.menu-toggle span,
+.menu-toggle span::before,
+.menu-toggle span::after {
+  display: block;
+  width: 1.1rem;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+}
+
+.menu-toggle span {
+  position: relative;
+}
+
+.menu-toggle span::before,
+.menu-toggle span::after {
+  content: "";
+  position: absolute;
+}
+
+.menu-toggle span::before {
+  top: -0.35rem;
+}
+
+.menu-toggle span::after {
+  top: 0.35rem;
+}
+
 .adult-note {
   font-size: 0.72rem;
   letter-spacing: 0.12em;
@@ -1382,8 +1430,30 @@ button.button {
     display: flex;
   }
 
+  .menu-toggle {
+    display: none;
+  }
+
+  /* Undo the popover's UA box so the links sit inline in the header. */
+  .site-nav {
+    position: static;
+    inset: auto;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    overflow: visible;
+  }
+
   .wrap {
     width: min(var(--wrap), calc(100% - 3.5rem));
+  }
+
+  .site-header.wrap {
+    width: 100%;
+    padding-inline: max(1.75rem, calc((100% - var(--wrap)) / 2));
   }
 
   .hero {
@@ -3017,4 +3087,38 @@ button.button {
   ::view-transition-new(*) {
     animation: none;
   }
+}
+
+/* Mobile menu, last so it wins over the generic link rules above. */
+
+.site-nav:popover-open {
+  display: grid;
+  gap: 0;
+  position: fixed;
+  inset: 4.6rem 1rem auto;
+  width: auto;
+  margin: 0;
+  padding: 0.4rem 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: var(--plum);
+  font-size: 1.05rem;
+  box-shadow: 0 1.5rem 3rem rgb(0 0 0 / 0.45);
+}
+
+.site-nav:popover-open a {
+  min-height: 3.25rem;
+}
+
+.site-nav:popover-open a + a {
+  border-top: 1px solid rgb(215 180 140 / 0.1);
+}
+
+.site-nav:popover-open a::after {
+  display: none;
+}
+
+.site-nav::backdrop {
+  background: rgb(17 12 16 / 0.55);
+  backdrop-filter: blur(4px);
 }

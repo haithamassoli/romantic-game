@@ -9,6 +9,7 @@ import {
   siteImages,
 } from "../lib/site-images";
 import { ClearDataButton } from "./providers";
+import { SiteNav } from "./site-nav";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
@@ -23,12 +24,12 @@ export default function Home() {
             <span className="brand-mark" aria-hidden="true" />
             معًا
           </a>
-          <nav aria-label="التنقل الرئيسي">
+          <SiteNav>
             <Link href="/positions">الوضعيات</Link>
             <Link href="/guides">الأدلة</Link>
             <a href="#games">الألعاب</a>
             <a href="#play">اللعب</a>
-          </nav>
+          </SiteNav>
           <span className="adult-note">
             للبالغين فقط <b>+18</b>
           </span>
