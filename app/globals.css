@@ -181,8 +181,14 @@ nav a:hover::after {
   padding-inline: max(1rem, calc((100% - var(--wrap)) / 2));
 }
 
-.menu-toggle {
+.header-tools {
   order: 1;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.menu-toggle,
+.reel-toggle {
   display: grid;
   place-items: center;
   width: 2.75rem;
@@ -1368,6 +1374,11 @@ button.button {
   overflow: auto;
 }
 
+.zoom-scroll video {
+  max-width: 100%;
+  max-height: calc(100dvh - 4.5rem);
+}
+
 .zoom-scroll img {
   width: auto;
   max-height: calc(100dvh - 4.5rem);
@@ -1739,7 +1750,7 @@ button.button {
     inset: auto;
     width: auto;
     height: auto;
-    margin: 0;
+    margin: 0 auto; /* centred, so the +18 note and play button stay together at the end */
     padding: 0;
     border: 0;
     background: none;
